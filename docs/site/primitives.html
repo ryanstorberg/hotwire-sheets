@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stacks, focus and overlays · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" aria-current="page">Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="stacks-focus-and-overlays">Stacks, focus and overlays</h1>
+<p>These primitives work with existing HTML. Their Rails helpers register the corresponding Stimulus controllers through <code>registerSheets(application)</code>. JSON options use Ruby snake_case or JavaScript camelCase. JavaScript callbacks and element-returning functions belong in application controllers.</p>
+<h2 id="named-stacks">Named stacks</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_stack(id: &quot;pages&quot;) do %&gt;
+  &lt;%= hotwire_sheet(id: &quot;details&quot;, for_component: &quot;pages&quot;) do |sheet| %&gt;
+    &lt;%= sheet.content do %&gt;
+      &lt;%= sheet.title &quot;Details&quot; %&gt;
+      &lt;%= sheet.close %&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>In JavaScript, create <code>new SheetStack(element, { componentId: &quot;pages&quot; })</code>. A sheet&#39;s <code>forComponent</code> can name the stack or use <code>&quot;closest&quot;</code>. A component reference can also be the instance itself. Sibling and nested sheets can belong to the same group. Grouping limits stacking progress to associated sheets; modal ordering remains shared across the document. Unrelated overlays still need correct front-to-back interaction ordering.</p>
+<p><code>stack.sheets</code> returns the currently presented members. <code>stack.progress</code> sums their travel progress. <code>stack.outlet(element, { stackingAnimation: ... })</code> responds to sheets above the first presented member. See <a href="/docs/animations">animation APIs</a>.</p>
+<h2 id="focus-targets">Focus targets</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_auto_focus(timing: &quot;dismiss&quot;, for_component: &quot;details&quot;,
+      html: { as: :button, type: &quot;button&quot; }) do %&gt;
+  Return to details
+&lt;% end %&gt;
+</code></pre>
+<p><code>new AutoFocusTarget(element, { timing: &quot;present&quot;, forComponent: &quot;details&quot; })</code> gives a focusable element priority during automatic focus. <code>timing</code> accepts <code>&quot;present&quot;</code>, <code>&quot;dismiss&quot;</code>, or an array containing both. Omitting <code>forComponent</code> associates the target with every sheet. Disabled, inert, disconnected, or hidden targets are excluded. The explicit <code>initialFocus</code> sheet option has priority during presentation.</p>
+<p><code>onPresentAutoFocus</code> and <code>onDismissAutoFocus</code> accept <code>{ focus: false }</code> or a callback that calls <code>event.changeDefault({ focus: false })</code>. Presentation hooks run after entry finishes; dismissal hooks run after the modal scope is released. Ordinary sheets retain their early focus acquisition so keyboard input has a valid scope during entry.</p>
+<h2 id="interactive-islands">Interactive islands</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_island(for_component: [&quot;details&quot;, &quot;pages&quot;], html: { class: &quot;navigation&quot; }) do %&gt;
+  &lt;%= link_to &quot;Help&quot;, help_path %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p><code>new Island(element, options)</code> accepts <code>forComponent</code> (one sheet/stack ID or an array), <code>disabled</code>, and <code>contentGetter</code>. Without an association it applies to every sheet. <code>contentGetter</code> may be a CSS selector or a JavaScript function returning an element. Otherwise, the root or its <code>data-island-content</code> child is the interactive region.</p>
+<p>Islands join the active modal&#39;s interaction and focus scope. Their pointer gestures cannot dismiss the sheet behind them. Default island content traps boundary wheel/touch scrolling; an external <code>contentGetter</code> owns its own scroll-trapping behavior. <code>island.setOptions({ disabled: true })</code> disables the exemption immediately. Legacy <code>data-sheet-island</code> remains supported; <code>data-sheet-island-for=&quot;details pages&quot;</code> scopes it and <code>data-sheet-island-disabled=&quot;true&quot;</code> disables it.</p>
+<h2 id="external-overlays">External overlays</h2>
+<pre><code class="language-js">import { ExternalOverlay } from &quot;hotwire-sheets&quot;;
+const dialog = new ExternalOverlay(host, {
+  contentGetter: &quot;#payment-dialog&quot;,
+  selfManagedInertOutside: false
+});
+// When the external dialog closes:
+dialog.destroy();
+</code></pre>
+<p>The Rails helper is <code>hotwire_sheet_external_overlay</code>. Options are <code>disabled</code> (default <code>false</code>), <code>contentGetter</code>, and <code>selfManagedInertOutside</code> (default <code>true</code>). If the external dialog manages its own modal isolation, sheet isolation and focus trapping are suspended to avoid competing managers. Otherwise its element joins the sheet&#39;s permitted interaction/focus scope. Escape does not dismiss the underlying sheet while the external overlay is registered.</p>
+<p>Dialog/popover markup added at the body level while a sheet is open is detected automatically. Register an external overlay explicitly for other portal shapes, custom widgets, or a component that owns its own isolation. Destroy the registration, or set <code>disabled: true</code>, when it is no longer presented. This makes the lifetime explicit and avoids leaving the sheet blocked by a hidden third-party wrapper.</p>
+<h2 id="fixed-viewport-content">Fixed viewport content</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_fixed(html: { class: &quot;floating-controls&quot; }) do %&gt;
+  &lt;button&gt;Help&lt;/button&gt;
+&lt;% end %&gt;
+</code></pre>
+<p><code>new Fixed(element)</code> places the element in a body-level viewport layer while retaining its insertion point for cleanup. This keeps it independent of transformed ancestors and viewport-clipped outlets. Removing the original owner, including through a Turbo Frame or Stream update, returns the portal to that removed subtree so controller cleanup can finish. Use normal <code>top</code>, <code>right</code>, <code>bottom</code>, and <code>left</code> CSS; a special side declaration is unnecessary with this implementation. Styles that depend on the old ancestor selector or inherited values should be moved onto the fixed element.</p>
+<p>The fixed element, or its <code>data-fixed-content</code> child, traps scrolling at its boundaries. Being fixed does not automatically make it an island: use <code>Island</code> as well when it should remain interactive above a modal sheet.</p>
+<p>While body scrollbars are removed, <code>--x-collapsed-scrollbar-thickness</code> and <code>--y-collapsed-scrollbar-thickness</code> expose the horizontal and vertical scrollbar compensation. For example, a right-anchored control can use <code>right: calc(16px + var(--y-collapsed-scrollbar-thickness))</code>.</p>
+<h2 id="accessible-hidden-content-and-backgrounds">Accessible hidden content and backgrounds</h2>
+<p><code>hotwire_sheet_visually_hidden(&quot;Details&quot;)</code>, <code>.sheet-visually-hidden</code>, or <code>new VisuallyHidden(element)</code> hides content visually while keeping it available to assistive technology. <code>sheet.handle</code> is a real button with hidden label text; clicking cycles detents, and arrow/Home/End keys offer explicit size controls.</p>
+<p><code>sheet.bleeding_background</code> renders <code>data-sheet-bleeding-background</code>, a noninteractive surface extending toward the dismissal edge. Give it the intended color and corner styling. <code>data-sheet-special-wrapper</code> with an inner <code>data-sheet-special-content</code> supplies an overflow wrapper for layouts that need it; the JavaScript gesture backend does not require React&#39;s Safari-specific component composition.</p>
+<h2 id="utility-functions">Utility functions</h2>
+<p><code>createComponentId(prefix)</code> creates a serializable component ID. Explicit Rails IDs remain preferable when the server and browser need to refer to the same element.</p>
+<p><code>observeMediaQuery(query, callback, { signal })</code> immediately reports the current match and subscribes to changes. It returns a cleanup function, supports AbortSignal, and reports <code>false</code> without a browser window. This replaces React&#39;s <code>useClientMediaQuery</code> subscription model.</p>
+<p><code>getPageScrollData</code> and <code>observePageScrollData</code> report page-scroll ownership. See <a href="/docs/scroll">Scroll</a>.</p>
+<h2 id="theme-color-dimming">Theme-color dimming</h2>
+<p>Set a <code>theme-color</code> meta tag and pass <code>theme_color_dimming: &quot;auto&quot;</code> to a sheet to blend the status-bar color with its backdrop in WebKit. The blend uses the backdrop color, its alpha, and travel opacity. Multiple registered overlays compose in order.</p>
+<pre><code class="language-js">import { updateThemeColor, createThemeColorDimmingOverlay } from &quot;hotwire-sheets&quot;;
+const dimming = createThemeColorDimmingOverlay({
+  element: document.querySelector(&quot;#screen-dimmer&quot;),
+  dimmingColor: &quot;rgb(0, 0, 0)&quot;
+});
+dimming.setDimmingOverlayOpacity(.3);
+dimming.animateDimmingOverlayOpacity({ keyframes: [.3, .6], duration: 500 });
+updateThemeColor(&quot;#f8fafc&quot;); // Changes the base color while preserving active dimming.
+// Later: dimming.destroy();
+</code></pre>
+<p>The optional element receives the same opacity as the theme-color blend. The animation method uses WAAPI for the element and a frame observer for the meta tag; the browser&#39;s status-bar appearance is outside the compositor animation API. Missing meta tags are tolerated. RGB and hexadecimal inputs are supported; use opaque base colors for predictable blending. The default dimming animation lasts 500 ms and uses <code>cubic-bezier(0.25, 1, 0.25, 1)</code>.</p>
+<p>All primitives have <code>destroy()</code> methods. Controller-managed instances clean up before Turbo snapshots and on removal. Create manual instances in <code>connect()</code> and destroy them in <code>disconnect()</code> when integrating with your own Stimulus controllers.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/primitives.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#named-stacks">Named stacks</a><a href="#focus-targets">Focus targets</a><a href="#interactive-islands">Interactive islands</a><a href="#external-overlays">External overlays</a><a href="#fixed-viewport-content">Fixed viewport content</a><a href="#accessible-hidden-content-and-backgrounds">Accessible hidden content and backgrounds</a><a href="#utility-functions">Utility functions</a><a href="#theme-color-dimming">Theme-color dimming</a></aside></div></body></html>

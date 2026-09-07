@@ -1,0 +1,150 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Examples · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" aria-current="page">Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="example-gallery">Example gallery</h1>
+<p>The gallery presents <strong>16 examples</strong> in one responsive grid. Each card shows desktop and mobile previews with watercolor artwork. Layouts, typography, panel corners, and dismiss controls use the Rails-compatible engine.</p>
+<p>Run <code>npm run demo</code> and open the <a href="http://127.0.0.1:4173/">local gallery</a>. The Docs link opens this guide. The static demo uses the actual core, Stimulus, and Turbo modules; the Ruby integration tests separately verify a real Rails application.</p>
+<p>Swipe-enabled presentations accept gestures from their surface or elsewhere in the viewport, including the backdrop. Page from Bottom closes only through its Close button. Outside swipes control the frontmost sheet and follow its edge and detents. Persistent Sheet with Detent expands or collapses without dismissing. Scrolling content and form controls keep their own interactions.</p>
+<p>Sheet with Keyboard and Detached Sheet accept both upward dismissal through the top of the screen and downward dismissal through the bottom, on desktop and mobile layouts.</p>
+<p>Sheet with Depth includes the root gallery page as its first receding layer. Its rounded top remains visible behind the first sheet at any gallery scroll position; nested sheets stay anchored at the bottom, and dismissing restores the page&#39;s original scroll position. Each depth layer uses native CSS Scroll Snap; covered feeds keep their dimensions and reading position, and scrolling resumes on the uncovered layer.</p>
+<h2 id="temporary-central-content">Temporary central content</h2>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Presentation and controls</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bottom Sheet</td>
+<td>White bottom panel, watercolor image, handle-shaped Dismiss button, and Got it action</td>
+</tr>
+<tr>
+<td>Top Sheet</td>
+<td>Top-anchored panel, watercolor image, corner cross, and Book it Now action</td>
+</tr>
+<tr>
+<td>Detached Sheet</td>
+<td>Rounded floating panel, watercolor image, Dismiss handle, and Got it action; centered on desktop and inset from the bottom on phones</td>
+</tr>
+<tr>
+<td>Card</td>
+<td>Centered image card with a corner cross and Reserve Spot action; enters and leaves through the top while scaling between 80% and 100%; only the backdrop fades</td>
+</tr>
+</tbody></table>
+<h2 id="temporary-side-content">Temporary side content</h2>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Presentation and controls</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sidebar</td>
+<td>Left navigation panel with the Acme organization header and grouped menu items; swipe left from the panel, a menu item, or its backdrop to dismiss, with native vertical scrolling and ordinary clicks preserved</td>
+</tr>
+<tr>
+<td>Toast</td>
+<td>Luca&#39;s message; enters and dismisses through the right edge on desktop (1000px and wider), or the top on narrower screens; five-second dismissal with hover/focus pause, preserving the current focus</td>
+</tr>
+<tr>
+<td>Sheet with Stacking</td>
+<td>Profile panel on the right of desktop screens or at the bottom on phones; cross on desktop, downward chevron on phones; open the related example at the end of the feed to stack another; the rear panel scales down and shifts back as the next panel enters</td>
+</tr>
+<tr>
+<td>Persistent Sheet with Detent</td>
+<td>Music player with a compact bar and expanded view; Expand, Collapse, Play/Pause, and Dismiss controls</td>
+</tr>
+</tbody></table>
+<h2 id="temporary-long-content">Temporary long content</h2>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Presentation and controls</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sheet with Detent</td>
+<td>Native CSS Scroll Snap contact list with a search field and Cycle handle; two open heights, then dismissal</td>
+</tr>
+<tr>
+<td>Sheet with Depth</td>
+<td>Full-width profile with a downward chevron; open related profiles to create three layers, keeping their bottom edges attached throughout the transition</td>
+</tr>
+<tr>
+<td>Sheet with Keyboard</td>
+<td>Product editor with horizontal watercolor thumbnails, labeled fields, Cancel, and Save; a two-column desktop form becomes one column on phones</td>
+</tr>
+<tr>
+<td>Lightbox</td>
+<td>Full-screen black image surface with a white cross; comments beside the image on desktop or in a nested sheet opened with the Comments button on phones; the container fades while the image slides up; swipe the image to dismiss; clicking or tapping the image does not enlarge it</td>
+</tr>
+</tbody></table>
+<h2 id="persistent-long-content">Persistent long content</h2>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Presentation and controls</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Parallax Page</td>
+<td>Horizontal article presentation with a back chevron; the underlying page and scrolled cover move at different rates</td>
+</tr>
+<tr>
+<td>Long Sheet</td>
+<td>Rounded, inset article with a large cover and a corner cross that scrolls with the article; continued scrolling past the end dismisses upward, and reopening enters from below at the beginning</td>
+</tr>
+<tr>
+<td>Page</td>
+<td>Full-screen horizontal article with a persistent corner cross</td>
+</tr>
+<tr>
+<td>Page from Bottom</td>
+<td>Full-screen vertical article dismissed only by its header Close button; native article scrolling remains enabled</td>
+</tr>
+</tbody></table>
+<h2 id="use-a-presentation-in-rails">Use a presentation in Rails</h2>
+<p>Start with <a href="/docs/recipes">recipes</a>, then use the <a href="/docs/rails">Rails helpers</a> and <a href="/docs/styling">styling guide</a> to compose your application&#39;s content. The example controller supplies application behaviors such as contact filtering, toast timing, and player controls through the documented browser API. They are not extra engine options.</p>
+<p>The player demonstrates playback UI without an audio stream. Product Save retains the edited values in the demo; wire a real application form to a Rails action as described in <a href="/docs/turbo">Turbo and Stimulus</a>. Sidebar destinations are demonstration controls.</p>
+<h2 id="edit-and-rebuild">Edit and rebuild</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>examples/catalog.js</code></td>
+<td>Official example names and content data</td>
+</tr>
+<tr>
+<td><code>scripts/build-gallery.mjs</code></td>
+<td>HTML generator</td>
+</tr>
+<tr>
+<td><code>examples/gallery.html</code></td>
+<td>Generated gallery markup</td>
+</tr>
+<tr>
+<td><code>examples/gallery.css</code></td>
+<td>Presentation styles and responsive breakpoints</td>
+</tr>
+<tr>
+<td><code>examples/gallery.js</code></td>
+<td>Stimulus application behaviors</td>
+</tr>
+<tr>
+<td><code>examples/assets/sources.json</code></td>
+<td>Original media URLs</td>
+</tr>
+</tbody></table>
+<pre><code class="language-sh">npm run build:gallery
+npm run build:docs
+npm run demo
+</code></pre>
+<p>The independent engine regression fixtures remain at <code>/regression</code>. Open <code>/?assets=built</code> to exercise the gallery with the gem&#39;s prebuilt modules. The browser suite checks both the regression fixtures and the reference gallery.</p>
+<h2 id="reference-scope">Reference scope</h2>
+<p>The gallery uses public-domain watercolor artwork, which is excluded from the runtime packages. <a href="/examples/assets/watercolors/README.md">Artwork credits</a> identify the original museum records. Long article bodies and most feed/comment text use original demo copy. Automated checks cover geometry and interactions; see <a href="/docs/coverage">coverage</a> for their scope and remaining device validation.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/examples.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#temporary-central-content">Temporary central content</a><a href="#temporary-side-content">Temporary side content</a><a href="#temporary-long-content">Temporary long content</a><a href="#persistent-long-content">Persistent long content</a><a href="#use-a-presentation-in-rails">Use a presentation in Rails</a><a href="#edit-and-rebuild">Edit and rebuild</a><a href="#reference-scope">Reference scope</a></aside></div></body></html>

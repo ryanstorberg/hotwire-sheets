@@ -1,0 +1,112 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Animation APIs · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" aria-current="page">Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="animation-apis">Animation APIs</h1>
+<p>The library uses the Web Animations API for timed surface motion and CSS Scroll Snap for native detent travel. Animation playback has no fixed 60 Hz cap. Actual compositing and frame rate depend on the browser, display, hardware, and animated properties.</p>
+<h2 id="separate-transition-settings">Separate transition settings</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;account&quot;,
+      entering_animation_settings: &quot;elastic&quot;,
+      exiting_animation_settings: { easing: &quot;ease-in&quot;, duration: 220 },
+      stepping_animation_settings: &quot;snappy&quot;) do |sheet| %&gt;
+  &lt;%= sheet.content do %&gt;
+    &lt;%= sheet.title &quot;Account&quot; %&gt;
+    &lt;%= sheet.close %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>JavaScript names are <code>enteringAnimationSettings</code>, <code>exitingAnimationSettings</code>, and <code>steppingAnimationSettings</code>. Each accepts a preset name or an object. The legacy <code>spring</code> setting supplies values when a phase does not override them.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>preset</code></td>
+<td><code>gentle</code>, <code>smooth</code>, <code>snappy</code>, <code>brisk</code>, <code>bouncy</code>, or <code>elastic</code></td>
+</tr>
+<tr>
+<td><code>easing: &quot;spring&quot;</code></td>
+<td>Analytical spring using <code>stiffness</code>, <code>damping</code>, and <code>mass</code></td>
+</tr>
+<tr>
+<td><code>initialVelocity</code></td>
+<td>Initial spring velocity in pixels per second</td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Spring position settlement tolerance in pixels</td>
+</tr>
+<tr>
+<td><code>easing</code></td>
+<td><code>linear</code>, <code>ease</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code>, or <code>cubic-bezier(...)</code></td>
+</tr>
+<tr>
+<td><code>duration</code></td>
+<td>Milliseconds for a timed easing; default 500 when selecting a timed easing</td>
+</tr>
+<tr>
+<td><code>delay</code></td>
+<td>Milliseconds before motion begins</td>
+</tr>
+<tr>
+<td><code>track</code></td>
+<td>Entry/exit direction for a sheet with two <code>tracks</code>; does not apply to stepping</td>
+</tr>
+<tr>
+<td><code>contentMove: false</code></td>
+<td>Entry places the content at its destination while associated effects animate; exit leaves content at its current detent until dismissal</td>
+</tr>
+<tr>
+<td><code>skip: true</code></td>
+<td>Completes immediately</td>
+</tr>
+</tbody></table>
+<p>Reduced motion skips sheet transitions. <code>animationPresets</code> exports six immutable spring configurations for common transitions. A native snap sheet without phase settings uses browser smooth scrolling. Supplying phase settings uses WAAPI for that programmatic transition and commits the physical scroll offset afterward. User input still uses native snapping.</p>
+<h2 id="travel-and-stacking-outlets">Travel and stacking outlets</h2>
+<p>An <code>Outlet</code> animates an existing element. It can be a title, handle, backdrop, page, trigger, or application element; an extra wrapper is unnecessary unless viewport clipping is requested.</p>
+<pre><code class="language-js">const effect = sheet.outlet(document.querySelector(&quot;#background&quot;), {
+  travelAnimation: {
+    scale: [1, .94],
+    translateY: [&quot;0px&quot;, &quot;12px&quot;],
+    transformOrigin: &quot;50% 0&quot;
+  },
+  stackingAnimation: {
+    opacity: ({ progress }) =&gt; Math.max(.4, 1 - progress * .15)
+  }
+});
+</code></pre>
+<p><code>new Outlet(element, { forComponent: &quot;account&quot;, ... })</code> can associate an element outside the sheet root. <code>new SheetStack(root, { componentId: &quot;pages&quot; }).outlet(element, {...})</code> creates an outlet driven by sheets above that stack&#39;s first sheet. A sheet outlet&#39;s stacking progress sums the travel progress of associated sheets above it. A sheet’s travel progress is zero when closed and one at its largest extent; stacking progress can exceed one.</p>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_outlet(for_component: &quot;account&quot;,
+      travel_animation: { scale: [1, 0.94], opacity: [1, 0.8] },
+      html: { id: &quot;background&quot; }) do %&gt;
+  &lt;%= render &quot;page&quot; %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>Property names use camelCase in JavaScript and snake_case in Ruby. Values can be a constant, a two-value array, or a JavaScript function receiving <code>{ progress, tween }</code>. <code>null</code> and <code>undefined</code> leave a property alone. On the backdrop, <code>travelAnimation: { opacity: null }</code> disables the default fade and keeps it opaque. <code>tween(start, end)</code> interpolates numbers and compatible CSS values using the current progress. Functions must be synchronous and free of side effects; the library samples them to construct animations.</p>
+<p>Individual transforms are composed into one transform: <code>translate</code>, <code>translateX/Y/Z</code>, <code>scale</code>, <code>scaleX/Y/Z</code>, <code>rotate</code>, <code>rotateX/Y/Z</code>, and <code>skew</code>, <code>skewX/Y</code>. Use a string with units for translations or rotations, or numbers for pixels/degrees. Scales are unitless. <code>travelAnimation</code> on a Sheet&#39;s options composes with its structural travel transform.</p>
+<p>For plain markup inside a sheet, use JSON-valued <code>data-sheet-travel-animation</code> and <code>data-sheet-stacking-animation</code>. The same attributes work on the view and its descendant parts. Functions must be attached through JavaScript, not embedded in JSON.</p>
+<h2 id="native-scroll-timelines">Native scroll timelines</h2>
+<p>Simple transform/opacity array outlets attached to a native snap sheet use a <code>ScrollTimeline</code> when available. The primary content retains its structural positioning and composes its outlet transform through the progress path. Their visual progress follows the browser&#39;s scrolling timeline. Other effects update from sheet progress, and timed transitions compile outlet frames into WAAPI animations. Native timeline support is feature-detected; there is no browser-name assumption. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/ScrollTimeline/ScrollTimeline">ScrollTimeline</a>.</p>
+<p>Callbacks, theme-color updates, and CSS properties that require layout or paint still involve the main thread. Choosing <code>height</code>, <code>top</code>, <code>borderRadius</code>, or a shadow does not make those properties compositor-only. Prefer transform and opacity for sustained motion. See <a href="/docs/architecture#gpu-acceleration-and-high-refresh-rates">architecture</a> for measurements and limits.</p>
+<h2 id="clip-the-page-before-transforming-it">Clip the page before transforming it</h2>
+<pre><code class="language-js">sheet.outlet(page, {
+  travelAnimation: {
+    clipBoundary: &quot;layout-viewport&quot;,
+    clipBorderRadius: [&quot;0px&quot;, &quot;24px&quot;],
+    clipTransformOrigin: &quot;50% 0&quot;,
+    scale: [1, .94]
+  }
+});
+</code></pre>
+<p>Viewport clipping uses a temporary fixed wrapper and a layout placeholder. It captures geometry when activated and remeasures the authored layout on resize, then restores the original DOM placement when the effect returns to zero or is destroyed. Keep viewport-fixed UI outside the moving surface or use <code>Fixed</code>. <code>borderRadius</code> may require painting even when the transform can be composited.</p>
+<h2 id="standalone-waapi-helper">Standalone WAAPI helper</h2>
+<pre><code class="language-js">import { animate } from &quot;hotwire-sheets&quot;;
+const animation = animate(element, { opacity: [0, 1] }, {
+  duration: 500,
+  easing: &quot;cubic-bezier(0.25, 1, 0.25, 1)&quot;
+});
+await animation?.finished;
+</code></pre>
+<p>The helper persists the final inline styles and removes the finished animation. Canceling preserves the pre-animation inline styles. Passing <code>null</code> returns <code>null</code>. If WAAPI is unavailable, final styles are applied immediately. The helper returns the native <code>Animation</code>, including its pause, play, cancel, and finished interfaces. Unlike Sheet transitions, this low-level helper leaves reduced-motion policy to its caller.</p>
+<p><code>effect.setOptions()</code> replaces the supplied animation definitions and restores styles for removed properties. <code>sheet.setOptions({ travelAnimation: ... })</code> updates the content effect.</p>
+<p>Call <code>effect.destroy()</code> when an externally created outlet is no longer needed. Outlets created with <code>sheet.outlet()</code> are also destroyed with their sheet. Their original inline styles are restored.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/animations.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#separate-transition-settings">Separate transition settings</a><a href="#travel-and-stacking-outlets">Travel and stacking outlets</a><a href="#native-scroll-timelines">Native scroll timelines</a><a href="#clip-the-page-before-transforming-it">Clip the page before transforming it</a><a href="#standalone-waapi-helper">Standalone WAAPI helper</a></aside></div></body></html>

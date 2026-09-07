@@ -1,0 +1,222 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Styling and composition · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" aria-current="page">Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="styling-and-composition">Styling and composition</h1>
+<p>Import <code>hotwire-sheets/styles.css</code> or use the gem&#39;s <code>hotwire_sheets</code> stylesheet. It provides positioning, transforms, scrolling, and input behavior. Add your own colors, type, spacing, and controls afterward.</p>
+<h2 id="documentation-and-example-theme">Documentation and example theme</h2>
+<p>The landing page, documentation, and interactive examples share typography and color tokens in <code>docs/theme.css</code>. The gallery applies those tokens through <code>examples/site.css</code>: green actions and the same navigation and text styles as the docs. Example cards pair desktop and mobile screenshots with full-color watercolor artwork, softly shaded device frames, and coordinated mint, sky, or clay backgrounds. Their palette comes from <code>examples/preview-themes.js</code>; hover motion respects reduced-motion preferences. Presentation geometry and movement remain in <code>examples/gallery.css</code>. To refresh the device previews after editing the demos, run <code>npm run capture:previews</code> with the demo server running.</p>
+<p>This site theme is an example of application styling; importing the library&#39;s structural stylesheet does not apply it to your Rails app. Reuse the token values or replace them with your application&#39;s own design system.</p>
+<h2 id="structural-elements">Structural elements</h2>
+<table>
+<thead>
+<tr>
+<th>Marker</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>data-sheet-root</code></td>
+<td>Stable ownership node; lifecycle events originate here</td>
+</tr>
+<tr>
+<td><code>data-sheet-view</code></td>
+<td>Fixed viewport and stacking context; portaled by default</td>
+</tr>
+<tr>
+<td><code>data-sheet-content</code></td>
+<td>Visible panel and accessible dialog</td>
+</tr>
+<tr>
+<td><code>data-sheet-backdrop</code></td>
+<td>Outside-click surface and dimming layer</td>
+</tr>
+<tr>
+<td><code>data-sheet-body</code></td>
+<td>Scrollable region sized to the current detent</td>
+</tr>
+<tr>
+<td><code>data-sheet-motion</code></td>
+<td>Optional direct child of content animated by WAAPI instead of the dialog shell</td>
+</tr>
+<tr>
+<td><code>data-sheet-motion-fade</code></td>
+<td>Direct child whose opacity follows open progress, with WAAPI playback during transitions</td>
+</tr>
+<tr>
+<td><code>data-sheet-handle</code></td>
+<td>Drag surface with arrow-key, Home, and End support</td>
+</tr>
+<tr>
+<td><code>data-sheet-drag</code></td>
+<td>Allows a button or link to start a sheet swipe while retaining ordinary clicks</td>
+</tr>
+<tr>
+<td><code>data-sheet-open=&quot;id&quot;</code></td>
+<td>Opens the root identified by that ID</td>
+</tr>
+<tr>
+<td><code>data-sheet-close</code></td>
+<td>Explicit close action within the associated view</td>
+</tr>
+<tr>
+<td><code>data-sheet-no-drag</code></td>
+<td>Region whose gestures belong to application controls</td>
+</tr>
+<tr>
+<td><code>data-sheet-island</code></td>
+<td>External content allowed through the modality boundary</td>
+</tr>
+</tbody></table>
+<p>Keep headers and action footers outside the body so they remain visible as the body scrolls. The core measures this surrounding content as fixed chrome. Use a single direct scroll body when possible.</p>
+<pre><code class="language-erb">&lt;%= sheet.content(class: &quot;product-sheet&quot;) do %&gt;
+  &lt;header class=&quot;product-toolbar&quot;&gt;
+    &lt;%= sheet.close &quot;Cancel&quot; %&gt;
+    &lt;%= sheet.title &quot;Edit product&quot; %&gt;
+    &lt;button type=&quot;submit&quot; form=&quot;product-form&quot;&gt;Save&lt;/button&gt;
+  &lt;/header&gt;
+  &lt;%= sheet.body do %&gt;
+    &lt;%= render &quot;products/form&quot; %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<h2 id="theme-variables">Theme variables</h2>
+<p>Set theme variables on the content or view. Variables defined only on the root stop inheriting into the view after it portals to <code>document.body</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--sheet-width</code></td>
+<td><code>100%</code></td>
+<td>Width of top/bottom content</td>
+</tr>
+<tr>
+<td><code>--sheet-background</code></td>
+<td><code>Canvas</code></td>
+<td>Content background</td>
+</tr>
+<tr>
+<td><code>--sheet-color</code></td>
+<td><code>CanvasText</code></td>
+<td>Content text</td>
+</tr>
+<tr>
+<td><code>--sheet-backdrop-color</code></td>
+<td><code>rgb(0 0 0 / 40%)</code></td>
+<td>Backdrop fill; set on the view/backdrop</td>
+</tr>
+<tr>
+<td><code>--sheet-z-index</code></td>
+<td><code>1000</code></td>
+<td>View&#39;s base stacking level</td>
+</tr>
+<tr>
+<td><code>--sheet-defaults</code></td>
+<td>Unset</td>
+<td>Set to <code>reset</code> to remove default surface/backdrop colors while retaining positioning and input behavior</td>
+</tr>
+</tbody></table>
+<p>For left/right sheets, the detent controls the panel&#39;s width. <code>--sheet-width</code> is for top/bottom sheets.</p>
+<p>Direct children default to the available detent width. Your own <code>width</code> rules take priority, so a positioned dismiss button can retain a fixed size.</p>
+<h2 id="motion-variables">Motion variables</h2>
+<p>The view supplies these properties to its descendants. Read them in CSS or use <code>sheet:progress</code> for application effects.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--sheet-progress</code></td>
+<td>Clamped 0–1 progress relative to maximum extent</td>
+</tr>
+<tr>
+<td><code>--sheet-visible</code></td>
+<td>Current visible pixels, capped at maximum extent; outward rubber banding can make it negative</td>
+</tr>
+<tr>
+<td><code>--sheet-offset</code></td>
+<td>Signed translation from the anchored position</td>
+</tr>
+<tr>
+<td><code>--sheet-extent</code></td>
+<td>Largest resolved detent</td>
+</tr>
+<tr>
+<td><code>--sheet-body-available</code></td>
+<td>Target detent&#39;s available body/chrome space</td>
+</tr>
+<tr>
+<td><code>--sheet-chrome</code></td>
+<td>Measured space outside the scroll body</td>
+</tr>
+<tr>
+<td><code>--sheet-stack-depth</code></td>
+<td>Sum of normalized progress of sheets above this sheet</td>
+</tr>
+<tr>
+<td><code>--sheet-stack-index</code></td>
+<td>Position in the active presentation stack</td>
+</tr>
+<tr>
+<td><code>--sheet-viewport-width</code>, <code>--sheet-viewport-height</code></td>
+<td>Visual viewport dimensions</td>
+</tr>
+<tr>
+<td><code>--sheet-viewport-top</code>, <code>--sheet-viewport-left</code></td>
+<td>Visual viewport offsets</td>
+</tr>
+<tr>
+<td><code>--sheet-viewport-keyboard</code></td>
+<td>Estimated occluded viewport height</td>
+</tr>
+</tbody></table>
+<p>The last value is a geometry estimate, not a reliable signal that a keyboard is open. Pinch zoom and browser UI also affect viewport geometry.</p>
+<h2 id="close-button-styles">Close-button styles</h2>
+<pre><code class="language-css">.corner-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #6b7280;
+}
+.corner-close svg { width: 22px; height: 22px; }
+.dismiss-handle {
+  width: 50px;
+  height: 6px;
+  margin: 8px auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #d1d5db;
+}
+</code></pre>
+<p>Provide an accessible label when the control contains only an icon or has no visible text. See the <a href="/docs/rails">Rails helper examples</a>.</p>
+<h2 id="depth-and-custom-transforms">Depth and custom transforms</h2>
+<p><code>stack_effect: true</code> enables the structural bottom-sheet scale effect. It scales around the bottom edge so layered content does not float above the viewport. The gallery adds a taller background surface and progressive width reduction to reproduce the reference Depth presentation.</p>
+<p>Give a page that recedes behind a sheet an explicit, opaque background. A transparent page will show the canvas behind it when transformed; setting only the body background does not give the page its own surface.</p>
+<p>For WAAPI/frame motion, an overridden <code>transform</code> must preserve the engine&#39;s <code>--sheet-offset</code> and the <code>-50%</code> horizontal centering on vertical sheets. Avoid <code>!important</code> on transform/opacity, which takes precedence over WAAPI. The default backend interpolates authored transform matrices; choose <code>animation: &quot;raf&quot;</code> for nonlinear transforms or custom effects that need to recompute throughout motion. Keep background surfaces extended during scaling to avoid exposing gaps.</p>
+<p>With <code>scrollSnap: true</code>, native view scrolling supplies the translation. Keep the structural <code>[data-sheet-scroll-snap]</code> positioning rules and do not add <code>--sheet-offset</code> a second time. The engine generates <code>data-sheet-snap-track</code> and <code>data-sheet-snap-point</code> elements as noninteractive, aria-hidden children of the view; do not style them as visible content. Colors, spacing, corners, and the bottom <code>stackEffect</code> remain customizable. Keep the feed height independent of the receding background surface so nesting cannot clamp its scroll position. If you enlarge a bottom surface from <code>extent</code> to <code>height</code>, place its native top at <code>calc(100% + extent - height)</code> so its bottom and scroll range stay fixed. Use <code>overflow: clip</code> on the rounded surface and retain <code>overscroll-behavior: auto</code> on content and body so boundary scrolling can reach the view. The <code>.depth-sheet</code> rules in <code>examples/gallery.css</code> implement this geometry.</p>
+<p>Native motion applies <code>overflow: hidden</code> to <code>data-sheet-body</code> while the surface is dragging, opening, settling, or closing. This preserves the feed&#39;s scroll position and prevents it from taking over a reversed swipe before the sheet reaches its detent. Keep that state rule effective in custom CSS. The native backdrop allows touch panning because it belongs to the same scroll container as the content.</p>
+<p>For independent moving and fading layers, put <code>data-sheet-motion</code> on one direct child and <code>data-sheet-motion-fade</code> on sibling controls or panels. Fade targets use opacity zero at the closed boundary and one at the full extent. WAAPI runs their fades alongside the moving surface and backdrop, with shared interruption and cleanup. Structural CSS supplies the same opacity during dragging, reduced motion, and the frame fallback. Keep the dialog shell opaque at the CSS opacity level (<code>opacity: 1</code>), with a transparent background, so fading chrome does not also fade the image. See the <a href="/docs/recipes#lightbox-with-independent-image-and-container-motion">Lightbox recipe</a>.</p>
+<h2 id="responsive-layouts-and-safe-areas">Responsive layouts and safe areas</h2>
+<p>Use CSS media queries for visual changes. For resting sheets, change an edge or detent configuration using <code>setOptions()</code>. Recreate the instance when a responsive design changes its DOM structure. The gallery&#39;s <code>PresentationController</code> demonstrates this without mutating the engine&#39;s internal state.</p>
+<p><code>.sheet-safe-area</code> supplies bottom/left/right safe-area padding; apply top safe-area padding where your presentation needs it. <code>.sheet-visually-hidden</code> preserves content for assistive technology while removing it visually. Keep device testing in your release workflow, especially for software keyboards and browser chrome.</p>
+<h2 id="css-layers-and-tailwind-v4">CSS layers and Tailwind V4</h2>
+<p>Import the structural styles before application utility layers:</p>
+<pre><code class="language-css">@import &quot;hotwire-sheets/unlayered-styles&quot; layer(hotwire-sheets);
+@import &quot;tailwindcss&quot;;
+</code></pre>
+<p>If your bundler does not support layered imports, import <code>hotwire-sheets/layered-styles</code> instead. It wraps the same styles in <code>@layer hotwire-sheets</code>. Rails asset-pipeline apps can link <code>hotwire_sheets_layered.css</code> before application styles. Use either the layered or unlayered version once, not both.</p>
+<p>The root variable <code>--sheet-100-lvh-dvh-pct</code> resolves to <code>max(100dvh, 100lvh)</code> in supporting browsers and <code>max(100%, 100vh)</code> otherwise. It is available for large viewport layouts, including the iOS in-app browser viewport-unit discrepancy described by the reference documentation. Sheet measurement still follows the visual viewport for keyboard safety.</p>
+<p>Use <a href="/docs/animations">animation outlets</a> for declarative travel and stacking effects on existing elements. The special <code>clipBoundary</code> option clips a long page to the viewport before transforming it. <a href="/docs/primitives#fixed-viewport-content">Fixed</a> preserves separate viewport UI during those effects.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/styling.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#documentation-and-example-theme">Documentation and example theme</a><a href="#structural-elements">Structural elements</a><a href="#theme-variables">Theme variables</a><a href="#motion-variables">Motion variables</a><a href="#close-button-styles">Close-button styles</a><a href="#depth-and-custom-transforms">Depth and custom transforms</a><a href="#responsive-layouts-and-safe-areas">Responsive layouts and safe areas</a><a href="#css-layers-and-tailwind-v4">CSS layers and Tailwind V4</a></aside></div></body></html>

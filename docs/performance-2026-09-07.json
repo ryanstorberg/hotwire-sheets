@@ -1,0 +1,1280 @@
+{
+  "date": "2026-09-07T18:52:22.612Z",
+  "browser": "Headless Chromium 153.0.8010.12",
+  "scope": "Local gallery entry/exit and three-layer depth transitions. Browser compositing reasons do not certify physical GPU execution or 120 Hz hardware.",
+  "results": [
+    {
+      "name": "Bottom Sheet",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 48,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "basic",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 1.53,
+      "styleMs": 9.06,
+      "scriptMs": 2.47,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Top Sheet",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 61,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "top",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 0.81,
+      "styleMs": 14.06,
+      "scriptMs": 3.32,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Detached Sheet",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 51,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "detached",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 0.52,
+      "styleMs": 9.91,
+      "scriptMs": 2.19,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Card",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 107,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "card",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 1.5,
+      "styleMs": 42.68,
+      "scriptMs": 6.58,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Sidebar",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 47,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "right",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 7,
+      "layoutMs": 4.27,
+      "styleMs": 21.53,
+      "scriptMs": 1.79,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Toast",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 47,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "toast",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 3,
+      "layoutMs": 1.31,
+      "styleMs": 16.85,
+      "scriptMs": 3.94,
+      "peakLayers": 8,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has an active accelerated opacity animation or transition.",
+        "Has a backdrop filter.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Stacking",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 59,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "stacked",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 7.08,
+      "styleMs": 26.56,
+      "scriptMs": 2.38,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Persistent Sheet with Detent",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 43,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "persistent",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 3,
+      "layoutMs": 1.47,
+      "styleMs": 28.87,
+      "scriptMs": 5.29,
+      "peakLayers": 8,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has an active accelerated opacity animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Detent",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 43,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "detents",
+          "nativeSnap": true,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 0.67,
+      "styleMs": 8.45,
+      "scriptMs": 1.86,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Is sticky position.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Depth",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 55,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "depth",
+          "nativeSnap": true,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 8,
+      "layoutMs": 4.01,
+      "styleMs": 24.8,
+      "scriptMs": 2.93,
+      "peakLayers": 14,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a trivial 3d transform.",
+        "Has a will-change: transform compositing hint.",
+        "Is sticky position.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Keyboard",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 57,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "keyboard",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 3.27,
+      "styleMs": 20.25,
+      "scriptMs": 2.48,
+      "peakLayers": 12,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Lightbox",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 60,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "lightbox",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 10,
+      "layoutMs": 4.19,
+      "styleMs": 23.03,
+      "scriptMs": 3.22,
+      "peakLayers": 13,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a trivial 3d transform.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Parallax Page",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 66,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "parallax",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 8,
+      "layoutMs": 4.67,
+      "styleMs": 23.15,
+      "scriptMs": 3.59,
+      "peakLayers": 16,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Long Sheet",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 60,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "long",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 2.08,
+      "styleMs": 15.6,
+      "scriptMs": 3.25,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    },
+    {
+      "name": "Page",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 66,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "page-sheet",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 2.18,
+      "styleMs": 14.44,
+      "scriptMs": 2.75,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Page from Bottom",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 61,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "page-bottom",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 2.46,
+      "styleMs": 13.64,
+      "scriptMs": 2.35,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Three depth layers",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": 166,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 4,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "depth",
+          "nativeSnap": true,
+          "animation": "waapi"
+        },
+        {
+          "id": "depth-child",
+          "nativeSnap": true,
+          "animation": "waapi"
+        },
+        {
+          "id": "depth-third",
+          "nativeSnap": true,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 117,
+      "layoutMs": 8.15,
+      "styleMs": 83.88,
+      "scriptMs": 12.99,
+      "peakLayers": 34,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a trivial 3d transform.",
+        "Has a will-change: transform compositing hint.",
+        "Is sticky position.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    },
+    {
+      "name": "Bottom Sheet",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 49,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "basic",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 1.2,
+      "styleMs": 20.4,
+      "scriptMs": 4.6,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Top Sheet",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 52,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "top",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 2.02,
+      "styleMs": 21.21,
+      "scriptMs": 3.28,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Detached Sheet",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 48,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "detached",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 0.8,
+      "styleMs": 28.68,
+      "scriptMs": 5.54,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Card",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 87,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "card",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 0.87,
+      "styleMs": 59.89,
+      "scriptMs": 10.03,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Sidebar",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 47,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "right",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 7,
+      "layoutMs": 3.01,
+      "styleMs": 26.13,
+      "scriptMs": 2.24,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Toast",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 43,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "toast",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 2,
+      "layoutMs": 1.14,
+      "styleMs": 17.07,
+      "scriptMs": 4.57,
+      "peakLayers": 8,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has an active accelerated opacity animation or transition.",
+        "Has a backdrop filter.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Stacking",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 48,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "stacked",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 10.03,
+      "styleMs": 32.89,
+      "scriptMs": 2.68,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Persistent Sheet with Detent",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 43,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "persistent",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 3,
+      "layoutMs": 1.75,
+      "styleMs": 34.97,
+      "scriptMs": 5.34,
+      "peakLayers": 8,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has an active accelerated opacity animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Detent",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 47,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "detents",
+          "nativeSnap": true,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 0.78,
+      "styleMs": 14.84,
+      "scriptMs": 4.28,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Is sticky position.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Depth",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 59,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "depth",
+          "nativeSnap": true,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 8,
+      "layoutMs": 2.77,
+      "styleMs": 35.94,
+      "scriptMs": 3.2,
+      "peakLayers": 14,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a trivial 3d transform.",
+        "Has a will-change: transform compositing hint.",
+        "Is sticky position.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    },
+    {
+      "name": "Sheet with Keyboard",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 63,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "keyboard",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 2.58,
+      "styleMs": 26.45,
+      "scriptMs": 4.04,
+      "peakLayers": 13,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Lightbox",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 63,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "lightbox",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 11,
+      "layoutMs": 1.07,
+      "styleMs": 37.59,
+      "scriptMs": 8.05,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a trivial 3d transform.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Parallax Page",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 47,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "parallax",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 8,
+      "layoutMs": 5.23,
+      "styleMs": 18.33,
+      "scriptMs": 2.18,
+      "peakLayers": 15,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Long Sheet",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 63,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "long",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 1.68,
+      "styleMs": 26.05,
+      "scriptMs": 5.96,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    },
+    {
+      "name": "Page",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 47,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "page-sheet",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 2.22,
+      "styleMs": 13.73,
+      "scriptMs": 2.45,
+      "peakLayers": 11,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Page from Bottom",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 62,
+      "medianMs": 16.7,
+      "p95Ms": 16.7,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "page-bottom",
+          "nativeSnap": false,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 6,
+      "layoutMs": 2.28,
+      "styleMs": 21.53,
+      "scriptMs": 4.45,
+      "peakLayers": 10,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has an active accelerated opacity animation or transition.",
+        "Is fixed position in a scrollable view.",
+        "Is fixed position that should undo overscroll of the viewport.",
+        "Has a will-change: opacity compositing hint.",
+        "Has a 3d transform.",
+        "Has an active accelerated transform animation or transition.",
+        "Has a will-change: transform compositing hint."
+      ]
+    },
+    {
+      "name": "Three depth layers",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frames": 179,
+      "medianMs": 16.7,
+      "p95Ms": 16.8,
+      "observedHz": 59.9,
+      "framesOver25ms": 0,
+      "longTasksOver50ms": 0,
+      "longestTaskMs": 0,
+      "backends": [
+        {
+          "id": "depth",
+          "nativeSnap": true,
+          "animation": "waapi"
+        },
+        {
+          "id": "depth-child",
+          "nativeSnap": true,
+          "animation": "waapi"
+        },
+        {
+          "id": "depth-third",
+          "nativeSnap": true,
+          "animation": "waapi"
+        }
+      ],
+      "layoutCount": 129,
+      "layoutMs": 6.75,
+      "styleMs": 106.51,
+      "scriptMs": 15.37,
+      "peakLayers": 34,
+      "compositingReasons": [
+        "Is the document.rootScroller.",
+        "Is a scrollable overflow element using accelerated scrolling.",
+        "Overlaps other composited content.",
+        "Has a trivial 3d transform.",
+        "Has a will-change: transform compositing hint.",
+        "Is sticky position.",
+        "Has a will-change: opacity compositing hint."
+      ]
+    }
+  ],
+  "runtime": "Node.js 24; macOS; Playwright Chromium; local gallery; no competing browser test suite during measurement"
+}

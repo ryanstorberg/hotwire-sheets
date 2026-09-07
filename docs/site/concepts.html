@@ -1,0 +1,72 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Core concepts · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" aria-current="page">Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="core-concepts">Core concepts</h1>
+<p>Hotwire Sheets provides swipeable interfaces for Rails and Hotwire through ERB helpers, DOM attributes, and Stimulus. The <a href="/docs/api-index">API index</a> lists component options and utilities; <a href="/docs/recipes">recipes</a> show how to combine them.</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sheet and content</td>
+<td><code>hotwire_sheet</code>, <code>sheet.content</code>, <code>portal</code>, and <code>container</code></td>
+</tr>
+<tr>
+<td>Accessible labels and handles</td>
+<td><code>sheet.title</code>, <code>sheet.description</code>, <code>sheet.handle</code></td>
+</tr>
+<tr>
+<td>Trigger actions</td>
+<td><code>hotwire_sheet_trigger(action: ...)</code>, <code>data-sheet-action</code>, and <code>step()</code></td>
+</tr>
+<tr>
+<td>Presented state</td>
+<td><code>defaultPresented</code>, <code>presented</code>, <code>setOptions</code>, open/close methods and callbacks</td>
+</tr>
+<tr>
+<td>Active detent</td>
+<td>Closed-inclusive <code>activeDetent</code> / <code>setActiveDetent</code> and change callback</td>
+</tr>
+<tr>
+<td>Scrolling</td>
+<td><code>Scroll</code>, <code>hotwire_scroll</code>, native scroll methods and trigger controls</td>
+</tr>
+<tr>
+<td>Stacks</td>
+<td>Named <code>SheetStack</code> groups and stack outlets</td>
+</tr>
+<tr>
+<td>Travel and stacking effects</td>
+<td><code>Outlet</code>, <code>sheet.outlet()</code>, JSON animation attributes</td>
+</tr>
+<tr>
+<td>Focus targets</td>
+<td><code>AutoFocusTarget</code>, present/dismiss timing and behavior hooks</td>
+</tr>
+<tr>
+<td>Interactive regions and overlays</td>
+<td>Scoped <code>Island</code> and explicitly registered <code>ExternalOverlay</code> lifetimes</td>
+</tr>
+<tr>
+<td>Viewport and accessible content</td>
+<td><code>Fixed</code> and <code>VisuallyHidden</code> primitives</td>
+</tr>
+<tr>
+<td>Utilities and subscriptions</td>
+<td>Native utilities and subscription functions with cleanup</td>
+</tr>
+</tbody></table>
+<h2 id="detent-numbering">Detent numbering</h2>
+<p><code>detent</code> and <code>snapTo(0)</code> identify the first open position. <code>activeDetent</code> and <code>setActiveDetent(0)</code> include closed at zero. Do not mix the two index systems.</p>
+<p>Supply every open position in <code>detents</code>. For example, <code>{ detents: [&quot;200px&quot;, &quot;content&quot;] }</code> provides a 200-pixel intermediate position and a full-content position. Numeric values are viewport fractions. See <a href="/docs/options">options</a> for sizing and <a href="/docs/javascript">JavaScript API</a> for state control.</p>
+<h2 id="composition-and-subscriptions">Composition and subscriptions</h2>
+<p>Apply structural data attributes to existing HTML elements, or use captured Rails blocks. The library operates directly on those elements. <code>observeMediaQuery</code> and <code>observePageScrollData</code> provide subscriptions with cleanup functions. Component IDs are strings so the server and browser can share them.</p>
+<h2 id="motion-and-platform-behavior">Motion and platform behavior</h2>
+<p>Native Scroll always uses native scrolling. Sheet detents can combine CSS Scroll Snap with configured WAAPI transitions; centered and two-track presentations use the transform backend. Explicit phase presets configure the spring for entry, exit, and detent changes.</p>
+<p><code>Fixed</code> escapes transformed ancestors through a body-level portal. Register custom portal overlays with <code>ExternalOverlay</code> so focus and modality are coordinated. Dialog and popover markup can be detected automatically.</p>
+<p>See <a href="/docs/coverage">coverage</a> for the tested contract and remaining physical-device checks, and <a href="/docs/architecture">architecture</a> for animation ownership and browser behavior.</p>
+<h2 id="gallery-and-artwork">Gallery and artwork</h2>
+<p>The <strong>Page from Bottom</strong> example closes only through its Close button. It disables sheet dragging, wheel-driven sheet motion, swipe dismissal, Escape dismissal, and outside-click dismissal while keeping the article&#39;s native scrolling enabled. These are presentation options in <code>examples/gallery.js</code>, not global defaults.</p>
+<p>The gallery uses public-domain watercolor artworks from the Art Institute of Chicago, with a distinct main painting for each of the 16 named examples. <a href="/examples/assets/watercolors/README.md">Artwork credits</a> and <code>examples/assets/watercolors/sources.json</code> record the original pages and CC0 designation. Preview cards pair desktop and mobile views with those paintings inside the device frames. Regenerate them with <code>npm run capture:previews</code> while the demo server is running.</p>
+<p>Gallery media is excluded from the runtime npm package and Ruby gem. Article bodies and most social-feed text are demonstration copy. The packages contain the browser engine, adapter, helpers, structural CSS, and documentation.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/concepts.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#detent-numbering">Detent numbering</a><a href="#composition-and-subscriptions">Composition and subscriptions</a><a href="#motion-and-platform-behavior">Motion and platform behavior</a><a href="#gallery-and-artwork">Gallery and artwork</a></aside></div></body></html>

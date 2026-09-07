@@ -1,0 +1,66 @@
+{
+  "name": "hotwire-sheets",
+  "version": "0.1.0",
+  "description": "Accessible swipeable sheets with a standalone browser core and Rails/Stimulus integration",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "src",
+    "app/assets/stylesheets/hotwire_sheets.css",
+    "docs",
+    "README.md",
+    "LICENSE",
+    "app/assets/stylesheets/hotwire_sheets_layered.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./stimulus": {
+      "types": "./src/stimulus/index.d.ts",
+      "import": "./src/stimulus/index.js"
+    },
+    "./styles.css": "./app/assets/stylesheets/hotwire_sheets.css",
+    "./unlayered-styles": "./app/assets/stylesheets/hotwire_sheets.css",
+    "./layered-styles": "./app/assets/stylesheets/hotwire_sheets_layered.css",
+    "./layered-styles.css": "./app/assets/stylesheets/hotwire_sheets_layered.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:gallery": "node scripts/build-gallery.mjs",
+    "capture:previews": "node scripts/capture-gallery-previews.mjs",
+    "build:docs": "node scripts/build-docs.mjs",
+    "test": "node --test test/unit/*.test.js",
+    "test:browser": "playwright test",
+    "test:ruby": "bundle exec rake test",
+    "demo": "node scripts/serve.mjs",
+    "prepack": "npm run build",
+    "benchmark:motion": "node scripts/benchmark-motion.mjs",
+    "test:types": "tsc --noEmit --strict --lib DOM,ES2023 --module NodeNext --moduleResolution NodeNext test/types/public-api.ts",
+    "benchmark:gallery": "node scripts/benchmark-gallery.mjs"
+  },
+  "peerDependencies": {
+    "@hotwired/stimulus": "^3.2.2"
+  },
+  "peerDependenciesMeta": {
+    "@hotwired/stimulus": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo": "^8.0.0",
+    "@playwright/test": "^1.55.0",
+    "esbuild": "^0.25.0",
+    "marked": "^18.0.11",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

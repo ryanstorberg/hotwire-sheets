@@ -1,0 +1,163 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scroll · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" aria-current="page">Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="scroll">Scroll</h1>
+<p><code>Scroll</code> supplies native scrolling, CSS Scroll Snap, keyboard visibility, explicit gesture boundaries, and the same controls for a panel or a page. It is independent of Rails and can be used inside or outside a Sheet.</p>
+<h2 id="rails">Rails</h2>
+<pre><code class="language-erb">&lt;%= hotwire_scroll(id: &quot;messages&quot;, scroll_snap_type: &quot;proximity&quot;,
+      native_scrollbar: false, scroll_padding: &quot;16px&quot;) do |scroll| %&gt;
+  &lt;%= scroll.view(style: &quot;height: 24rem&quot;) do %&gt;
+    &lt;%= scroll.content do %&gt;
+      &lt;% @messages.each do |message| %&gt;
+        &lt;article data-scroll-snap-align&gt;&lt;%= message.body %&gt;&lt;/article&gt;
+      &lt;% end %&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+  &lt;%= scroll.trigger(&quot;Latest&quot;, action: { type: &quot;scroll-to&quot;, progress: 1 }) %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p><code>registerSheets(application)</code> registers the <code>sheet-scroll</code> controller as well as the sheet and auxiliary controllers. Give the view a constrained size. Inside flex or grid layouts, set <code>min-height: 0</code> and <code>min-width: 0</code> on ancestors that need to shrink.</p>
+<h2 id="javascript">JavaScript</h2>
+<pre><code class="language-js">import { Scroll } from &quot;hotwire-sheets&quot;;
+
+const messages = new Scroll(document.querySelector(&quot;#messages&quot;), {
+  axis: &quot;y&quot;,
+  safeArea: &quot;visual-viewport&quot;,
+  onScroll({ progress, distance, availableDistance }) {
+    console.log(progress, distance, availableDistance);
+  }
+});
+messages.scrollTo({ progress: 1 });
+messages.scrollBy({ distance: -120, animationSettings: { skip: true } });
+</code></pre>
+<p>Supply <code>data-scroll-view</code> and <code>data-scroll-content</code> descendants. The view may also be the root element. The library places content in an internal native scroll container so other direct children of the view can remain stationary. <code>scroll.scroller</code> identifies the actual scrolling element; <code>scroll.view</code> identifies the authored viewport. Put scrollable content inside the content element and stationary controls alongside it. Style the controls with ordinary absolute positioning.</p>
+<h2 id="options">Options</h2>
+<p>Ruby options use snake_case, including nested hash keys; JavaScript uses the names below. Callback functions are supplied in JavaScript. Behavior option objects are also serializable through Rails.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>componentId</code></td>
+<td>Root ID or generated ID</td>
+<td>Associates external controls with this instance</td>
+</tr>
+<tr>
+<td><code>componentRef</code></td>
+<td>Unset</td>
+<td>Optional <code>{ current: null }</code> object receives the instance, then <code>null</code> on destroy</td>
+</tr>
+<tr>
+<td><code>axis</code></td>
+<td><code>&quot;y&quot;</code></td>
+<td><code>&quot;x&quot;</code> or <code>&quot;y&quot;</code>; horizontal scrolling handles RTL direction</td>
+</tr>
+<tr>
+<td><code>pageScroll</code></td>
+<td><code>false</code></td>
+<td>Controls page scrolling through this instance</td>
+</tr>
+<tr>
+<td><code>nativePageScrollReplacement</code></td>
+<td><code>false</code></td>
+<td><code>true</code>, <code>false</code>, or <code>&quot;auto&quot;</code>; requires <code>pageScroll: true</code></td>
+</tr>
+<tr>
+<td><code>safeArea</code></td>
+<td><code>&quot;visual-viewport&quot;</code></td>
+<td><code>&quot;none&quot;</code>, <code>&quot;layout-viewport&quot;</code>, or <code>&quot;visual-viewport&quot;</code>; adds travel room when the view extends beyond that viewport</td>
+</tr>
+<tr>
+<td><code>scrollGestureTrap</code></td>
+<td><code>false</code></td>
+<td>Boolean, <code>{ x, y }</code>, or <code>{ xStart, xEnd, yStart, yEnd }</code>; traps configured boundaries even without overflow</td>
+</tr>
+<tr>
+<td><code>scrollGestureOvershoot</code></td>
+<td><code>true</code></td>
+<td>Permits browser elastic overscroll; <code>false</code> disables it and traps boundaries</td>
+</tr>
+<tr>
+<td><code>scrollGesture</code></td>
+<td><code>&quot;auto&quot;</code></td>
+<td><code>false</code> blocks user wheel, touch, scrolling keys, and native scrollbar interaction; methods remain available</td>
+</tr>
+<tr>
+<td><code>nativeFocusScrollPrevention</code></td>
+<td><code>true</code></td>
+<td>Focuses text controls without independently scrolling the page during pointer focus</td>
+</tr>
+<tr>
+<td><code>onFocusInside</code></td>
+<td><code>{ scrollIntoView: true }</code></td>
+<td>Reveals focus within the configured safe area; accepts a behavior callback</td>
+</tr>
+<tr>
+<td><code>scrollAnimationSettings</code></td>
+<td><code>{ skip: &quot;auto&quot; }</code></td>
+<td>Uses browser smooth scrolling unless skipped; <code>&quot;auto&quot;</code> respects reduced motion</td>
+</tr>
+<tr>
+<td><code>scrollAnchoring</code></td>
+<td><code>true</code></td>
+<td>Sets native <code>overflow-anchor</code>; browser support applies</td>
+</tr>
+<tr>
+<td><code>scrollSnapType</code></td>
+<td><code>&quot;none&quot;</code></td>
+<td><code>&quot;none&quot;</code>, <code>&quot;proximity&quot;</code>, or <code>&quot;mandatory&quot;</code>; the selected axis is applied automatically</td>
+</tr>
+<tr>
+<td><code>scrollPadding</code></td>
+<td><code>&quot;auto&quot;</code></td>
+<td>Native CSS scroll padding</td>
+</tr>
+<tr>
+<td><code>scrollTimelineName</code></td>
+<td><code>&quot;none&quot;</code></td>
+<td>Named native CSS scroll timeline, for example <code>&quot;--messages&quot;</code>; browser support applies</td>
+</tr>
+<tr>
+<td><code>nativeScrollbar</code></td>
+<td><code>true</code></td>
+<td>Shows or hides native scrollbars</td>
+</tr>
+<tr>
+<td><code>onScroll</code></td>
+<td>Unset</td>
+<td>Frame-coalesced <code>{ progress, distance, availableDistance, nativeEvent }</code></td>
+</tr>
+<tr>
+<td><code>onScrollStart</code></td>
+<td><code>{ dismissKeyboard: false }</code></td>
+<td>Behavior hook; can blur the focused descendant when scrolling begins</td>
+</tr>
+<tr>
+<td><code>onScrollEnd</code></td>
+<td>Unset</td>
+<td>Receives <code>{ nativeEvent }</code> when scrolling settles</td>
+</tr>
+<tr>
+<td><code>onPress</code></td>
+<td><code>{ forceFocus: true, runAction: true }</code></td>
+<td>Default behavior for this Scroll&#39;s triggers</td>
+</tr>
+</tbody></table>
+<p>Use <code>scroll.setOptions({...})</code> to update options. Changing page-scroll ownership requires destroying and recreating the instance. <code>scroll.refresh()</code> queues geometry measurement after application layout changes.</p>
+<p>Elastic overscroll depends on the browser and operating system. Page-scroll replacement deliberately changes browser UI behavior: native pull-to-refresh, status-bar scroll-to-top, and automatic browser-chrome collapse may no longer apply. <code>&quot;auto&quot;</code> preserves native page scrolling in mobile browser tabs and uses a replacement on desktop and in standalone mode.</p>
+<h2 id="methods-and-triggers">Methods and triggers</h2>
+<p><code>getProgress()</code> returns a number from zero to one, <code>getDistance()</code> returns the current distance in pixels, and <code>getAvailableDistance()</code> returns total available travel. <code>scrollTo</code> accepts an absolute <code>distance</code> or <code>progress</code>; <code>scrollBy</code> accepts a relative one. Their <code>animationSettings.skip</code> accepts <code>true</code>, <code>false</code>, <code>&quot;auto&quot;</code>, or <code>&quot;default&quot;</code> to inherit the instance setting. These methods delegate motion to native scrolling and do not animate <code>scrollTop</code> in a JavaScript frame loop.</p>
+<pre><code class="language-html">&lt;button data-scroll-for=&quot;messages&quot;
+  data-scroll-action=&#39;{&quot;type&quot;:&quot;scroll-by&quot;,&quot;distance&quot;:200}&#39;&gt;Next&lt;/button&gt;
+</code></pre>
+<p>Inside a Scroll root, <code>data-scroll-for</code> can be omitted. Outside it, provide the component ID. <code>data-scroll-on-press=&#39;{&quot;forceFocus&quot;:false}&#39;</code> overrides press behavior for one trigger. <code>scroll:progress</code>, <code>scroll:start</code>, <code>scroll:end</code>, <code>scroll:focus-inside</code>, and <code>scroll:press</code> are bubbling DOM events. Behavior-event details expose <code>changeDefault({...})</code> and <code>nativeEvent</code>.</p>
+<h2 id="page-ownership">Page ownership</h2>
+<pre><code class="language-js">import { getPageScrollData, observePageScrollData } from &quot;hotwire-sheets&quot;;
+const stop = observePageScrollData(({ pageScrollContainer, nativePageScrollReplaced }) =&gt; {
+  // Connect application scroll indicators to the actual page owner.
+});
+// Later: stop();
+</code></pre>
+<p>The observer runs immediately and when a replacement is installed or removed. On the server, the getter returns an undefined container and <code>false</code>; it does not access the DOM at module-import time. Only one replacement page scroller can be active per document. <code>destroy()</code> removes listeners and observers and restores the original content placement and owned page styles.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/scroll.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#rails">Rails</a><a href="#javascript">JavaScript</a><a href="#options">Options</a><a href="#methods-and-triggers">Methods and triggers</a><a href="#page-ownership">Page ownership</a></aside></div></body></html>

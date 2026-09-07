@@ -1,0 +1,414 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Options · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" aria-current="page">Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="options">Options</h1>
+<p>Rails helpers accept snake_case keys. JavaScript accepts camelCase keys. For a Stimulus root, use <code>data-sheet-options-value</code> with a JSON object in camelCase. Structural Stimulus values override the same keys inside that object.</p>
+<h2 id="layout-and-detents">Layout and detents</h2>
+<table>
+<thead>
+<tr>
+<th>Rails / JavaScript</th>
+<th>Default</th>
+<th>Values and behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>edge</code></td>
+<td><code>&quot;bottom&quot;</code></td>
+<td><code>&quot;top&quot;</code>, <code>&quot;bottom&quot;</code>, <code>&quot;left&quot;</code>, <code>&quot;right&quot;</code></td>
+</tr>
+<tr>
+<td><code>detents</code></td>
+<td><code>[&quot;content&quot;]</code></td>
+<td>Nonempty array of positive visible lengths</td>
+</tr>
+<tr>
+<td><code>initial_detent</code> / <code>initialDetent</code></td>
+<td><code>0</code></td>
+<td>Zero-based index into the declared detents</td>
+</tr>
+<tr>
+<td><code>portal</code></td>
+<td><code>true</code></td>
+<td>Moves the view to the document body on first open</td>
+</tr>
+<tr>
+<td><code>stack_effect</code> / <code>stackEffect</code></td>
+<td><code>false</code></td>
+<td>Bottom-sheet scale effect responding to sheets above it</td>
+</tr>
+</tbody></table>
+<pre><code class="language-ruby">detents: [&quot;content&quot;, 0.6, &quot;90%&quot;, &quot;320px&quot;]
+</code></pre>
+<p>Numbers in <code>(0, 1]</code> represent fractions of the visual viewport. Pixel strings represent pixels. Percent strings represent viewport percentages. <code>&quot;content&quot;</code> measures intrinsic content size. All resolved sizes are clamped to the viewport; vertical sheets use height, horizontal sheets use width. Other positive CSS lengths such as <code>&quot;18rem&quot;</code>, <code>&quot;60dvh&quot;</code>, and <code>&quot;calc(100dvh - 24px)&quot;</code> are resolved in the browser. <code>0</code>, negative values, and <code>&quot;auto&quot;</code> are not accepted.</p>
+<p>Legacy <code>detent</code>/<code>snapTo()</code> indices follow declaration order even if content changes size or two detents resolve to the same size. In that API, zero is the first open detent. The closed-inclusive <code>activeDetent</code>/<code>setActiveDetent()</code> API uses zero for closed. Call <code>close()</code> to dismiss without an index. Arrow keys on a handle move through resolved size order, and Home/End select the smallest/largest detent.</p>
+<h2 id="gestures-and-dismissal">Gestures and dismissal</h2>
+<table>
+<thead>
+<tr>
+<th>Rails / JavaScript</th>
+<th>Default</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>dismissible</code></td>
+<td><code>true</code></td>
+<td>Allows Escape, outside-click, and gesture dismissal</td>
+</tr>
+<tr>
+<td><code>swipe_to_dismiss</code> / <code>swipeToDismiss</code></td>
+<td><code>true</code></td>
+<td>Includes closed among gesture destinations</td>
+</tr>
+<tr>
+<td><code>scroll_end_dismiss</code> / <code>scrollEndDismiss</code></td>
+<td><code>false</code></td>
+<td>Lets a bottom sheet with one open detent exit upward when scrolling continues past its body&#39;s end; enabled in Long Sheet</td>
+</tr>
+<tr>
+<td><code>opposite_edge_dismiss</code> / <code>oppositeEdgeDismiss</code></td>
+<td><code>false</code></td>
+<td>Allows swipe dismissal through either end of the sheet&#39;s axis; requires one open detent; enabled in Sheet with Keyboard and Detached Sheet</td>
+</tr>
+<tr>
+<td><code>close_on_escape</code> / <code>closeOnEscape</code></td>
+<td><code>true</code></td>
+<td>Escape dismisses the frontmost sheet</td>
+</tr>
+<tr>
+<td><code>close_on_outside</code> / <code>closeOnOutside</code></td>
+<td><code>true</code></td>
+<td>Outside click dismisses the frontmost sheet</td>
+</tr>
+<tr>
+<td><code>draggable</code></td>
+<td><code>true</code></td>
+<td>Allows pointer/touch drag movement</td>
+</tr>
+<tr>
+<td><code>handle_only</code> / <code>handleOnly</code></td>
+<td><code>false</code></td>
+<td>Restricts drag starts to handles</td>
+</tr>
+<tr>
+<td><code>wheel</code></td>
+<td><code>true</code></td>
+<td>Allows a new wheel gesture at a scroll boundary to move the sheet; an existing content-scroll burst retains ownership</td>
+</tr>
+<tr>
+<td><code>swipe_from_outside</code> / <code>swipeFromOutside</code></td>
+<td><code>true</code></td>
+<td>Accepts drag and wheel input outside the frontmost sheet, including its backdrop and the page behind nonmodal sheets</td>
+</tr>
+<tr>
+<td><code>prevent_edge_swipe</code> / <code>preventEdgeSwipe</code></td>
+<td><code>false</code></td>
+<td>Attempts to cancel touches near horizontal screen edges</td>
+</tr>
+</tbody></table>
+<p><code>dismissible: false</code> still allows an explicit close button or <code>close()</code> call. To veto closing for unsaved work, cancel <code>sheet:before-close</code>. <code>draggable</code> and <code>wheel</code> are separate switches. Set both to false for a dialog that moves only through explicit API calls.</p>
+<p>Outside swipes use the sheet&#39;s edge direction and detent/dismissal rules. Only the frontmost sheet accepts them. <code>swipe_from_outside: false</code> limits gestures to its content; <code>handle_only: true</code> limits them further to handles. Inputs, unmarked buttons/links, <code>data-sheet-no-drag</code> regions, and external <code>data-sheet-island</code> overlays keep their own interactions. Once a wheel gesture starts moving a nonmodal sheet, it continues if the sheet uncovers an ordinary page button or link beneath the pointer. New gestures over those controls remain protected. Nonmodal sheets preserve ordinary page clicks; an accepted drag suppresses the resulting click so it cannot activate a background control or dismiss a second sheet. A persistent sheet with <code>swipe_to_dismiss: false</code> changes detents without closing.</p>
+<p>Use <code>data-sheet-no-drag</code> on a custom control or region that must keep its own gestures. Interactive descendants such as inputs are already excluded from drag initiation. Add <code>data-sheet-drag</code> to a button or link that should also accept swipes, as in Sidebar&#39;s navigation items. A normal click still activates the control; a recognized drag suppresses its click and native link dragging. The marker respects <code>handle_only</code>, <code>draggable</code>, and enclosing <code>data-sheet-no-drag</code> regions, and never opts editable descendants into dragging. Native scrolling that the browser has claimed may remain noncancelable; a handle is the most reliable drag surface.</p>
+<p>With <code>scroll_end_dismiss: true</code>, the article scrolls normally between its boundaries. At the beginning, continued downward swiping dismisses through the bottom; at the end, continued upward swiping dismisses through the top. Wheel input follows the same directions and stays with either exit even if the article moves away from the pointer. A short pull springs back, while sufficient distance or velocity dismisses. Close buttons, Escape, and <code>close()</code> exit upward when the resting article is scrolled past halfway, and downward otherwise. Reopening starts at the beginning and enters from below. Gesture guards and cancelable <code>sheet:before-close</code> still apply; touch handoff requires a cancelable event.</p>
+<p>This option requires <code>edge: :bottom</code> and one detent, typically <code>detents: [1]</code>. It uses WAAPI (or the selected frame fallback) even when <code>scroll_snap: true</code> is supplied, because its dismissal edge changes with reading position; scrolling inside the article remains native. Other presentations retain their usual boundary ownership.</p>
+<p>With <code>opposite_edge_dismiss: true</code>, a bottom sheet can exit through the top or bottom. Top, left, and right sheets similarly accept dismissal at either end of their axis. Swipes may start on the surface or backdrop; scrollable content scrolls first, then continued cancelable input at its boundary can move the sheet. Inputs and protected regions retain their own gestures. A short or canceled pull returns to the open position, and dismissal vetoes still apply. Reopening uses the configured entrance edge. Close buttons and Escape use that edge unless an opposite exit is already moving.</p>
+<p>This mode uses one viewport length for travel in either direction, with WAAPI/frame motion even if <code>scroll_snap: true</code> is also set. Custom centered presentations must incorporate <code>--sheet-offset</code> into their transform so they physically follow both directions. It does not reset form data or content scroll position when reopening.</p>
+<h2 id="dismissal-commitment">Dismissal commitment</h2>
+<p>Wheel-driven travel commits to dismissal once it reaches the midpoint between closed and the smallest open detent. The exit animation then completes without waiting for the trackpad momentum stream to stop. With one open detent, that means halfway through the dismissal travel. With several detents, the lower open positions remain available instead of being skipped on the way down.</p>
+<p>A sharp drop in wheel magnitude identifies the weak momentum tail of a shorter pull. That pull settles promptly to its nearest detent; tiny continued packets do not keep resetting the settling timer. The remainder of the same burst cannot reverse a committed exit or dismiss the exposed parent. A pause, direction reversal, or renewed push releases the wheel guard. The guard owns input, not an invisible modal layer or a background scroll lock.</p>
+<p>Touch and pointer drags follow the finger until release. Native touch release settles immediately, including when the finger pauses before release. Canceled drags restore their detent, and a new touch can interrupt an uncommitted return animation. <code>dismissible: false</code>, <code>swipe_to_dismiss: false</code>, alert dialogs, and <code>sheet:before-close</code> vetoes retain their existing behavior. An explicit <code>open()</code> can still interrupt an exit.</p>
+<h2 id="modality-and-focus">Modality and focus</h2>
+<table>
+<thead>
+<tr>
+<th>Rails / JavaScript</th>
+<th>Default</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>modal</code></td>
+<td><code>true</code></td>
+<td>Supplies modal dialog semantics and modality defaults</td>
+</tr>
+<tr>
+<td><code>trap_focus</code> / <code>trapFocus</code></td>
+<td>Follows <code>modal</code></td>
+<td>Keeps keyboard focus within active scopes</td>
+</tr>
+<tr>
+<td><code>lock_scroll</code> / <code>lockScroll</code></td>
+<td>Follows <code>modal</code></td>
+<td>Locks document scrolling while presented</td>
+</tr>
+<tr>
+<td><code>inert</code></td>
+<td>Follows <code>modal</code></td>
+<td>Makes unrelated background content inert</td>
+</tr>
+<tr>
+<td><code>autofocus</code></td>
+<td><code>true</code></td>
+<td>Moves focus into the sheet when it opens</td>
+</tr>
+<tr>
+<td><code>restore_focus</code> / <code>restoreFocus</code></td>
+<td><code>true</code></td>
+<td>Returns focus after dismissing the frontmost sheet</td>
+</tr>
+<tr>
+<td><code>initial_focus</code> / <code>initialFocus</code></td>
+<td>Unset</td>
+<td>Selector within the content; JavaScript also accepts an element</td>
+</tr>
+</tbody></table>
+<p>These flags are independent. Turning off <code>inert</code> does not automatically turn off the focus trap. A nonmodal player usually uses <code>modal: false, autofocus: false, close_on_outside: false</code>. A notification additionally uses <code>restore_focus: false</code> so its timer cannot pull focus away from the current task.</p>
+<h2 id="motion-backends">Motion backends</h2>
+<table>
+<thead>
+<tr>
+<th>Rails / JavaScript</th>
+<th>Default</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>animation</code></td>
+<td><code>&quot;waapi&quot;</code></td>
+<td>Browser-owned transform/opacity spring animation; <code>&quot;raf&quot;</code> selects the JavaScript fallback</td>
+</tr>
+<tr>
+<td><code>scroll_snap</code> / <code>scrollSnap</code></td>
+<td><code>false</code></td>
+<td>Native CSS Scroll Snap detents on all four edges; native scroll timing by default; phase settings can select WAAPI transitions</td>
+</tr>
+</tbody></table>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;contacts&quot;, detents: [0.4, 0.9], scroll_snap: true) do |sheet| %&gt;
+  &lt;%= sheet.content do %&gt;
+    &lt;%= sheet.handle %&gt;
+    &lt;%= sheet.title &quot;Contacts&quot; %&gt;
+    &lt;%= sheet.body do %&gt;&lt;p&gt;Your contacts go here.&lt;/p&gt;&lt;% end %&gt;
+    &lt;%= sheet.close %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>Both backends use the same lifecycle and detent APIs. Native snapping is opt-in because it changes gesture and settling feel. Its generated view/track geometry should retain the structural CSS; use the default WAAPI backend for custom transforms such as a centered card or detached presentation. If CSS Scroll Snap is unavailable, the sheet uses the animation backend. If WAAPI is unavailable, it falls back to frame animation.</p>
+<p>The default WAAPI backend snapshots authored transforms and interpolates their matrices. Avoid <code>!important</code> on animated <code>transform</code>/<code>opacity</code>, which overrides browser animations. Use <code>animation: &quot;raf&quot;</code> for nonlinear CSS transforms or effects that must be recalculated on every JavaScript frame. See <a href="/docs/architecture#gpu-acceleration-and-high-refresh-rates">architecture</a> for acceleration, frame pacing, and benchmark details.</p>
+<h2 id="spring-motion">Spring motion</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;panel&quot;,
+      spring: { stiffness: 420, damping: 38, mass: 1 }) do |sheet| %&gt;
+  &lt;%# content %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>All three values must be positive finite numbers. More stiffness pulls toward the destination more strongly; more damping reduces oscillation; more mass increases inertia. Omitted entries use the values above. These parameters apply to WAAPI and frame animation. Native snap uses browser scroll timing unless explicit phase animation settings are supplied. Both modes respect <code>prefers-reduced-motion</code>; public transition calls can also use <code>immediate: true</code>.</p>
+<h2 id="rails-only-arguments">Rails-only arguments</h2>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id:</code></td>
+<td>Required</td>
+<td>Stable unique DOM ID</td>
+</tr>
+<tr>
+<td><code>open:</code></td>
+<td><code>false</code></td>
+<td>Present after the Stimulus controller connects</td>
+</tr>
+<tr>
+<td><code>html:</code></td>
+<td><code>{}</code></td>
+<td>Root attributes, including <code>data:</code> and classes</td>
+</tr>
+<tr>
+<td><code>label:</code></td>
+<td>Unset</td>
+<td>Accessible dialog name when no title is used</td>
+</tr>
+<tr>
+<td><code>description:</code></td>
+<td>Unset</td>
+<td>Default text for <code>sheet.description</code></td>
+</tr>
+</tbody></table>
+<p>Unknown Rails option keys raise an error. The JavaScript constructor validates edges, detents, starting indices, and spring values; use its TypeScript declarations to catch misspelled keys.</p>
+<h2 id="stimulus-values">Stimulus values</h2>
+<p>The built-in controller recognizes <code>options</code>, <code>detents</code>, <code>initialDetent</code>, <code>edge</code>, <code>modal</code>, and <code>open</code>. For example:</p>
+<pre><code class="language-html">&lt;div id=&quot;panel&quot; data-controller=&quot;sheet&quot;
+     data-sheet-detents-value=&#39;[0.4,0.9]&#39;
+     data-sheet-initial-detent-value=&quot;0&quot;
+     data-sheet-options-value=&#39;{&quot;handleOnly&quot;:true,&quot;closeOnOutside&quot;:false}&#39;&gt;
+  &lt;!-- view and content --&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Configuration is read on connect. Changing <code>data-sheet-open-value</code> presents or dismisses a connected sheet. Changes to <code>data-sheet-options-value</code> call <code>setOptions</code>. Geometry and swipe-availability changes must be made while the sheet rests. Separate structural Stimulus values are initial configuration; use the options object or <code>setOptions()</code> for live changes. The gallery also demonstrates rebuilding responsive presentations when their structure changes.</p>
+<h2 id="extended-sheet-options">Extended Sheet options</h2>
+<p>These options configure presentation state, placement, interaction, and animation. All serializable options are accepted by the Rails helper in snake_case.</p>
+<table>
+<thead>
+<tr>
+<th>JavaScript option</th>
+<th>Default</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>componentId</code></td>
+<td>Root DOM ID</td>
+<td>Associates triggers, outlets, focus targets, and islands</td>
+</tr>
+<tr>
+<td><code>forComponent</code> / <code>stack</code></td>
+<td>Closest named stack when present</td>
+<td>Stack ID, instance, or <code>&quot;closest&quot;</code></td>
+</tr>
+<tr>
+<td><code>sheetRole</code></td>
+<td><code>&quot;dialog&quot;</code></td>
+<td>Content ARIA role; <code>&quot;alertdialog&quot;</code> disables gesture, outside, and Escape dismissal</td>
+</tr>
+<tr>
+<td><code>defaultPresented</code></td>
+<td><code>false</code></td>
+<td>Presents after initialization</td>
+</tr>
+<tr>
+<td><code>presented</code></td>
+<td>Unset</td>
+<td>Initial controlled state; update using <code>setOptions</code>, the setter, or Stimulus open value</td>
+</tr>
+<tr>
+<td><code>defaultActiveDetent</code></td>
+<td><code>1</code> in closed-inclusive numbering</td>
+<td>Initial open position; closed remains separate until presentation</td>
+</tr>
+<tr>
+<td><code>activeDetent</code></td>
+<td>Unset</td>
+<td>Controlled detent; zero means closed, one means the first open position</td>
+</tr>
+<tr>
+<td><code>contentPlacement</code></td>
+<td>Derived from <code>edge</code> / <code>tracks</code></td>
+<td>An edge or <code>&quot;center&quot;</code>; cross-axis alignment is centered</td>
+</tr>
+<tr>
+<td><code>tracks</code></td>
+<td>Derived from <code>edge</code></td>
+<td>An edge or two opposing edges; the first track is the default entrance</td>
+</tr>
+<tr>
+<td><code>container</code></td>
+<td>Document body</td>
+<td>Portal destination; element or selector in JavaScript, selector in Rails</td>
+</tr>
+<tr>
+<td><code>swipe</code></td>
+<td><code>true</code></td>
+<td>Alias for <code>draggable</code></td>
+</tr>
+<tr>
+<td><code>swipeDismissal</code></td>
+<td><code>true</code> except alert dialogs</td>
+<td>Alias for <code>swipeToDismiss</code></td>
+</tr>
+<tr>
+<td><code>swipeable</code></td>
+<td><code>true</code></td>
+<td>Alias for backdrop/outside gesture availability; a backdrop may also use <code>data-sheet-swipeable=&quot;false&quot;</code></td>
+</tr>
+<tr>
+<td><code>swipeTrap</code></td>
+<td><code>true</code></td>
+<td>Boolean or <code>{ x, y }</code>; allows boundary propagation when false and modality permits it</td>
+</tr>
+<tr>
+<td><code>swipeOvershoot</code></td>
+<td><code>false</code></td>
+<td>Opt-in elastic movement past the largest open extent; use a bleeding background for an attached surface</td>
+</tr>
+<tr>
+<td><code>nativeEdgeSwipePrevention</code></td>
+<td><code>false</code></td>
+<td>Alias for edge-swipe prevention</td>
+</tr>
+<tr>
+<td><code>inertOutside</code></td>
+<td><code>true</code></td>
+<td>Alias for modal defaults, including inertness, focus trapping, and scroll locking</td>
+</tr>
+<tr>
+<td><code>nativeFocusScrollPrevention</code></td>
+<td><code>true</code></td>
+<td>Manages pointer focus without native viewport scrolling; iframe and browser keyboard limitations still apply</td>
+</tr>
+<tr>
+<td><code>themeColorDimming</code></td>
+<td><code>false</code></td>
+<td><code>&quot;auto&quot;</code> blends the backdrop with the theme-color meta tag in WebKit</td>
+</tr>
+<tr>
+<td><code>travelAnimation</code>, <code>stackingAnimation</code></td>
+<td>Unset</td>
+<td><a href="/docs/animations">Outlet definitions</a> on the content</td>
+</tr>
+<tr>
+<td><code>enteringAnimationSettings</code></td>
+<td>Legacy spring / native timing</td>
+<td>Entry preset or settings object</td>
+</tr>
+<tr>
+<td><code>exitingAnimationSettings</code></td>
+<td>Legacy spring / native timing</td>
+<td>Exit preset or settings object</td>
+</tr>
+<tr>
+<td><code>steppingAnimationSettings</code></td>
+<td>Legacy spring / native timing</td>
+<td>Detent transition preset or settings object</td>
+</tr>
+</tbody></table>
+<p><code>swipeOvershoot</code> intentionally remains opt-in to preserve the anchored behavior of existing applications. <code>swipeTrap</code> cannot allow interactions through an inert modal scope, and disabling overshoot traps boundary gestures. Native scroll chaining remains subject to browser cancellation and elasticity support. Supported two-track placement uses the WAAPI gesture backend; one-track native sheets retain their existing physical scroll geometry.</p>
+<h2 id="callbacks-and-behavior-hooks">Callbacks and behavior hooks</h2>
+<p><code>onPresentedChange(boolean)</code> and <code>onActiveDetentChange(number)</code> report completed state changes. <code>onTravelStatusChange</code> reports <code>idleOutside</code>, <code>entering</code>, <code>idleInside</code>, <code>stepping</code>, or <code>exiting</code>. <code>onTravelRangeChange({ start, end })</code> reports closed-inclusive detent bounds. <code>onTravel({ progress, range, progressAtDetents })</code> runs with rendered motion; <code>onTravelStart()</code> and <code>onTravelEnd()</code> bracket travel. Supply functions in JavaScript.</p>
+<p>Behavior hooks accept an option object or a JavaScript callback whose event exposes <code>nativeEvent</code> and <code>changeDefault(options)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Hook</th>
+<th>Default options</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>onPresentAutoFocus</code></td>
+<td><code>{ focus: true }</code></td>
+</tr>
+<tr>
+<td><code>onDismissAutoFocus</code></td>
+<td><code>{ focus: true }</code></td>
+</tr>
+<tr>
+<td><code>onClickOutside</code></td>
+<td><code>{ dismiss: true, stopOverlayPropagation: true }</code></td>
+</tr>
+<tr>
+<td><code>onEscapeKeyDown</code></td>
+<td><code>{ dismiss: true, stopOverlayPropagation: true, nativePreventDefault: true }</code></td>
+</tr>
+<tr>
+<td><code>onPress</code></td>
+<td><code>{ forceFocus: true, runAction: true }</code></td>
+</tr>
+</tbody></table>
+<p>Legacy <code>autofocus</code>, <code>restoreFocus</code>, <code>closeOnOutside</code>, <code>closeOnEscape</code>, and <code>dismissible</code> flags supply the defaults when customized. Alert dialogs always block outside/Escape dismissal, even if a callback requests it. <code>onFocusInside({ nativeEvent })</code> is a notification callback. The <a href="/docs/scroll">Scroll</a> variant additionally offers configurable reveal behavior.</p>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;notification&quot;, modal: false,
+      on_escape_key_down: { dismiss: false, stop_overlay_propagation: false },
+      on_click_outside: { dismiss: false, stop_overlay_propagation: false }) do |sheet| %&gt;
+  &lt;%= sheet.content do %&gt;&lt;%= sheet.title &quot;Saved&quot; %&gt;&lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>This lets the nonmodal notification stay open while an underlying sheet handles Escape or an outside click. The callback/behavior events also have DOM equivalents; see <a href="/docs/javascript">JavaScript API</a>.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/options.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#layout-and-detents">Layout and detents</a><a href="#gestures-and-dismissal">Gestures and dismissal</a><a href="#dismissal-commitment">Dismissal commitment</a><a href="#modality-and-focus">Modality and focus</a><a href="#motion-backends">Motion backends</a><a href="#spring-motion">Spring motion</a><a href="#rails-only-arguments">Rails-only arguments</a><a href="#stimulus-values">Stimulus values</a><a href="#extended-sheet-options">Extended Sheet options</a><a href="#callbacks-and-behavior-hooks">Callbacks and behavior hooks</a></aside></div></body></html>

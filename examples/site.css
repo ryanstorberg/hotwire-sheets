@@ -1,0 +1,143 @@
+@import url("/docs/theme.css");
+
+/* Site and demo chrome share the docs theme. Geometry and motion stay in gallery.css. */
+:root { font-family: var(--site-font); color: var(--site-ink); }
+#page { line-height: 1.6; }
+#page a { text-underline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
+}
+.gallery-bar {
+  height: 64px;
+  min-height: 64px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--site-border);
+  background: #fffffff5;
+}
+.gallery-brand { font-size: 19px; font-weight: 600; letter-spacing: -.5px; }
+.gallery-brand span {
+  margin-left: 10px;
+  padding: 3px 7px;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  color: var(--site-muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.6;
+}
+.gallery-nav { color: var(--site-ink); font-weight: 600; }
+.gallery-nav a:hover { color: var(--site-accent); }
+.gallery-content { max-width: 1280px; margin: auto; padding: 54px 54px 32px; }
+.gallery-intro { padding: 0 0 48px; text-align: left; }
+.gallery-meta { font-size: 10px; letter-spacing: 1.2px; color: var(--site-muted); font-weight: 600; }
+.gallery-intro h1 {
+  max-width: 760px;
+  margin: 14px 0 24px;
+  font-size: 48px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  font-weight: 750;
+  color: var(--site-heading);
+}
+.gallery-intro em { color: var(--site-accent); }
+.gallery-intro p { max-width: 640px; margin: 16px 0; font-size: 15px; line-height: 1.6; text-wrap: wrap; }
+.get-started {
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 0 20px;
+  border: 1px solid var(--site-accent);
+  border-radius: 8px;
+  background: var(--site-accent);
+  font-size: 14px;
+}
+.get-started:hover { background: #1b4937; }
+.gallery-section-title { margin: 0 0 20px; font-size: 25px; line-height: 1.3; letter-spacing: -.5px; color: var(--site-heading); }
+.cards { gap: 24px; scroll-margin-top: 92px; }
+#page .example-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--preview-caption, var(--site-surface));
+  border: 1px solid var(--preview-border, var(--site-border));
+  border-radius: 22px;
+  box-shadow: 0 2px 3px #182e2310, 0 8px 16px -8px var(--preview-shadow, #235d4730);
+  isolation: isolate;
+  transform: none;
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms, border-color 220ms;
+}
+#page .example-card:focus-visible { outline: 2px solid var(--site-accent); outline-offset: 4px; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  #page .example-card:hover { transform: translateY(-4px); box-shadow: 0 3px 6px #182e2310, 0 16px 24px -10px var(--preview-shadow, #235d4730); }
+  #page .example-card:active { transform: translateY(-1px); }
+}
+.example-card .preview { filter: none; object-position: center; border-bottom: 1px solid var(--preview-border, var(--site-border)); }
+.device-preview { height: auto; }
+#page .example-card strong {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  min-height: 58px;
+  padding: 14px 18px;
+  background: linear-gradient(110deg, #ffffffba, #ffffff20);
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -.3px;
+  white-space: normal;
+  color: var(--site-ink);
+}
+.gallery-footer { margin-top: 64px; border-top: 1px solid var(--site-border); padding-top: 24px; gap: 16px; font-size: 12px; color: var(--site-muted); }
+.gallery-footer a { color: var(--site-accent); }
+
+/* Shared typography and controls inside the interactive examples. */
+.primary-action { height: 48px; border-radius: 8px; padding-inline: 28px; background: var(--site-accent); font-size: 15px; }
+.primary-action:hover { background: #1b4937; }
+.compact-info h2, .card-info h2, .top-sheet .compact-body > h2, .profile-info h2 {
+  font-size: 30px; font-weight: 750; letter-spacing: -.5px; color: var(--site-heading);
+}
+.compact-info p, .card-info p { font-size: 16px; font-weight: 400; line-height: 1.6; color: var(--site-muted); }
+.compact-image { border-radius: var(--site-radius); }
+.organization { background: var(--site-surface); border-color: var(--site-border); }
+.organization strong { font-size: 19px; font-weight: 600; }
+.sidebar-scroll { gap: 32px; }
+.sidebar-scroll h3 { font-size: 11px; letter-spacing: .8px; color: var(--site-muted); margin-bottom: 16px; }
+.sidebar-scroll ul { gap: 16px; }
+.sidebar-scroll button { font-size: 15px; font-weight: 400; }
+.sidebar-scroll button:hover { color: var(--site-accent); }
+.contacts-header input { background: var(--site-surface); border: 1px solid var(--site-border); border-radius: 8px; font-size: 15px; }
+.contact strong { font-size: 16px; }
+.contact span { font-size: 14px; }
+.product-header button { color: var(--site-accent); }
+.product-field input, .product-field textarea { border-radius: 8px; caret-color: var(--site-accent); }
+.product-details > h3 { font-size: 25px; font-weight: 750; letter-spacing: -.5px; }
+.toast-message h2 { font-weight: 600; }
+.toast-message p { font-size: 15px; font-weight: 400; line-height: 1.4; }
+.article-copy > h1 { font-size: 38px; line-height: 1.15; letter-spacing: -1px; font-weight: 750; }
+.article-copy > h2 { font-size: 23px; font-weight: 500; }
+.article-prose { font-size: 16px; line-height: 1.6; }
+/* Parallax headers occupy the same slot as the landing navigation. */
+.parallax-bar, .parallax-bar > .dismiss { height: 64px; }
+[data-sheet-view]:has(> .parallax-sheet) > [data-sheet-backdrop] { top: 64px; }
+.related-example { border: 1px solid var(--site-border); border-radius: var(--site-radius); background: var(--site-surface); }
+.related-example strong { font-size: 15px; font-weight: 600; }
+.persistent-sheet { --sheet-background: var(--site-accent); background: var(--site-accent); }
+.album-cover { box-shadow: 0 10px 24px -8px #123d2d66; }
+.lightbox-sheet :focus-visible, .mobile-comments-sheet :focus-visible, .persistent-sheet :focus-visible { outline-color: currentColor; }
+
+@media (max-width: 999px) { .gallery-content { padding-inline: 40px; } }
+@media (max-width: 749px) {
+  .gallery-bar { height: 60px; min-height: 60px; padding: 0 20px; }
+  .gallery-brand { font-size: 17px; }
+  .gallery-brand span { display: none; }
+  .gallery-content { padding: 36px 20px; }
+  .gallery-intro h1 { font-size: 32px; }
+  .gallery-intro p { font-size: 15px; }
+  .gallery-section-title { font-size: 23px; }
+  .article-copy > h1 { font-size: 32px; }
+  .article-copy > h2 { font-size: 23px; }
+  .parallax-bar, .parallax-bar > .dismiss { height: 60px; }
+  [data-sheet-view]:has(> .parallax-sheet) > [data-sheet-backdrop] { top: 60px; }
+}
+@media (prefers-reduced-motion: reduce) { #page .example-card { transition: none; } }

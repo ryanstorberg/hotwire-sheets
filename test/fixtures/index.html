@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hotwire Sheets · Interaction lab</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/app/assets/stylesheets/hotwire_sheets.css">
+  <link rel="stylesheet" href="/test/fixtures/lab.css">
+  <script type="importmap">{"imports":{"@hotwired/stimulus":"/node_modules/@hotwired/stimulus/dist/stimulus.js","@hotwired/turbo":"/node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js","hotwire-sheets":"/app/assets/javascripts/hotwire_sheets.js","hotwire-sheets/stimulus":"/app/assets/javascripts/hotwire_sheets_stimulus.js"}}</script>
+  <script type="module" src="/test/fixtures/lab.js"></script>
+</head>
+<body>
+  <main id="page">
+    <nav><a href="/" class="wordmark">Hotwire Sheets<span> / Rails</span></a><a href="/regression/next" id="navigate">Another page ↗</a></nav>
+    <header class="intro"><p class="eyebrow">A browser engine. A Rails library.</p><h1>Made to move.</h1><p class="lede">Swipe, snap, scroll. Server-rendered interfaces with a little more feeling.</p></header>
+    <section class="example-group" aria-labelledby="group-0">
+      <div class="group-heading"><h2 id="group-0">Temporary central content</h2><p>Compact presentations that keep one thing in focus.</p></div>
+      <div class="cards">
+        <button data-sheet-open="basic" class="card" aria-label="Bottom Sheet"><span class="number">01 / EXAMPLE</span><span class="drawing bottom" aria-hidden="true"></span><strong>Bottom Sheet<span aria-hidden="true">↗</span></strong><span>A compact sheet rising from the bottom.</span></button>
+        <button data-sheet-open="top" class="card" aria-label="Top Sheet"><span class="number">02 / EXAMPLE</span><span class="drawing top" aria-hidden="true"></span><strong>Top Sheet<span aria-hidden="true">↗</span></strong><span>The same gesture, arriving from above.</span></button>
+        <button data-sheet-open="detached" class="card" aria-label="Detached Sheet"><span class="number">03 / EXAMPLE</span><span class="drawing detached" aria-hidden="true"></span><strong>Detached Sheet<span aria-hidden="true">↗</span></strong><span>A floating sheet with room around its edges.</span></button>
+        <button data-sheet-open="card" class="card" aria-label="Card"><span class="number">04 / EXAMPLE</span><span class="drawing card-preview" aria-hidden="true"></span><strong>Card<span aria-hidden="true">↗</span></strong><span>A centered card with a soft entrance.</span></button>
+      </div>
+    </section>
+    <section class="example-group" aria-labelledby="group-1">
+      <div class="group-heading"><h2 id="group-1">Temporary side content</h2><p>Overlays that leave the surrounding page in view.</p></div>
+      <div class="cards">
+        <button data-sheet-open="right" class="card" aria-label="Sidebar"><span class="number">05 / EXAMPLE</span><span class="drawing sidebar" aria-hidden="true"></span><strong>Sidebar<span aria-hidden="true">↗</span></strong><span>A drawer that enters from the side.</span></button>
+        <button data-sheet-open="toast" class="card" aria-label="Toast"><span class="number">06 / EXAMPLE</span><span class="drawing toast" aria-hidden="true"></span><strong>Toast<span aria-hidden="true">↗</span></strong><span>A swipeable notification that leaves focus in place.</span></button>
+        <button data-sheet-open="stacked" class="card" aria-label="Sheet with Stacking"><span class="number">07 / EXAMPLE</span><span class="drawing stacked" aria-hidden="true"></span><strong>Sheet with Stacking<span aria-hidden="true">↗</span></strong><span>Open another sheet without losing your place.</span></button>
+        <button data-sheet-open="persistent" class="card" aria-label="Persistent Sheet with Detent"><span class="number">08 / EXAMPLE</span><span class="drawing persistent" aria-hidden="true"></span><strong>Persistent Sheet with Detent<span aria-hidden="true">↗</span></strong><span>A non-modal sheet with two resting positions.</span></button>
+      </div>
+    </section>
+    <section class="example-group" aria-labelledby="group-2">
+      <div class="group-heading"><h2 id="group-2">Temporary long content</h2><p>More room for scrolling, typing, and exploring.</p></div>
+      <div class="cards">
+        <button data-sheet-open="detents" class="card" aria-label="Sheet with Detent"><span class="number">09 / EXAMPLE</span><span class="drawing detents" aria-hidden="true"></span><strong>Sheet with Detent<span aria-hidden="true">↗</span></strong><span>Three resting positions and a scrollable body.</span></button>
+        <button data-sheet-open="depth" class="card" aria-label="Sheet with Depth"><span class="number">10 / EXAMPLE</span><span class="drawing depth" aria-hidden="true"></span><strong>Sheet with Depth<span aria-hidden="true">↗</span></strong><span>Layered sheets with a receding background.</span></button>
+        <button data-sheet-open="keyboard" class="card" aria-label="Sheet with Keyboard"><span class="number">11 / EXAMPLE</span><span class="drawing form" aria-hidden="true"></span><strong>Sheet with Keyboard<span aria-hidden="true">↗</span></strong><span>Inputs, Turbo Frames, and keyboard avoidance.</span></button>
+        <button data-sheet-open="lightbox" class="card" aria-label="Lightbox"><span class="number">12 / EXAMPLE</span><span class="drawing lightbox" aria-hidden="true"></span><strong>Lightbox<span aria-hidden="true">↗</span></strong><span>Browse artwork in a full-screen image viewer.</span></button>
+      </div>
+    </section>
+    <section class="example-group" aria-labelledby="group-3">
+      <div class="group-heading"><h2 id="group-3">Persistent long content</h2><p>Immersive presentations with a full page of space.</p></div>
+      <div class="cards">
+        <button data-sheet-open="parallax" class="card" aria-label="Parallax Page"><span class="number">13 / EXAMPLE</span><span class="drawing parallax" aria-hidden="true"></span><strong>Parallax Page<span aria-hidden="true">↗</span></strong><span>A page that moves independently of its background.</span></button>
+        <button data-sheet-open="long" class="card" aria-label="Long Sheet"><span class="number">14 / EXAMPLE</span><span class="drawing long" aria-hidden="true"></span><strong>Long Sheet<span aria-hidden="true">↗</span></strong><span>A full-height sheet with a long reading surface.</span></button>
+        <button data-sheet-open="page-sheet" class="card" aria-label="Page"><span class="number">15 / EXAMPLE</span><span class="drawing page" aria-hidden="true"></span><strong>Page<span aria-hidden="true">↗</span></strong><span>A full-screen page that enters horizontally.</span></button>
+        <button data-sheet-open="page-bottom" class="card" aria-label="Page from Bottom"><span class="number">16 / EXAMPLE</span><span class="drawing page-bottom" aria-hidden="true"></span><strong>Page from Bottom<span aria-hidden="true">↗</span></strong><span>A full-screen page that enters vertically.</span></button>
+      </div>
+    </section>
+    <footer><span>Hotwire Sheets / 0.1.0</span><span>Independent implementation · No React</span></footer>
+  </main>
+  <div id="basic" data-controller="sheet" data-sheet-root>
+    <div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="basic-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div>
+      <header><p class="eyebrow">THE EVERYDAY OVERLAY</p><h2 id="basic-title">Bottom Sheet</h2></header>
+      <div data-sheet-body><p>Drag the handle. Press Escape. Tab through the controls. The sheet takes care of the mechanics while Rails takes care of your application.</p><label>Your name<input id="name" placeholder="Ada Lovelace"></label></div>
+      <footer><button data-sheet-close class="primary">That feels right</button></footer>
+    </section></div>
+  </div>
+  <div id="detents" data-controller="sheet" data-sheet-root data-sheet-detents-value='[0.35,0.65,1]' data-sheet-initial-detent-value="1">
+    <div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="detents-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet. Use arrow keys."></div><header><p class="eyebrow">35% / 65% / 100%</p><h2 id="detents-title">Sheet with Detent</h2></header>
+      <div data-sheet-body id="long-body"><p>Move the handle between detents, or scroll this list. At the scroll boundary, a new outward gesture moves the sheet.</p><ol id="long-list"></ol></div>
+      <footer><button data-sheet-close class="primary">Done exploring</button></footer>
+    </section></div>
+  </div>
+  <div id="stacked" data-controller="sheet" data-sheet-root data-sheet-detents-value='[0.65]' data-sheet-options-value='{"stackEffect":false}'>
+    <div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="stacked-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><p class="eyebrow">ONE MORE LAYER</p><h2 id="stacked-title">Sheet with Stacking</h2></header>
+      <div data-sheet-body><p>Open a second sheet. Focus, scroll locking and the backdrop follow the stack.</p><button data-sheet-open="child" class="primary">Open the next sheet</button></div>
+      <footer><button data-sheet-close>Close parent</button></footer>
+      <div id="child" data-controller="sheet" data-sheet-root><div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="child-title">
+        <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><p class="eyebrow">A NEW PERSPECTIVE</p><h2 id="child-title">Everything in its place.</h2></header><div data-sheet-body><p>The parent stays behind this sheet. Closing returns focus to where you left off.</p><input aria-label="Child input"></div><footer><button data-sheet-close class="primary">Back to the first sheet</button></footer>
+      </section></div></div>
+    </section></div>
+  </div>
+  <div id="right" data-controller="sheet" data-sheet-root data-sheet-edge-value="right" data-sheet-detents-value='["380px"]'><div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="right-title"><div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><p class="eyebrow">A DIFFERENT ANGLE</p><h2 id="right-title">Sidebar</h2></header><div data-sheet-body><p>Drawers use the same spring, focus, scroll and gesture engine.</p></div><footer><button data-sheet-close class="primary">Close sidebar</button></footer></section></div></div>
+  <div id="left" data-controller="sheet" data-sheet-root data-sheet-edge-value="left" data-sheet-detents-value='["320px"]'><div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-label="Left sidebar"><div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><h2>A left turn.</h2></header><div data-sheet-body><p>Swipe left to dismiss.</p></div><footer><button data-sheet-close>Close</button></footer></section></div></div>
+  <div id="top" data-controller="sheet" data-sheet-root data-sheet-edge-value="top" data-sheet-detents-value='["300px"]'><div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-label="Top Sheet"><footer><button data-sheet-close>Close</button></footer><div data-sheet-body><p>Swipe up to dismiss.</p></div><header><h2>Top Sheet</h2></header><div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div></section></div></div>
+  <div id="keyboard" data-controller="sheet" data-sheet-root data-sheet-detents-value='[0.8]'><div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="keyboard-title"><div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><p class="eyebrow">HTML OVER THE WIRE</p><h2 id="keyboard-title">Sheet with Keyboard</h2></header><div data-sheet-body><turbo-frame id="details" src="/frame" loading="lazy"><p>Loading details…</p></turbo-frame><label>A longer thought<textarea rows="4"></textarea></label></div><footer><button data-sheet-close class="primary">Close form</button></footer></section></div></div>
+  <div id="persistent" data-controller="sheet" data-sheet-root data-turbo-permanent data-sheet-modal-value="false" data-sheet-detents-value='["260px",0.6]' data-sheet-options-value='{"swipeToDismiss":false}'><div data-sheet-view hidden><section data-sheet-content aria-label="Persistent Sheet with Detent"><div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><h2>Persistent Sheet with Detent</h2></header><div data-sheet-body><p>The rest of the page stays available. Follow “Another page” to try a Turbo visit.</p></div><footer><button data-sheet-close>Close persistent sheet</button></footer></section></div></div>
+  <div id="locked" data-controller="sheet" data-sheet-root data-sheet-options-value='{"dismissible":false}'><div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-label="Required action"><div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><h2>A deliberate choice.</h2></header><div data-sheet-body><p>Escape, outside clicks and swipes cannot dismiss this sheet.</p></div><footer><button data-sheet-close class="primary">Confirm and close</button></footer></section></div></div>
+  <div id="detached" data-controller="sheet" data-sheet-root>
+    <div data-sheet-view class="demo-detached" hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="detached-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div>
+      <header><p class="eyebrow">A LITTLE BREATHING ROOM</p><h2 id="detached-title">Detached Sheet</h2></header>
+      <div data-sheet-body><div class="mini-art garden" role="img" aria-label="An abstract garden in soft green and golden colors"></div><p>A floating surface with rounded corners and space around every edge. Drag it down or use the button below.</p></div>
+      <footer><button data-sheet-close class="primary">Got it</button></footer>
+    </section></div>
+  </div>
+  <div id="card" data-controller="sheet" data-sheet-root data-sheet-options-value='{"draggable":false}'>
+    <div data-sheet-view class="demo-card" hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="card-title">
+      <header><p class="eyebrow">A MOMENT IN THE MIDDLE</p><h2 id="card-title">Card</h2></header>
+      <div data-sheet-body><div class="mini-art studio" role="img" aria-label="An abstract still life of a circle and arches"></div><p>A centered card for a short decision. It enters with a gentle fade and scale.</p></div>
+      <footer><button data-sheet-close class="primary">Sounds good</button></footer>
+    </section></div>
+  </div>
+  <div id="toast" data-controller="sheet demo" data-demo-kind-value="toast" data-sheet-root data-sheet-edge-value="top" data-sheet-modal-value="false" data-sheet-options-value='{"autofocus":false,"restoreFocus":false}'>
+    <div data-sheet-view class="demo-toast" hidden><section data-sheet-content aria-labelledby="toast-title">
+      <header><span class="toast-icon" aria-hidden="true">✓</span><div><h2 id="toast-title">Toast</h2><p role="status">Your changes have been saved.</p></div><button data-sheet-close aria-label="Dismiss Toast" class="icon-button">×</button></header>
+      <div data-sheet-body><p class="toast-hint">Swipe up to dismiss. Pauses while hovered or focused.</p></div>
+    </section></div>
+  </div>
+  <div id="depth" data-controller="sheet" data-sheet-root data-sheet-detents-value='[0.82]' data-sheet-options-value='{"stackEffect":true}'>
+    <div data-sheet-view class="demo-depth" hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="depth-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div>
+      <header><p class="eyebrow">LAYERS WITH PERSPECTIVE</p><h2 id="depth-title">Sheet with Depth</h2></header>
+      <div data-sheet-body><div class="mini-art strata" role="img" aria-label="Layered green mountain silhouettes"></div><p>Open the next layer and watch this sheet recede. Its scale and position follow the front sheet as it moves.</p><button data-sheet-open="depth-child" class="primary">Open the next layer</button><div class="reading-copy"><h3>A place to return to</h3><p>The first sheet keeps its scroll position and contents while the next layer takes focus.</p><p>Try dragging the second sheet slowly. The depth effect follows your gesture in both directions.</p></div></div>
+      <footer><button data-sheet-close>Close depth demo</button></footer>
+      <div id="depth-child" data-controller="sheet" data-sheet-root data-sheet-detents-value='[0.58]' data-sheet-options-value='{"stackEffect":true}'>
+        <div data-sheet-view class="demo-depth-child" hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="depth-child-title">
+          <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><p class="eyebrow">LAYER TWO</p><h2 id="depth-child-title">A closer look</h2></header>
+          <div data-sheet-body><p>Drag this layer to reveal the depth effect behind it, or add one more sheet to the stack.</p><button data-sheet-open="depth-third">Open a third layer</button></div><footer><button data-sheet-close class="primary">Back one layer</button></footer>
+          <div id="depth-third" data-controller="sheet" data-sheet-root><div data-sheet-view hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="depth-third-title"><div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header><h2 id="depth-third-title">One more perspective</h2></header><div data-sheet-body><p>Three sheets, one focus scope. Close this sheet to return to the second layer.</p></div><footer><button data-sheet-close class="primary">Back to layer two</button></footer></section></div></div>
+        </section></div>
+      </div>
+    </section></div>
+  </div>
+  <div id="lightbox" data-controller="sheet demo" data-demo-kind-value="lightbox" data-sheet-root data-sheet-detents-value='[1]'>
+    <div data-sheet-view class="demo-lightbox demo-full-page" hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="lightbox-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Drag down to dismiss Lightbox"></div>
+      <header class="demo-toolbar"><h2 id="lightbox-title">Lightbox</h2><button data-sheet-close aria-label="Close Lightbox" class="icon-button">×</button></header>
+      <div data-sheet-body data-sheet-no-drag class="lightbox-viewer"><img src="/test/fixtures/art/alpine.svg" alt="Alpine Morning — geometric mountain peaks reflected in a still lake" draggable="false" data-lightbox-image></div>
+      <footer class="lightbox-controls"><button type="button" data-demo-action="previous" aria-label="Previous image">←</button><div aria-live="polite"><strong data-lightbox-caption>Alpine Morning</strong><span data-lightbox-count>1 / 3</span></div><button type="button" data-demo-action="zoom" aria-label="Zoom image" aria-pressed="false">＋</button><button type="button" data-demo-action="next" aria-label="Next image">→</button></footer>
+    </section></div>
+  </div>
+  <div id="long" data-controller="sheet" data-sheet-root data-sheet-detents-value='[1]'>
+    <div data-sheet-view class="demo-long" hidden><div data-sheet-backdrop></div><section data-sheet-content aria-labelledby="long-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Resize sheet"></div><header class="demo-toolbar"><div><p class="eyebrow">TAKE THE SCENIC ROUTE</p><h2 id="long-title">Long Sheet</h2></div><button data-sheet-close aria-label="Close Long Sheet" class="icon-button">×</button></header>
+      <div data-sheet-body class="reading-copy"><img class="cover-art" src="/test/fixtures/art/coast.svg" alt="Coastal Calm — a curved shoreline and a setting sun"><h3>A little further from the everyday</h3><p>A long reading surface with a fixed header and a scrollable body. Scroll all the way through, then return to the top and swipe to dismiss.</p><div data-demo-chapters></div><p class="end-marker">You have reached the end.</p></div>
+      <footer><button data-sheet-close class="primary">Back to examples</button></footer>
+    </section></div>
+  </div>
+  <div id="page-sheet" data-controller="sheet" data-sheet-root data-sheet-edge-value="right" data-sheet-detents-value='[1]'>
+    <div data-sheet-view class="demo-full-page" hidden><section data-sheet-content aria-labelledby="page-title">
+      <header class="demo-toolbar"><button data-sheet-close aria-label="Close Page">← Back</button><h2 id="page-title">Page</h2><span class="toolbar-note">A new perspective</span></header>
+      <div data-sheet-body class="page-reading"><div class="page-cover"><img src="/test/fixtures/art/desert.svg" alt="Desert Light — warm dunes beneath a circular sun"><div><p class="eyebrow">ROOM FOR THE WHOLE STORY</p><h3>Some things deserve<br>the whole page.</h3></div></div><article class="reading-copy"><h3>Make yourself at home</h3><p>A full-screen page that enters from the right. The header stays in place while the story scrolls below it.</p><div data-demo-chapters="6"></div><button data-sheet-close class="primary">Return to the gallery</button></article></div>
+    </section></div>
+  </div>
+  <div id="page-bottom" data-controller="sheet" data-sheet-root data-sheet-detents-value='[1]'>
+    <div data-sheet-view class="demo-full-page" hidden><section data-sheet-content aria-labelledby="page-bottom-title">
+      <div data-sheet-handle tabindex="0" role="group" aria-label="Drag down to dismiss Page from Bottom"></div><header class="demo-toolbar"><h2 id="page-bottom-title">Page from Bottom</h2><button data-sheet-close aria-label="Close Page from Bottom" class="icon-button">×</button></header>
+      <div data-sheet-body class="page-reading"><div class="page-cover"><img src="/test/fixtures/art/alpine.svg" alt="Alpine Morning — blue-green mountains reflected in water"><div><p class="eyebrow">FROM A DIFFERENT DIRECTION</p><h3>A fresh view,<br>from the ground up.</h3></div></div><article class="reading-copy"><h3>All the room you need</h3><p>This page rises from the bottom and fills the viewport. Drag the top handle to dismiss it, or scroll through the content.</p><div data-demo-chapters="6"></div><button data-sheet-close class="primary">Return to the gallery</button></article></div>
+    </section></div>
+  </div>
+  <div id="parallax" data-controller="sheet demo" data-demo-kind-value="parallax" data-sheet-root data-sheet-edge-value="right" data-sheet-detents-value='[1]'>
+    <div data-sheet-view class="demo-full-page demo-parallax" hidden><section data-sheet-content aria-labelledby="parallax-title">
+      <header class="demo-toolbar"><button data-sheet-close aria-label="Close Parallax Page">← Back</button><h2 id="parallax-title">Parallax Page</h2></header>
+      <div data-sheet-body class="page-reading"><div class="page-cover parallax-cover"><img src="/test/fixtures/art/coast.svg" alt="Coastal Calm — a sunlit shoreline"><div><p class="eyebrow">TWO LAYERS. TWO SPEEDS.</p><h3>A different<br>point of view.</h3></div></div><article class="reading-copy"><h3>Watch the world move</h3><p>As this page enters, the gallery moves a shorter distance behind it. As you scroll, the artwork moves more slowly than the text.</p><div data-demo-chapters="8"></div><button data-sheet-close class="primary">Return to the gallery</button></article></div>
+    </section></div>
+  </div>
+</body>
+</html>

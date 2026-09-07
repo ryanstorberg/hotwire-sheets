@@ -1,0 +1,136 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Coverage and limits · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" aria-current="page">Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="coverage-and-validation">Coverage and validation</h1>
+<p>Hotwire Sheets provides a browser engine and Rails/DOM APIs. The <a href="/docs/api-index">API index</a> lists the available components, options, and utility functions. This page records automated validation, measured performance, and remaining platform checks.</p>
+<h2 id="implemented-surface">Implemented surface</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Available behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sheet</td>
+<td>Four edges, centered placement, opposite tracks, controlled presentation, closed-inclusive active detents, legacy open indices, CSS-length detents, arbitrary portal destinations</td>
+</tr>
+<tr>
+<td>Motion</td>
+<td>WAAPI spring and timed easing, six built-in presets, separate entry/exit/step settings, delays, velocity, skip and contentMove controls, cancellation, reduced motion</td>
+</tr>
+<tr>
+<td>Native sheet travel</td>
+<td>CSS Scroll Snap detents and browser scrolling; configured WAAPI programmatic transitions can coexist with native gesture travel</td>
+</tr>
+<tr>
+<td>Dismissal commitment</td>
+<td>Wheel midpoint commitment, prompt momentum-tail settlement, touch release/cancellation, interruptible short returns, and protection from chained parent dismissal</td>
+</tr>
+<tr>
+<td>Scroll</td>
+<td>Native panel/page scrolling, optional page-scroll replacement, safe areas, focus visibility, scroll controls/events, axis/edge trapping, snapping, anchoring, padding, timelines and scrollbars</td>
+</tr>
+<tr>
+<td>Effects</td>
+<td>Travel/stacking outlets on existing elements, individual transform composition, callbacks, viewport clipping, native scroll timelines where supported</td>
+</tr>
+<tr>
+<td>Stacks</td>
+<td>Named groups, sibling/nested membership, scoped stacking progress and shared modal ordering</td>
+</tr>
+<tr>
+<td>Accessibility</td>
+<td>Dialog roles, alert-dialog safeguards, autofocus targets, behavior hooks, outside/Escape propagation, focus trapping/restoration, interactive islands and external overlays</td>
+</tr>
+<tr>
+<td>Auxiliary APIs</td>
+<td>Fixed viewport content, visually hidden content, bleeding backgrounds, IDs, media/page subscriptions, theme-color blending, standalone animate helper</td>
+</tr>
+<tr>
+<td>Rails</td>
+<td>Compound helpers, recursive option serialization, Stimulus controllers, Turbo snapshot cleanup, importmap/bundler modules, layered/unlayered styles</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>16 guides, options and component tables, individual/bundled Markdown, llms.txt and a machine-readable API inventory</td>
+</tr>
+<tr>
+<td>Gallery</td>
+<td>All 16 named examples, with existing nested input, player, parallax, lightbox, Card and dismissal regressions retained</td>
+</tr>
+</tbody></table>
+<h2 id="automated-validation">Automated validation</h2>
+<p>The browser suite runs Chromium, Firefox, WebKit, and an iPhone-sized WebKit configuration. It covers the gallery, interaction ownership, focus, accessibility, geometry, cancellation, responsive layouts, Turbo behavior, documentation links, and built importmap modules. Desktop-only wheel/pointer cases are skipped in the mobile context; synthetic touch and ownership cases also run there.</p>
+<p>New API scenarios check controlled state and CSS lengths, alert dialogs, phase timing/contentMove, native snap with WAAPI transitions, centered two-track motion, native Scroll methods and stationary chrome, directional trapping, page ownership, outlets independent of the frame observer, named stack isolation, focus/islands/external overlays, theme blending, declarative triggers, native timelines, and viewport clipping/Fixed cleanup.</p>
+<p>Verified on 2026-09-07:</p>
+<ul>
+<li>Browser suite: <strong>880 configured cases</strong> across four configurations, including the 96 API cases and 32 dismissal-commitment cases. The complete run passed 859 cases with 19 platform-specific skips; two assertions needed updates for continuous wheel cadence and immediate offscreen closure.</li>
+<li>Final dismissal/direction reruns: <strong>90 passed, 2 platform-specific skips</strong>, covering both updated assertions and all commitment regressions. There are no unresolved failures from the complete run. Held touch, touch cancellation, interruption of a short return, close vetoes, all four edges, and immediate parent scrolling are included. Reruns are not added to the configured-case count.</li>
+<li>JavaScript unit tests: <strong>14 passed</strong>. TypeScript public API examples compiled with strict checking.</li>
+<li>Rails integration/helper tests: <strong>18 passed, 51 assertions</strong>.</li>
+<li>npm tarball and Ruby gem built successfully, including the generated runtime, stylesheet variants, API inventory, and documentation.</li>
+<li>The API guide was visually checked at 1280px and 390px widths, with no document-level horizontal overflow.</li>
+</ul>
+<p>Run the complete checks locally:</p>
+<pre><code class="language-sh">npm ci
+bundle install
+npm run build
+npm run build:docs
+npm test
+npm run test:types
+bundle exec rake test
+npm run test:browser -- --workers=4
+</code></pre>
+<p>The Ruby integration runs Rails 8.1.3 with Propshaft on Ruby 4.0.2 and exercises asset delivery and rendered helpers. The gem permits Rails 7.1–8.x; the entire older-Rails and Sprockets matrix has not been run. TypeScript checks compile real examples against the exported declarations.</p>
+<h2 id="performance-evidence">Performance evidence</h2>
+<p>WAAPI surface/outlet playback and native scrolling use browser animation machinery. Transform and opacity are eligible for compositor acceleration; native scroll timelines are used when supported. Layout/paint properties and application callbacks still involve the main thread. The depth demo currently retains a geometry compensation during stacking to preserve its bottom anchor and scroll range; it is not a compositor-only effect.</p>
+<pre><code class="language-sh">npm run demo
+# In another terminal:
+npm run benchmark:motion
+npm run benchmark:gallery
+</code></pre>
+<p>The gallery benchmark covers all 16 presentations and a three-layer depth sequence at desktop and phone viewport sizes. It records frame intervals, long tasks, layout/style/script durations, layer counts, and browser compositing reasons in <code>tmp/motion-benchmark-all.json</code>. Headless Chromium measurements describe that test environment; a compositor layer is not proof of physical GPU execution, and a 60 Hz run cannot certify 120 Hz hardware.</p>
+<h3 id="recorded-run-2026-09-07">Recorded run: 2026-09-07</h3>
+<p>Headless Chromium 153.0.8010.12 tested 34 cases: every gallery presentation plus three nested depth layers, at each viewport size. The <a href="performance-2026-09-07.json">raw report</a> records individual timings and compositing reasons.</p>
+<table>
+<thead>
+<tr>
+<th>Viewport</th>
+<th align="right">Cases</th>
+<th align="right">Sampled frame intervals</th>
+<th>Per-case 95th percentile</th>
+<th align="right">Intervals over 25 ms</th>
+<th align="right">Tasks over 50 ms</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1280 × 720</td>
+<td align="right">17</td>
+<td align="right">1,097</td>
+<td>16.7–16.8 ms</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>390 × 844</td>
+<td align="right">17</td>
+<td align="right">1,047</td>
+<td>16.7–16.8 ms</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody></table>
+<p>Median cadence was approximately 60 Hz. The four slower intervals occurred in the desktop three-layer depth sequence. Chromium reported accelerated transform/opacity animation and accelerated scrolling reasons across the gallery. The depth sequence also performed layout: 117 layout events totaling 8.15 ms on desktop and 129 totaling 6.75 ms at the phone viewport. Those totals are for the entire sequence, not each frame.</p>
+<p>This is one automated entry/exit run, including layered transitions. It is not a physical trackpad benchmark, a thermal/battery test, or a guarantee under application load. No 120 Hz display was measured.</p>
+<h2 id="differences-and-platform-limits">Differences and platform limits</h2>
+<ul>
+<li>Legacy defaults remain stable: open detent numbering, the default spring, opt-in native sheet snapping, and opt-in inward overshoot. Use the closed-inclusive API and explicit phase presets when applications need those conventions.</li>
+<li>Composition uses DOM attributes, Rails helpers, and cleanup-aware subscriptions.</li>
+<li>Centered, two-track, and custom split-surface presentations use the transform gesture backend; their content still scrolls natively. A native touch stream that becomes noncancelable remains subject to browser chaining rules.</li>
+<li>Fixed elements use a body-level portal. Ancestor-dependent CSS/inheritance may need to move onto the fixed element. Explicit external-overlay registration is recommended for custom portal shapes.</li>
+<li>Viewport, keyboard, edge-navigation, overscroll, and theme/status-bar behavior vary by browser. Physical iOS/Android, VoiceOver/TalkBack, and high-refresh hardware validation remain necessary for a stable-release claim.</li>
+<li>The gallery demonstrates layouts and interactions; automated screenshots do not certify rendering on every device. Watercolor artwork credits are documented in <a href="/docs/concepts#gallery-and-artwork">Core concepts</a>.</li>
+<li>No sheet-specific router, Back-to-dismiss history layer, Turbo Native adapter, or package publication is claimed; those are separate application integrations.</li>
+</ul>
+<h2 id="physical-device-acceptance">Physical-device acceptance</h2>
+<p>Verify repeated three-layer dismissal with a real trackpad, continued momentum at content boundaries, direction reversal, and scrolling the re-exposed parent. The previously reported freezing/jumping reproduction was resolved and confirmed by the user; the automated regressions retain that behavior.</p>
+<p>On physical iPhone/iPad and Android, check software-keyboard opening/closing, browser chrome changes, rotation, pinch zoom, editable controls, native edge navigation, and screen-reader focus. Measure 60 Hz and 120 Hz transitions under representative application load, including long feeds and repeated open/close cycles. Browser automation and synthetic input complement these checks rather than replacing them.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/coverage.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#implemented-surface">Implemented surface</a><a href="#automated-validation">Automated validation</a><a href="#performance-evidence">Performance evidence</a><a href="#differences-and-platform-limits">Differences and platform limits</a><a href="#physical-device-acceptance">Physical-device acceptance</a></aside></div></body></html>

@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Getting started · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" aria-current="page">Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="getting-started">Getting started</h1>
+<p>Hotwire Sheets provides swipeable sheets for server-rendered Rails applications. The browser engine handles gestures and animations locally. A Stimulus controller connects it to Turbo, and ERB helpers generate accessible markup.</p>
+<p>Version <strong>0.1.0</strong>. The packages are currently local builds. The gem supports Rails 7.1–8.x and Ruby 3.1+; Rails 8.1.3 with Propshaft is the integration tested combination. Review <a href="/docs/coverage">coverage</a> for the device and compatibility limits.</p>
+<h2 id="install-with-importmap">Install with importmap</h2>
+<p>Add the checkout to your application&#39;s Gemfile:</p>
+<pre><code class="language-ruby">gem &quot;hotwire_sheets&quot;, path: &quot;/absolute/path/to/hotwire-sheets&quot;
+</code></pre>
+<pre><code class="language-sh">bundle install
+bin/rails generate hotwire_sheets:install
+</code></pre>
+<p>Install Stimulus in your application first if it is not already present. The generator adds the two importmap pins, registers the controller in <code>app/javascript/controllers/index.js</code>, and adds the stylesheet to an ERB application layout. The gem includes prebuilt ES modules, so this setup does not need Node at runtime.</p>
+<p>For a custom setup, add these yourself:</p>
+<pre><code class="language-ruby"># config/importmap.rb
+pin &quot;hotwire-sheets&quot;, to: &quot;hotwire_sheets.js&quot;
+pin &quot;hotwire-sheets/stimulus&quot;, to: &quot;hotwire_sheets_stimulus.js&quot;
+</code></pre>
+<pre><code class="language-js">// After creating your existing Stimulus application:
+import { registerSheets } from &quot;hotwire-sheets/stimulus&quot;
+registerSheets(application)
+</code></pre>
+<pre><code class="language-erb">&lt;%# Inside the layout&#39;s head %&gt;
+&lt;%= stylesheet_link_tag &quot;hotwire_sheets&quot;, &quot;data-turbo-track&quot;: &quot;reload&quot; %&gt;
+</code></pre>
+<h2 id="install-with-a-bundler">Install with a bundler</h2>
+<p>Keep the gem for the helpers and install the local JavaScript package too:</p>
+<pre><code class="language-sh">npm install /absolute/path/to/hotwire-sheets @hotwired/stimulus
+</code></pre>
+<p>Register the controller as above. Load the CSS using the Rails stylesheet tag, or <code>import &quot;hotwire-sheets/styles.css&quot;</code> when your bundler processes CSS. Load it once. Import the core and adapter from the same package installation so <code>Sheet.get()</code> uses the same instance registry.</p>
+<h2 id="your-first-sheet">Your first sheet</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_trigger &quot;Open details&quot;, sheet: &quot;details&quot; %&gt;
+
+&lt;%= hotwire_sheet(id: &quot;details&quot;, detents: [&quot;content&quot;]) do |sheet| %&gt;
+  &lt;%= sheet.content(class: &quot;details-sheet&quot;) do %&gt;
+    &lt;%= sheet.handle %&gt;
+    &lt;%= sheet.title &quot;Your reservation&quot; %&gt;
+    &lt;%= sheet.description &quot;Everything you need for your visit.&quot; %&gt;
+    &lt;%= sheet.body do %&gt;
+      &lt;p&gt;Saturday at 10:00 am · Two guests&lt;/p&gt;
+    &lt;% end %&gt;
+    &lt;%= sheet.close &quot;Got it&quot;, class: &quot;details-close&quot; %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<pre><code class="language-css">.details-sheet {
+  --sheet-width: 700px;
+  --sheet-background: white;
+  --sheet-color: #1f2937;
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  gap: 20px;
+}
+.details-sheet [data-sheet-handle] {
+  width: 50px;
+  height: 6px;
+  margin-inline: auto;
+  border-radius: 999px;
+  background: #d1d5db;
+}
+.details-close {
+  border: 0;
+  border-radius: 999px;
+  padding: 16px 40px;
+  background: #1f2937;
+  color: white;
+}
+</code></pre>
+<p>The library supplies structural styles. The visual designs in the <a href="/">gallery</a> are examples built on that structure. Their source is in <code>examples/gallery.html</code>, <code>examples/gallery.css</code>, and <code>examples/gallery.js</code>. The original photo assets belong to the reference gallery and are separate from the runtime package.</p>
+<h2 id="next-steps">Next steps</h2>
+<ul>
+<li><a href="/docs/rails">Rails helpers</a>: markup, attributes, labels, and reusable partials.</li>
+<li><a href="/docs/options">Options</a>: every supported configuration setting and default.</li>
+<li><a href="/docs/javascript">JavaScript API</a>: programmatic control and lifecycle events.</li>
+<li><a href="/docs/styling">Styling</a>: handles, close buttons, fixed headers, and depth effects.</li>
+<li><a href="/docs/turbo">Turbo and Stimulus</a>: forms, Frames, Streams, and navigation.</li>
+<li><a href="/docs/recipes">Recipes</a>: common presentations with copyable ERB.</li>
+<li><a href="/docs/concepts">Core concepts</a>: composition, detent numbering, and subscriptions.</li>
+</ul>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/getting-started.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#install-with-importmap">Install with importmap</a><a href="#install-with-a-bundler">Install with a bundler</a><a href="#your-first-sheet">Your first sheet</a><a href="#next-steps">Next steps</a></aside></div></body></html>

@@ -1,0 +1,665 @@
+{
+  "package": "hotwire-sheets",
+  "version": "0.1.0",
+  "updated": "2026-09-07",
+  "components": {
+    "Sheet": "Sheet / hotwire_sheet",
+    "Sheet triggers": "data-sheet-action / hotwire_sheet_trigger",
+    "Sheet outlets": "Outlet / hotwire_sheet_outlet",
+    "Portal": "portal and container options",
+    "Sheet options": "Sheet options / data-sheet-view",
+    "Backdrop": "data-sheet-backdrop / sheet.backdrop",
+    "Sheet content": "data-sheet-content / sheet.content",
+    "Bleeding background": "data-sheet-bleeding-background / sheet.bleeding_background",
+    "Handle": "data-sheet-handle / sheet.handle",
+    "Title": "data-sheet-title / sheet.title",
+    "Description": "data-sheet-description / sheet.description",
+    "Special wrapper": "data-sheet-special-wrapper",
+    "Special content": "data-sheet-special-content",
+    "Scroll": "Scroll / hotwire_scroll",
+    "Scroll triggers": "data-scroll-action / hotwire_scroll_trigger",
+    "Scroll options": "Scroll options / scroll.view",
+    "Scroll content": "data-scroll-content / scroll.content",
+    "SheetStack": "SheetStack / hotwire_sheet_stack",
+    "Stack outlets": "Outlet / stack.outlet",
+    "AutoFocusTarget": "AutoFocusTarget / hotwire_sheet_auto_focus",
+    "Island": "Island / hotwire_sheet_island",
+    "Island content": "data-island-content",
+    "Fixed": "Fixed / hotwire_sheet_fixed",
+    "Fixed content": "data-fixed-content",
+    "VisuallyHidden": "VisuallyHidden / .sheet-visually-hidden",
+    "ExternalOverlay": "ExternalOverlay / hotwire_sheet_external_overlay"
+  },
+  "records": [
+    {
+      "component": "Sheet",
+      "property": "componentId",
+      "api": "componentId",
+      "notes": ""
+    },
+    {
+      "component": "Sheet",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Sheet",
+      "property": "sheetRole",
+      "api": "sheetRole",
+      "notes": ""
+    },
+    {
+      "component": "Sheet",
+      "property": "defaultPresented",
+      "api": "defaultPresented",
+      "notes": ""
+    },
+    {
+      "component": "Sheet",
+      "property": "presented",
+      "api": "presented",
+      "notes": ""
+    },
+    {
+      "component": "Sheet",
+      "property": "onPresentedChange",
+      "api": "onPresentedChange",
+      "notes": ""
+    },
+    {
+      "component": "Sheet",
+      "property": "defaultActiveDetent",
+      "api": "defaultActiveDetent",
+      "notes": "Closed-inclusive numbering; legacy detent/snapTo keep open-position indices."
+    },
+    {
+      "component": "Sheet",
+      "property": "activeDetent",
+      "api": "activeDetent",
+      "notes": "Closed-inclusive numbering; legacy detent/snapTo keep open-position indices."
+    },
+    {
+      "component": "Sheet",
+      "property": "onActiveDetentChange",
+      "api": "onActiveDetentChange",
+      "notes": "Closed-inclusive numbering; legacy detent/snapTo keep open-position indices."
+    },
+    {
+      "component": "Sheet triggers",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Sheet triggers",
+      "property": "action",
+      "api": "action",
+      "notes": ""
+    },
+    {
+      "component": "Sheet triggers",
+      "property": "onPress",
+      "api": "onPress",
+      "notes": ""
+    },
+    {
+      "component": "Sheet triggers",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Sheet triggers",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Sheet outlets",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Sheet outlets",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Sheet outlets",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Portal",
+      "property": "container",
+      "api": "container",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Sheet options",
+      "property": "contentPlacement",
+      "api": "contentPlacement",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "tracks",
+      "api": "tracks",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "detents",
+      "api": "detents",
+      "notes": "Supply every open position, including \"content\" for full-content sizing."
+    },
+    {
+      "component": "Sheet options",
+      "property": "swipeTrap",
+      "api": "swipeTrap",
+      "notes": "Axis-aware boundary propagation; native scroll chaining follows browser cancellation rules."
+    },
+    {
+      "component": "Sheet options",
+      "property": "swipeOvershoot",
+      "api": "swipeOvershoot",
+      "notes": "Opt-in here to preserve existing attached-edge behavior; native elasticity depends on the browser."
+    },
+    {
+      "component": "Sheet options",
+      "property": "swipeDismissal",
+      "api": "swipeDismissal",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "swipe",
+      "api": "swipe",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "nativeEdgeSwipePrevention",
+      "api": "nativeEdgeSwipePrevention",
+      "notes": "Cancels qualifying edge touch starts; physical browser gesture prevention is best-effort."
+    },
+    {
+      "component": "Sheet options",
+      "property": "enteringAnimationSettings",
+      "api": "enteringAnimationSettings",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "exitingAnimationSettings",
+      "api": "exitingAnimationSettings",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "steppingAnimationSettings",
+      "api": "steppingAnimationSettings",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onTravelStatusChange",
+      "api": "onTravelStatusChange",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onTravelRangeChange",
+      "api": "onTravelRangeChange",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onTravel",
+      "api": "onTravel",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onTravelStart",
+      "api": "onTravelStart",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onTravelEnd",
+      "api": "onTravelEnd",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "inertOutside",
+      "api": "inertOutside",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onPresentAutoFocus",
+      "api": "onPresentAutoFocus",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onDismissAutoFocus",
+      "api": "onDismissAutoFocus",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onClickOutside",
+      "api": "onClickOutside",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onEscapeKeyDown",
+      "api": "onEscapeKeyDown",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "onFocusInside",
+      "api": "onFocusInside",
+      "notes": ""
+    },
+    {
+      "component": "Sheet options",
+      "property": "nativeFocusScrollPrevention",
+      "api": "nativeFocusScrollPrevention",
+      "notes": "Pointer focus uses preventScroll; browser/keyboard/iframe limitations still apply."
+    },
+    {
+      "component": "Backdrop",
+      "property": "swipeable",
+      "api": "swipeable",
+      "notes": ""
+    },
+    {
+      "component": "Backdrop",
+      "property": "themeColorDimming",
+      "api": "themeColorDimming",
+      "notes": "Sheet option or programmatic dimming overlay; WebKit automatic mode."
+    },
+    {
+      "component": "Backdrop",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Backdrop",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Sheet content",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Sheet content",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Bleeding background",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Bleeding background",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Handle",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Handle",
+      "property": "action",
+      "api": "action",
+      "notes": ""
+    },
+    {
+      "component": "Handle",
+      "property": "onPress",
+      "api": "onPress",
+      "notes": ""
+    },
+    {
+      "component": "Handle",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Handle",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Title",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Title",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Description",
+      "property": "travelAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Description",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "Scroll",
+      "property": "componentId",
+      "api": "componentId",
+      "notes": ""
+    },
+    {
+      "component": "Scroll",
+      "property": "componentRef",
+      "api": "Scroll instance / componentRef.current",
+      "notes": "No React ref dependency."
+    },
+    {
+      "component": "Scroll triggers",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Scroll triggers",
+      "property": "action",
+      "api": "action",
+      "notes": ""
+    },
+    {
+      "component": "Scroll triggers",
+      "property": "onPress",
+      "api": "onPress",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Scroll options",
+      "property": "axis",
+      "api": "axis",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "pageScroll",
+      "api": "pageScroll",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "nativePageScrollReplacement",
+      "api": "nativePageScrollReplacement",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "safeArea",
+      "api": "safeArea",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollGestureTrap",
+      "api": "scrollGestureTrap",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollGestureOvershoot",
+      "api": "scrollGestureOvershoot",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollGesture",
+      "api": "scrollGesture",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "onScroll",
+      "api": "onScroll",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "onScrollStart",
+      "api": "onScrollStart",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "onScrollEnd",
+      "api": "onScrollEnd",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "nativeFocusScrollPrevention",
+      "api": "nativeFocusScrollPrevention",
+      "notes": "Pointer focus uses preventScroll; browser/keyboard/iframe limitations still apply."
+    },
+    {
+      "component": "Scroll options",
+      "property": "onFocusInside",
+      "api": "onFocusInside",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollAnimationSettings",
+      "api": "scrollAnimationSettings",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollAnchoring",
+      "api": "scrollAnchoring",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollSnapType",
+      "api": "scrollSnapType",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollPadding",
+      "api": "scrollPadding",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "scrollTimelineName",
+      "api": "scrollTimelineName",
+      "notes": ""
+    },
+    {
+      "component": "Scroll options",
+      "property": "nativeScrollbar",
+      "api": "nativeScrollbar",
+      "notes": ""
+    },
+    {
+      "component": "Scroll",
+      "property": "getProgress",
+      "api": "getProgress",
+      "notes": ""
+    },
+    {
+      "component": "Scroll",
+      "property": "getDistance",
+      "api": "getDistance",
+      "notes": ""
+    },
+    {
+      "component": "Scroll",
+      "property": "getAvailableDistance",
+      "api": "getAvailableDistance",
+      "notes": ""
+    },
+    {
+      "component": "Scroll",
+      "property": "scrollTo",
+      "api": "scrollTo",
+      "notes": ""
+    },
+    {
+      "component": "Scroll",
+      "property": "scrollBy",
+      "api": "scrollBy",
+      "notes": ""
+    },
+    {
+      "component": "SheetStack",
+      "property": "componentId",
+      "api": "componentId",
+      "notes": ""
+    },
+    {
+      "component": "Stack outlets",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Stack outlets",
+      "property": "stackingAnimation",
+      "api": "Outlet definitions or data-sheet-*-animation",
+      "notes": "Functions in JavaScript; arrays/constants can be serialized from Rails."
+    },
+    {
+      "component": "AutoFocusTarget",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "AutoFocusTarget",
+      "property": "timing",
+      "api": "timing",
+      "notes": ""
+    },
+    {
+      "component": "Island",
+      "property": "forComponent",
+      "api": "forComponent",
+      "notes": "Serializable IDs or JavaScript instances; DOM ancestry supplies closest association."
+    },
+    {
+      "component": "Island",
+      "property": "disabled",
+      "api": "disabled",
+      "notes": ""
+    },
+    {
+      "component": "Island",
+      "property": "contentGetter",
+      "api": "contentGetter",
+      "notes": ""
+    },
+    {
+      "component": "ExternalOverlay",
+      "property": "disabled",
+      "api": "disabled",
+      "notes": ""
+    },
+    {
+      "component": "ExternalOverlay",
+      "property": "selfManagedInertOutside",
+      "api": "selfManagedInertOutside",
+      "notes": ""
+    },
+    {
+      "component": "ExternalOverlay",
+      "property": "contentGetter",
+      "api": "contentGetter",
+      "notes": ""
+    },
+    {
+      "component": "createComponentId",
+      "property": "function",
+      "api": "createComponentId",
+      "notes": ""
+    },
+    {
+      "component": "Page scroll subscriptions",
+      "property": "function",
+      "api": "getPageScrollData / observePageScrollData",
+      "notes": "Subscriptions return cleanup functions."
+    },
+    {
+      "component": "Media query subscriptions",
+      "property": "function",
+      "api": "observeMediaQuery",
+      "notes": "Subscriptions return cleanup functions."
+    },
+    {
+      "component": "updateThemeColor",
+      "property": "function",
+      "api": "updateThemeColor",
+      "notes": ""
+    },
+    {
+      "component": "Theme color dimming",
+      "property": "function",
+      "api": "createThemeColorDimmingOverlay",
+      "notes": "Subscriptions return cleanup functions."
+    },
+    {
+      "component": "animate",
+      "property": "function",
+      "api": "animate",
+      "notes": ""
+    }
+  ]
+}

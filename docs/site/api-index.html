@@ -1,0 +1,895 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>API index · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" aria-current="page">API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="api-index">API index</h1>
+<p>This index lists the component options and utility functions available in Hotwire Sheets. Use the linked guides for defaults, signatures, and complete examples. Serializable options also work through Rails helpers in snake_case.</p>
+<p>See <a href="/docs/concepts">core concepts</a>, <a href="/docs/options">options</a>, <a href="/docs/rails">Rails helpers</a>, <a href="/docs/javascript">JavaScript API</a>, <a href="/docs/animations">animation APIs</a>, and <a href="/docs/coverage">coverage</a>.</p>
+<h2 id="components">Components</h2>
+<table>
+<thead>
+<tr>
+<th>Component or part</th>
+<th>JavaScript / Rails API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sheet</td>
+<td>Sheet / hotwire_sheet</td>
+</tr>
+<tr>
+<td>Sheet triggers</td>
+<td>data-sheet-action / hotwire_sheet_trigger</td>
+</tr>
+<tr>
+<td>Sheet outlets</td>
+<td>Outlet / hotwire_sheet_outlet</td>
+</tr>
+<tr>
+<td>Portal</td>
+<td>portal and container options</td>
+</tr>
+<tr>
+<td>Sheet options</td>
+<td>Sheet options / data-sheet-view</td>
+</tr>
+<tr>
+<td>Backdrop</td>
+<td>data-sheet-backdrop / sheet.backdrop</td>
+</tr>
+<tr>
+<td>Sheet content</td>
+<td>data-sheet-content / sheet.content</td>
+</tr>
+<tr>
+<td>Bleeding background</td>
+<td>data-sheet-bleeding-background / sheet.bleeding_background</td>
+</tr>
+<tr>
+<td>Handle</td>
+<td>data-sheet-handle / sheet.handle</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>data-sheet-title / sheet.title</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>data-sheet-description / sheet.description</td>
+</tr>
+<tr>
+<td>Special wrapper</td>
+<td>data-sheet-special-wrapper</td>
+</tr>
+<tr>
+<td>Special content</td>
+<td>data-sheet-special-content</td>
+</tr>
+<tr>
+<td>Scroll</td>
+<td>Scroll / hotwire_scroll</td>
+</tr>
+<tr>
+<td>Scroll triggers</td>
+<td>data-scroll-action / hotwire_scroll_trigger</td>
+</tr>
+<tr>
+<td>Scroll options</td>
+<td>Scroll options / scroll.view</td>
+</tr>
+<tr>
+<td>Scroll content</td>
+<td>data-scroll-content / scroll.content</td>
+</tr>
+<tr>
+<td>SheetStack</td>
+<td>SheetStack / hotwire_sheet_stack</td>
+</tr>
+<tr>
+<td>Stack outlets</td>
+<td>Outlet / stack.outlet</td>
+</tr>
+<tr>
+<td>AutoFocusTarget</td>
+<td>AutoFocusTarget / hotwire_sheet_auto_focus</td>
+</tr>
+<tr>
+<td>Island</td>
+<td>Island / hotwire_sheet_island</td>
+</tr>
+<tr>
+<td>Island content</td>
+<td>data-island-content</td>
+</tr>
+<tr>
+<td>Fixed</td>
+<td>Fixed / hotwire_sheet_fixed</td>
+</tr>
+<tr>
+<td>Fixed content</td>
+<td>data-fixed-content</td>
+</tr>
+<tr>
+<td>VisuallyHidden</td>
+<td>VisuallyHidden / .sheet-visually-hidden</td>
+</tr>
+<tr>
+<td>ExternalOverlay</td>
+<td>ExternalOverlay / hotwire_sheet_external_overlay</td>
+</tr>
+</tbody></table>
+<h2 id="sheet">Sheet</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>componentId</code></td>
+<td>componentId</td>
+<td></td>
+</tr>
+<tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>sheetRole</code></td>
+<td>sheetRole</td>
+<td></td>
+</tr>
+<tr>
+<td><code>defaultPresented</code></td>
+<td>defaultPresented</td>
+<td></td>
+</tr>
+<tr>
+<td><code>presented</code></td>
+<td>presented</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onPresentedChange</code></td>
+<td>onPresentedChange</td>
+<td></td>
+</tr>
+<tr>
+<td><code>defaultActiveDetent</code></td>
+<td>defaultActiveDetent</td>
+<td>Closed-inclusive numbering; legacy detent/snapTo keep open-position indices.</td>
+</tr>
+<tr>
+<td><code>activeDetent</code></td>
+<td>activeDetent</td>
+<td>Closed-inclusive numbering; legacy detent/snapTo keep open-position indices.</td>
+</tr>
+<tr>
+<td><code>onActiveDetentChange</code></td>
+<td>onActiveDetentChange</td>
+<td>Closed-inclusive numbering; legacy detent/snapTo keep open-position indices.</td>
+</tr>
+</tbody></table>
+<h2 id="sheet-triggers">Sheet triggers</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>action</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onPress</code></td>
+<td>onPress</td>
+<td></td>
+</tr>
+<tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="sheet-outlets">Sheet outlets</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="portal">Portal</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>container</code></td>
+<td>container</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="sheet-options">Sheet options</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>contentPlacement</code></td>
+<td>contentPlacement</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tracks</code></td>
+<td>tracks</td>
+<td></td>
+</tr>
+<tr>
+<td><code>detents</code></td>
+<td>detents</td>
+<td>Supply every open position, including &quot;content&quot; for full-content sizing.</td>
+</tr>
+<tr>
+<td><code>swipeTrap</code></td>
+<td>swipeTrap</td>
+<td>Axis-aware boundary propagation; native scroll chaining follows browser cancellation rules.</td>
+</tr>
+<tr>
+<td><code>swipeOvershoot</code></td>
+<td>swipeOvershoot</td>
+<td>Opt-in here to preserve existing attached-edge behavior; native elasticity depends on the browser.</td>
+</tr>
+<tr>
+<td><code>swipeDismissal</code></td>
+<td>swipeDismissal</td>
+<td></td>
+</tr>
+<tr>
+<td><code>swipe</code></td>
+<td>swipe</td>
+<td></td>
+</tr>
+<tr>
+<td><code>nativeEdgeSwipePrevention</code></td>
+<td>nativeEdgeSwipePrevention</td>
+<td>Cancels qualifying edge touch starts; physical browser gesture prevention is best-effort.</td>
+</tr>
+<tr>
+<td><code>enteringAnimationSettings</code></td>
+<td>enteringAnimationSettings</td>
+<td></td>
+</tr>
+<tr>
+<td><code>exitingAnimationSettings</code></td>
+<td>exitingAnimationSettings</td>
+<td></td>
+</tr>
+<tr>
+<td><code>steppingAnimationSettings</code></td>
+<td>steppingAnimationSettings</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onTravelStatusChange</code></td>
+<td>onTravelStatusChange</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onTravelRangeChange</code></td>
+<td>onTravelRangeChange</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onTravel</code></td>
+<td>onTravel</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onTravelStart</code></td>
+<td>onTravelStart</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onTravelEnd</code></td>
+<td>onTravelEnd</td>
+<td></td>
+</tr>
+<tr>
+<td><code>inertOutside</code></td>
+<td>inertOutside</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onPresentAutoFocus</code></td>
+<td>onPresentAutoFocus</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onDismissAutoFocus</code></td>
+<td>onDismissAutoFocus</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onClickOutside</code></td>
+<td>onClickOutside</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onEscapeKeyDown</code></td>
+<td>onEscapeKeyDown</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onFocusInside</code></td>
+<td>onFocusInside</td>
+<td></td>
+</tr>
+<tr>
+<td><code>nativeFocusScrollPrevention</code></td>
+<td>nativeFocusScrollPrevention</td>
+<td>Pointer focus uses preventScroll; browser/keyboard/iframe limitations still apply.</td>
+</tr>
+</tbody></table>
+<h2 id="backdrop">Backdrop</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>swipeable</code></td>
+<td>swipeable</td>
+<td></td>
+</tr>
+<tr>
+<td><code>themeColorDimming</code></td>
+<td>themeColorDimming</td>
+<td>Sheet option or programmatic dimming overlay; WebKit automatic mode.</td>
+</tr>
+<tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="sheet-content">Sheet content</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="bleeding-background">Bleeding background</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="handle">Handle</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>action</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onPress</code></td>
+<td>onPress</td>
+<td></td>
+</tr>
+<tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="title">Title</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="description">Description</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>travelAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="scroll">Scroll</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>componentId</code></td>
+<td>componentId</td>
+<td></td>
+</tr>
+<tr>
+<td><code>componentRef</code></td>
+<td>Scroll instance / componentRef.current</td>
+<td>No React ref dependency.</td>
+</tr>
+<tr>
+<td><code>getProgress</code></td>
+<td>getProgress</td>
+<td></td>
+</tr>
+<tr>
+<td><code>getDistance</code></td>
+<td>getDistance</td>
+<td></td>
+</tr>
+<tr>
+<td><code>getAvailableDistance</code></td>
+<td>getAvailableDistance</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollTo</code></td>
+<td>scrollTo</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollBy</code></td>
+<td>scrollBy</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="scroll-triggers">Scroll triggers</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>action</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onPress</code></td>
+<td>onPress</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="scroll-options">Scroll options</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>axis</code></td>
+<td>axis</td>
+<td></td>
+</tr>
+<tr>
+<td><code>pageScroll</code></td>
+<td>pageScroll</td>
+<td></td>
+</tr>
+<tr>
+<td><code>nativePageScrollReplacement</code></td>
+<td>nativePageScrollReplacement</td>
+<td></td>
+</tr>
+<tr>
+<td><code>safeArea</code></td>
+<td>safeArea</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollGestureTrap</code></td>
+<td>scrollGestureTrap</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollGestureOvershoot</code></td>
+<td>scrollGestureOvershoot</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollGesture</code></td>
+<td>scrollGesture</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onScroll</code></td>
+<td>onScroll</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onScrollStart</code></td>
+<td>onScrollStart</td>
+<td></td>
+</tr>
+<tr>
+<td><code>onScrollEnd</code></td>
+<td>onScrollEnd</td>
+<td></td>
+</tr>
+<tr>
+<td><code>nativeFocusScrollPrevention</code></td>
+<td>nativeFocusScrollPrevention</td>
+<td>Pointer focus uses preventScroll; browser/keyboard/iframe limitations still apply.</td>
+</tr>
+<tr>
+<td><code>onFocusInside</code></td>
+<td>onFocusInside</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollAnimationSettings</code></td>
+<td>scrollAnimationSettings</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollAnchoring</code></td>
+<td>scrollAnchoring</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollSnapType</code></td>
+<td>scrollSnapType</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollPadding</code></td>
+<td>scrollPadding</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scrollTimelineName</code></td>
+<td>scrollTimelineName</td>
+<td></td>
+</tr>
+<tr>
+<td><code>nativeScrollbar</code></td>
+<td>nativeScrollbar</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="sheetstack">SheetStack</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>componentId</code></td>
+<td>componentId</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="stack-outlets">Stack outlets</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>stackingAnimation</code></td>
+<td>Outlet definitions or data-sheet-*-animation</td>
+<td>Functions in JavaScript; arrays/constants can be serialized from Rails.</td>
+</tr>
+</tbody></table>
+<h2 id="autofocustarget">AutoFocusTarget</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>timing</code></td>
+<td>timing</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="island">Island</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>forComponent</code></td>
+<td>forComponent</td>
+<td>Serializable IDs or JavaScript instances; DOM ancestry supplies closest association.</td>
+</tr>
+<tr>
+<td><code>disabled</code></td>
+<td>disabled</td>
+<td></td>
+</tr>
+<tr>
+<td><code>contentGetter</code></td>
+<td>contentGetter</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="externaloverlay">ExternalOverlay</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>disabled</code></td>
+<td>disabled</td>
+<td></td>
+</tr>
+<tr>
+<td><code>selfManagedInertOutside</code></td>
+<td>selfManagedInertOutside</td>
+<td></td>
+</tr>
+<tr>
+<td><code>contentGetter</code></td>
+<td>contentGetter</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="createcomponentid">createComponentId</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>function</code></td>
+<td>createComponentId</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="page-scroll-subscriptions">Page scroll subscriptions</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>function</code></td>
+<td>getPageScrollData / observePageScrollData</td>
+<td>Subscriptions return cleanup functions.</td>
+</tr>
+</tbody></table>
+<h2 id="media-query-subscriptions">Media query subscriptions</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>function</code></td>
+<td>observeMediaQuery</td>
+<td>Subscriptions return cleanup functions.</td>
+</tr>
+</tbody></table>
+<h2 id="updatethemecolor">updateThemeColor</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>function</code></td>
+<td>updateThemeColor</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="theme-color-dimming">Theme color dimming</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>function</code></td>
+<td>createThemeColorDimmingOverlay</td>
+<td>Subscriptions return cleanup functions.</td>
+</tr>
+</tbody></table>
+<h2 id="animate">animate</h2>
+<table>
+<thead>
+<tr>
+<th>Property or action</th>
+<th>API</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>function</code></td>
+<td>animate</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="guides-and-downloadable-documentation">Guides and downloadable documentation</h2>
+<p>Installation is covered in <a href="/docs/getting-started">getting started</a>. <a href="/docs/styling">Styling</a> covers HTML composition, CSS layers, Tailwind ordering, viewport sizing, and default styles. <a href="/docs/primitives">Primitives</a> covers stacks, focus, and external overlays. The <a href="/docs/examples">examples</a> and <a href="/docs/recipes">recipes</a> show all 16 presentations.</p>
+<p>Download individual Markdown pages, <a href="llms.txt">llms.txt</a>, the bundled <a href="docs-full.md">docs-full.md</a>, or the <a href="api-inventory.json">machine-readable API inventory</a>.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/api-index.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#components">Components</a><a href="#sheet">Sheet</a><a href="#sheet-triggers">Sheet triggers</a><a href="#sheet-outlets">Sheet outlets</a><a href="#portal">Portal</a><a href="#sheet-options">Sheet options</a><a href="#backdrop">Backdrop</a><a href="#sheet-content">Sheet content</a><a href="#bleeding-background">Bleeding background</a><a href="#handle">Handle</a><a href="#title">Title</a><a href="#description">Description</a><a href="#scroll">Scroll</a><a href="#scroll-triggers">Scroll triggers</a><a href="#scroll-options">Scroll options</a><a href="#sheetstack">SheetStack</a><a href="#stack-outlets">Stack outlets</a><a href="#autofocustarget">AutoFocusTarget</a><a href="#island">Island</a><a href="#externaloverlay">ExternalOverlay</a><a href="#createcomponentid">createComponentId</a><a href="#page-scroll-subscriptions">Page scroll subscriptions</a><a href="#media-query-subscriptions">Media query subscriptions</a><a href="#updatethemecolor">updateThemeColor</a><a href="#theme-color-dimming">Theme color dimming</a><a href="#animate">animate</a><a href="#guides-and-downloadable-documentation">Guides and downloadable documentation</a></aside></div></body></html>

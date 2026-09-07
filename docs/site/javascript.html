@@ -1,0 +1,198 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JavaScript API · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" aria-current="page">JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="javascript-api">JavaScript API</h1>
+<p>The core has no Rails, Turbo, Stimulus, or React dependency. Import <code>Sheet</code> and the structural CSS, then connect it to ordinary HTML.</p>
+<pre><code class="language-html">&lt;button data-sheet-open=&quot;profile&quot;&gt;View profile&lt;/button&gt;
+&lt;div id=&quot;profile&quot; data-sheet-root&gt;
+  &lt;div data-sheet-view hidden&gt;
+    &lt;div data-sheet-backdrop&gt;&lt;/div&gt;
+    &lt;section data-sheet-content aria-labelledby=&quot;profile-title&quot;&gt;
+      &lt;div data-sheet-handle tabindex=&quot;0&quot; aria-label=&quot;Resize sheet&quot;&gt;&lt;/div&gt;
+      &lt;h2 id=&quot;profile-title&quot;&gt;Profile&lt;/h2&gt;
+      &lt;div data-sheet-body&gt;Scrollable content&lt;/div&gt;
+      &lt;button type=&quot;button&quot; data-sheet-close&gt;Close&lt;/button&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code class="language-js">import { Sheet } from &quot;hotwire-sheets&quot;
+
+const root = document.getElementById(&quot;profile&quot;)
+const sheet = new Sheet(root, { detents: [0.4, 0.9] })
+await sheet.open()
+await sheet.snapTo(1)
+await sheet.close()
+sheet.destroy()
+</code></pre>
+<p>When Stimulus owns the root, retrieve it with <code>Sheet.get(root)</code> instead of constructing a second instance. Retrieve after the controller connects; before that, the result is <code>undefined</code>.</p>
+<h2 id="methods">Methods</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Arguments</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>new Sheet(root, options)</code></td>
+<td>Root HTMLElement, <a href="/docs/options">options</a></td>
+<td>Connected instance; starts closed</td>
+</tr>
+<tr>
+<td><code>Sheet.get(root)</code></td>
+<td>Root HTMLElement</td>
+<td>Instance or <code>undefined</code></td>
+</tr>
+<tr>
+<td><code>open(options)</code></td>
+<td><code>detent</code>, <code>trigger</code>, <code>immediate</code>, <code>reason</code></td>
+<td><code>Promise&lt;boolean&gt;</code></td>
+</tr>
+<tr>
+<td><code>close(options)</code></td>
+<td><code>force</code>, <code>restoreFocus</code>, <code>immediate</code>, <code>reason</code></td>
+<td><code>Promise&lt;boolean&gt;</code></td>
+</tr>
+<tr>
+<td><code>snapTo(index, options)</code></td>
+<td>Zero-based index, <code>velocity</code>, <code>immediate</code>, <code>reason</code></td>
+<td><code>Promise&lt;boolean&gt;</code></td>
+</tr>
+<tr>
+<td><code>refresh()</code></td>
+<td>None</td>
+<td>Schedules a measurement on the next frame</td>
+</tr>
+<tr>
+<td><code>destroy()</code></td>
+<td>None</td>
+<td>Synchronously releases resources; idempotent</td>
+</tr>
+</tbody></table>
+<p>Transition promises resolve <code>true</code> for a completed transition and <code>false</code> for canceled, interrupted, or inapplicable transitions. <code>open()</code> on an open sheet snaps to the requested detent. <code>snapTo()</code> on a closed sheet stores the requested index for its next opening and resolves <code>false</code>. Invalid detent indices reject the transition promise with a range error.</p>
+<p><code>immediate</code> defaults to false. <code>reason</code> defaults to <code>&quot;api&quot;</code>. <code>open</code> defaults to the current detent and uses the active element as its return-focus trigger. <code>close({ force: true })</code> bypasses the cancelable before-close event. Set <code>restoreFocus: false</code> for navigation-driven closes. <code>snapTo</code> velocity is measured in pixels per millisecond.</p>
+<h2 id="readable-state">Readable state</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>root</code>, <code>view</code>, <code>content</code></td>
+<td>The associated DOM elements</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td><code>closed</code>, <code>opening</code>, <code>open</code>, <code>dragging</code>, <code>settling</code>, <code>closing</code>, <code>destroyed</code></td>
+</tr>
+<tr>
+<td><code>isOpen</code></td>
+<td>True while presented, including animation and dragging</td>
+</tr>
+<tr>
+<td><code>detent</code></td>
+<td>Current requested detent index</td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td>Current visible length in pixels; capped at maximum extent, with outward rubber banding allowed below zero</td>
+</tr>
+<tr>
+<td><code>progress</code></td>
+<td>Normalized position relative to maximum extent, clamped to 0–1</td>
+</tr>
+<tr>
+<td><code>points</code></td>
+<td>Resolved detent lengths after the first measurement</td>
+</tr>
+</tbody></table>
+<p>Treat these as read-only, apart from the explicit <code>presented</code> and <code>activeDetent</code> setters described below. The root and view also expose <code>data-sheet-state</code> for CSS and automation.</p>
+<h2 id="events">Events</h2>
+<p>Events bubble from the <strong>root</strong> as <code>CustomEvent</code>s. Each detail object includes <code>sheet</code> and <code>detent</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Timing</th>
+<th>Additional detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sheet:before-open</code></td>
+<td>Before presentation; cancelable</td>
+<td><code>reason</code>, requested <code>detent</code></td>
+</tr>
+<tr>
+<td><code>sheet:open</code></td>
+<td>Opening completes</td>
+<td><code>reason</code></td>
+</tr>
+<tr>
+<td><code>sheet:before-close</code></td>
+<td>Before closing; cancelable</td>
+<td><code>reason</code></td>
+</tr>
+<tr>
+<td><code>sheet:close</code></td>
+<td>Closing completes or forced cleanup finishes</td>
+<td><code>reason</code></td>
+</tr>
+<tr>
+<td><code>sheet:detent-change</code></td>
+<td>A snap to a different detent completes</td>
+<td><code>previousDetent</code>, <code>reason</code></td>
+</tr>
+<tr>
+<td><code>sheet:progress</code></td>
+<td>A rendered position changes or is measured</td>
+<td><code>position</code>, <code>progress</code></td>
+</tr>
+<tr>
+<td><code>sheet:drag-start</code></td>
+<td>A drag takes control</td>
+<td>Input lifecycle notification</td>
+</tr>
+<tr>
+<td><code>sheet:drag-end</code></td>
+<td>Drag ends</td>
+<td>Input lifecycle notification</td>
+</tr>
+</tbody></table>
+<p>Keep progress handlers light. Read geometry during setup or resize rather than forcing layout every animation frame. If sheets are nested in your root markup, filter <code>event.target === root</code> to ignore a child&#39;s bubbling events.</p>
+<pre><code class="language-js">root.addEventListener(&quot;sheet:before-close&quot;, event =&gt; {
+  if (event.target === root &amp;&amp; formIsDirty()) event.preventDefault()
+})
+
+root.addEventListener(&quot;sheet:close&quot;, event =&gt; {
+  if (event.target === root) console.log(event.detail.reason)
+})
+</code></pre>
+<p>Typical reasons include <code>api</code>, <code>trigger</code>, <code>close-button</code>, <code>outside</code>, <code>escape</code>, <code>swipe</code>, <code>gesture</code>, <code>keyboard</code>, <code>navigation</code>, and <code>disconnect</code>. Applications may supply their own reason strings.</p>
+<h2 id="typescript">TypeScript</h2>
+<p>The npm exports include declarations for <code>Sheet</code>, <code>SheetOptions</code>, <code>Detent</code>, <code>SpringOptions</code>, and <code>TransitionOptions</code>.</p>
+<pre><code class="language-ts">import { Sheet, type SheetOptions } from &quot;hotwire-sheets&quot;
+const options: SheetOptions = { detents: [&quot;content&quot;, &quot;80%&quot;] }
+const sheet = new Sheet(document.querySelector&lt;HTMLElement&gt;(&quot;#profile&quot;)!, options)
+</code></pre>
+<p>Lower-level exported utilities are <code>resolveDetents</code>, <code>nearestDetent</code>, <code>springAt</code>, and <code>rubberBand</code>. Most applications should use <code>Sheet</code> rather than coordinating those pieces themselves.</p>
+<h2 id="controlled-state-and-triggers">Controlled state and triggers</h2>
+<pre><code class="language-js">sheet.presented = true;
+await sheet.setActiveDetent(2); // Closed-inclusive: second open position.
+await sheet.setOptions({ onEscapeKeyDown: { dismiss: false } });
+sheet.presented = false;
+</code></pre>
+<p><code>presented</code> reads presentation state and its setter opens/closes the sheet. <code>activeDetent</code> includes closed at zero; its setter calls <code>setActiveDetent</code>. Use <code>setActiveDetent(index, transitionOptions)</code> when you need a completion promise. Legacy <code>detent</code> and <code>snapTo(index)</code> continue to use zero-based open positions.</p>
+<p><code>step({ direction: &quot;up&quot; })</code> or <code>step({ direction: &quot;down&quot; })</code> cycles through the closed and open positions. <code>step({ detent: 2 })</code> selects an explicit closed-inclusive detent. <code>setOptions(partialOptions)</code> updates configuration. Update geometry or swipe availability while resting; controlled presentation can interrupt ongoing transitions.</p>
+<pre><code class="language-html">&lt;button data-sheet-for=&quot;profile&quot; data-sheet-action=&quot;present&quot;&gt;Open&lt;/button&gt;
+&lt;button data-sheet-for=&quot;profile&quot; data-sheet-action=&#39;{&quot;type&quot;:&quot;step&quot;,&quot;direction&quot;:&quot;down&quot;}&#39;&gt;Previous size&lt;/button&gt;
+&lt;button data-sheet-for=&quot;profile&quot; data-sheet-action=&quot;dismiss&quot;&gt;Close&lt;/button&gt;
+</code></pre>
+<p><code>data-sheet-for</code> can name a <code>componentId</code>, or be omitted inside its sheet root. <code>data-sheet-open</code> and <code>data-sheet-close</code> remain supported. Trigger press behavior can be customized with <code>data-sheet-on-press</code> JSON or the instance&#39;s <code>onPress</code> hook.</p>
+<h2 id="extended-events">Extended events</h2>
+<p>Travel events are <code>sheet:travel-status-change</code>, <code>sheet:travel-range-change</code>, <code>sheet:travel-start</code>, <code>sheet:travel-end</code>, and <code>sheet:travel</code>. The travel event carries <code>progress</code>, <code>range</code>, and <code>progressAtDetents</code>. Status/range events carry <code>status</code>/<code>range</code> respectively.</p>
+<p>Behavior events are <code>sheet:present-auto-focus</code>, <code>sheet:dismiss-auto-focus</code>, <code>sheet:click-outside</code>, <code>sheet:escape-key-down</code>, and <code>sheet:press</code>. Their detail exposes the behavior fields, <code>nativeEvent</code>, and <code>changeDefault({...})</code>; these events customize the default action through that method rather than <code>preventDefault()</code>. The existing before-open/before-close events remain cancelable.</p>
+<h2 id="additional-exports">Additional exports</h2>
+<p>The core also exports <code>Scroll</code>, <code>Outlet</code>, <code>SheetStack</code>, <code>Island</code>, <code>ExternalOverlay</code>, <code>Fixed</code>, <code>AutoFocusTarget</code>, <code>VisuallyHidden</code>, <code>animate</code>, <code>animationPresets</code>, <code>tween</code>, <code>createComponentId</code>, <code>getPageScrollData</code>, <code>observePageScrollData</code>, <code>observeMediaQuery</code>, <code>updateThemeColor</code>, and <code>createThemeColorDimmingOverlay</code>. Their options and return types ship in the TypeScript declarations.</p>
+<p>See <a href="/docs/scroll">Scroll</a>, <a href="/docs/animations">animation APIs</a>, and <a href="/docs/primitives">auxiliary primitives</a> for complete usage. The browser entry point can be imported during server rendering; no DOM is accessed until a DOM-dependent instance is constructed. Functions whose purpose is observing the browser provide an explicit server fallback.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/javascript.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#methods">Methods</a><a href="#readable-state">Readable state</a><a href="#events">Events</a><a href="#typescript">TypeScript</a><a href="#controlled-state-and-triggers">Controlled state and triggers</a><a href="#extended-events">Extended events</a><a href="#additional-exports">Additional exports</a></aside></div></body></html>

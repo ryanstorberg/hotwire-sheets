@@ -1,0 +1,211 @@
+/* Structural styles only. Override colors, corners and spacing in your app. */
+[data-sheet-view] {
+  --sheet-progress: 0;
+  --sheet-stack-depth: 0;
+  --sheet-stack-index: 0;
+  --sheet-offset: 0px;
+  --sheet-chrome: 0px;
+  position: fixed;
+  top: var(--sheet-viewport-top, 0px);
+  left: var(--sheet-viewport-left, 0px);
+  width: var(--sheet-viewport-width, 100vw);
+  height: var(--sheet-viewport-height, 100dvh);
+  z-index: calc(var(--sheet-z-index, 1000) + var(--sheet-stack-index));
+  overflow: clip;
+  pointer-events: none;
+  isolation: isolate;
+}
+[data-sheet-view][hidden] { display: none !important; }
+[data-sheet-view][data-sheet-modal="true"] { pointer-events: auto; }
+[data-sheet-backdrop] {
+  position: absolute;
+  inset: 0;
+  background: var(--sheet-defaults, var(--sheet-backdrop-color, rgb(0 0 0 / 40%)));
+  opacity: var(--sheet-progress);
+  pointer-events: auto;
+  touch-action: none;
+}
+[data-sheet-modal="false"] > [data-sheet-backdrop] { display: none; }
+[data-sheet-content] {
+  box-sizing: border-box;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  background: var(--sheet-defaults, var(--sheet-background, Canvas));
+  color: var(--sheet-defaults, var(--sheet-color, CanvasText));
+  overscroll-behavior: contain;
+  outline: none;
+  max-width: 100%;
+  touch-action: pan-x pan-y pinch-zoom;
+  contain: layout;
+}
+[data-sheet-content] > :not([data-sheet-body]) { flex-shrink: 0; }
+[data-sheet-content] > [data-sheet-motion-fade] { opacity: clamp(0, var(--sheet-progress), 1); }
+[data-sheet-edge="bottom"] > [data-sheet-content],
+[data-sheet-edge="top"] > [data-sheet-content] {
+  width: var(--sheet-width, 100%);
+  height: var(--sheet-extent);
+  left: 50%;
+  transform: translate3d(-50%, var(--sheet-offset), 0);
+}
+[data-sheet-edge="bottom"] > [data-sheet-content] { bottom: 0; }
+[data-sheet-edge="top"] > [data-sheet-content] { top: 0; justify-content: flex-end; }
+[data-sheet-edge="left"] > [data-sheet-content],
+[data-sheet-edge="right"] > [data-sheet-content] {
+  top: 0;
+  width: var(--sheet-extent);
+  height: 100%;
+  transform: translate3d(var(--sheet-offset), 0, 0);
+}
+[data-sheet-edge="left"] > [data-sheet-content] { left: 0; }
+[data-sheet-edge="right"] > [data-sheet-content] { right: 0; }
+/* Default flow width at partial detents; authored control sizes take priority. */
+:where([data-sheet-edge="left"] > [data-sheet-content]) > *,
+:where([data-sheet-edge="right"] > [data-sheet-content]) > * {
+  width: min(100%, max(0px, calc(var(--sheet-body-available) - var(--sheet-chrome))));
+}
+[data-sheet-edge="left"] > [data-sheet-content] > * { align-self: flex-end; }
+[data-sheet-stack-effect="true"][data-sheet-edge="bottom"] > [data-sheet-content] {
+  /* Recede around the anchored edge so scaling never exposes a gap below. */
+  transform-origin: center bottom;
+  transform: translate3d(-50%, var(--sheet-offset), 0)
+    scale(calc(1 - min(var(--sheet-stack-depth), 3) * 0.035));
+}
+[data-sheet-state="dragging"] > [data-sheet-content],
+[data-sheet-state="opening"] > [data-sheet-content],
+[data-sheet-state="closing"] > [data-sheet-content],
+[data-sheet-state="settling"] > [data-sheet-content] { will-change: transform; }
+[data-sheet-state="opening"] > [data-sheet-backdrop],
+[data-sheet-state="closing"] > [data-sheet-backdrop],
+[data-sheet-state="settling"] > [data-sheet-backdrop] { will-change: opacity; }
+[data-sheet-body] {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  flex: 0 1 auto;
+  max-height: max(0px, calc(var(--sheet-body-available) - var(--sheet-chrome)));
+}
+[data-sheet-edge="left"] [data-sheet-body],
+[data-sheet-edge="right"] [data-sheet-body] { flex: 1 1 auto; max-height: none; }
+[data-sheet-handle] {
+  cursor: grab;
+  touch-action: pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
+}
+[data-sheet-state="dragging"] [data-sheet-handle] { cursor: grabbing; }
+[data-sheet-drag] { user-select: none; -webkit-user-select: none; }
+[data-sheet-handle]:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.sheet-safe-area {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.sheet-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-sheet-content], [data-sheet-backdrop] { animation: none !important; transition: none !important; }
+}
+
+/* Native detents: scrolling the view physically moves the sheet. */
+[data-sheet-view][data-sheet-scroll-snap] {
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  overflow-anchor: none;
+  direction: ltr;
+}
+[data-sheet-scroll-snap]::-webkit-scrollbar { display: none; }
+[data-sheet-view][data-sheet-scroll-snap][data-sheet-gesture-settling] { overflow: hidden; }
+[data-sheet-scroll-snap][data-sheet-edge="bottom"],
+[data-sheet-scroll-snap][data-sheet-edge="top"] { overflow-x: hidden; scroll-snap-type: y mandatory; }
+[data-sheet-scroll-snap][data-sheet-edge="left"],
+[data-sheet-scroll-snap][data-sheet-edge="right"] { overflow-y: hidden; scroll-snap-type: x mandatory; }
+/* At rest, allow the first input packet to travel its actual distance. Some
+   async scrolling engines choose a mandatory target before JS can suspend it. */
+[data-sheet-scroll-snap][data-sheet-state="open"][data-sheet-edge="bottom"],
+[data-sheet-scroll-snap][data-sheet-state="open"][data-sheet-edge="top"] { scroll-snap-type: y proximity; }
+[data-sheet-scroll-snap][data-sheet-state="open"][data-sheet-edge="left"],
+[data-sheet-scroll-snap][data-sheet-state="open"][data-sheet-edge="right"] { scroll-snap-type: x proximity; }
+[data-sheet-scroll-snap][data-sheet-snap-suspended][data-sheet-edge] { scroll-snap-type: none; }
+[data-sheet-snap-track], [data-sheet-snap-point] { position: absolute; top: 0; left: 0; pointer-events: none; }
+[data-sheet-snap-point] { width: 1px; height: 1px; scroll-snap-align: start; }
+[data-sheet-scroll-snap][data-sheet-edge="bottom"] > [data-sheet-snap-point],
+[data-sheet-scroll-snap][data-sheet-edge="top"] > [data-sheet-snap-point] { width: 100%; }
+[data-sheet-scroll-snap][data-sheet-edge="left"] > [data-sheet-snap-point],
+[data-sheet-scroll-snap][data-sheet-edge="right"] > [data-sheet-snap-point] { height: 100%; }
+[data-sheet-scroll-snap] > [data-sheet-backdrop] { position: sticky; top: 0; left: 0; width: 100%; height: 100%; touch-action: pan-x pan-y pinch-zoom; }
+[data-sheet-scroll-snap] > [data-sheet-content] { z-index: 1; will-change: auto; overscroll-behavior: auto; }
+[data-sheet-scroll-snap][data-sheet-edge="bottom"] > [data-sheet-content] { top: 100%; bottom: auto; transform: translate3d(-50%, 0, 0); }
+[data-sheet-scroll-snap][data-sheet-edge="top"] > [data-sheet-content] { top: 0; transform: translate3d(-50%, 0, 0); }
+[data-sheet-scroll-snap][data-sheet-edge="right"] > [data-sheet-content] { left: 100%; right: auto; transform: none; }
+[data-sheet-scroll-snap][data-sheet-edge="left"] > [data-sheet-content] { left: 0; transform: none; }
+[data-sheet-scroll-snap][data-sheet-stack-effect="true"][data-sheet-edge="bottom"] > [data-sheet-content] {
+  transform-origin: center bottom;
+  transform: translate3d(-50%, 0, 0) scale(calc(1 - min(var(--sheet-stack-depth), 3) * 0.035));
+}
+[data-sheet-scroll-snap] [data-sheet-handle] { touch-action: pan-x pan-y pinch-zoom; }
+[data-sheet-view][data-sheet-scroll-snap] [data-sheet-body] { overscroll-behavior: auto; }
+/* Until the surface is at rest, reversed input must move that same surface.
+   Otherwise a feed under the pointer steals the gesture halfway through a
+   return, leaving the sheet stationary while its article suddenly scrolls. */
+[data-sheet-view][data-sheet-scroll-snap]:is([data-sheet-state="dragging"], [data-sheet-state="opening"], [data-sheet-state="settling"], [data-sheet-state="closing"]) [data-sheet-body] {
+  overflow: hidden;
+}
+
+/* Viewport units also cover SFSafariViewController's undersized lvh. */
+:root { --sheet-100-lvh-dvh-pct: max(100%, 100vh); --x-collapsed-scrollbar-thickness: 0px; --y-collapsed-scrollbar-thickness: 0px; }
+@supports (height: 1dvh) { :root { --sheet-100-lvh-dvh-pct: max(100dvh, 100lvh); } }
+[data-scroll-view] { min-width: 0; min-height: 0; position: relative; overflow: auto; }
+[data-scroll-view][data-scroll-page="true"] { overflow: visible; }
+[data-scroll-content] { display: flow-root; min-width: 0; min-height: 0; }
+[data-scroll-axis="y"] [data-scroll-safe-content] { padding-block: var(--scroll-safe-start, 0px) var(--scroll-safe-end, 0px); }
+[data-scroll-axis="x"] [data-scroll-safe-content] { padding-inline: var(--scroll-safe-start, 0px) var(--scroll-safe-end, 0px); }
+[data-scroll-native-scrollbar="false"]::-webkit-scrollbar { display: none; }
+[data-scroll-snap-align] { scroll-snap-align: start; }
+[data-sheet-placement="center"][data-sheet-edge] > [data-sheet-content] { top: 50%; left: 50%; bottom: auto; right: auto; }
+[data-sheet-placement="center"]:is([data-sheet-edge="top"], [data-sheet-edge="bottom"]) > [data-sheet-content] { transform: translate3d(-50%, calc(-50% + var(--sheet-offset)), 0); }
+[data-sheet-placement="center"]:is([data-sheet-edge="left"], [data-sheet-edge="right"]) > [data-sheet-content] { height: var(--sheet-height, 100%); transform: translate3d(calc(-50% + var(--sheet-offset)), -50%, 0); }
+[data-sheet-placement="top"][data-sheet-edge] > [data-sheet-content] { top: 0; bottom: auto; }
+[data-sheet-placement="bottom"][data-sheet-edge] > [data-sheet-content] { bottom: 0; top: auto; }
+[data-sheet-placement="left"][data-sheet-edge] > [data-sheet-content] { left: 0; right: auto; }
+[data-sheet-placement="right"][data-sheet-edge] > [data-sheet-content] { right: 0; left: auto; }
+[data-sheet-bleeding-background] { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: inherit; border-radius: inherit; }
+[data-sheet-edge="bottom"] [data-sheet-bleeding-background] { bottom: calc(-1 * var(--sheet-viewport-height, 100vh)); }
+[data-sheet-edge="top"] [data-sheet-bleeding-background] { top: calc(-1 * var(--sheet-viewport-height, 100vh)); }
+[data-sheet-edge="left"] [data-sheet-bleeding-background] { left: calc(-1 * var(--sheet-viewport-width, 100vw)); }
+[data-sheet-edge="right"] [data-sheet-bleeding-background] { right: calc(-1 * var(--sheet-viewport-width, 100vw)); }
+[data-sheet-special-wrapper] { overflow: hidden; min-width: 0; min-height: 0; }
+[data-sheet-special-content] { min-width: 0; min-height: 0; touch-action: pan-x pan-y pinch-zoom; }
+[data-sheet-island], [data-island-content], [data-fixed-content] { overscroll-behavior: contain; }
+
+[data-scroll-viewport] { width: 100%; height: 100%; min-width: 0; min-height: 0; overflow: auto; }
+[data-scroll-axis="x"] [data-scroll-safe-content] { width: max-content; min-width: 100%; }
+[data-scroll-native-scrollbar="false"] [data-scroll-viewport]::-webkit-scrollbar { display: none; }
+/* Authored outlet transforms compose after structural travel. */
+[data-sheet-edge="bottom"] > [data-sheet-content], [data-sheet-edge="top"] > [data-sheet-content] { transform: translate3d(-50%, var(--sheet-offset), 0) var(--sheet-outlet-transform, scale(1)); }
+[data-sheet-edge="left"] > [data-sheet-content], [data-sheet-edge="right"] > [data-sheet-content] { transform: translate3d(var(--sheet-offset), 0, 0) var(--sheet-outlet-transform, scale(1)); }
+[data-sheet-scroll-snap]:is([data-sheet-edge="bottom"], [data-sheet-edge="top"]) > [data-sheet-content] { transform: translate3d(-50%, 0, 0) var(--sheet-outlet-transform, scale(1)); }
+[data-sheet-scroll-snap]:is([data-sheet-edge="left"], [data-sheet-edge="right"]) > [data-sheet-content] { transform: var(--sheet-outlet-transform, none); }
+[data-sheet-placement="center"]:is([data-sheet-edge="top"], [data-sheet-edge="bottom"]) > [data-sheet-content] { transform: translate3d(-50%, calc(-50% + var(--sheet-offset)), 0) var(--sheet-outlet-transform, scale(1)); }
+[data-sheet-placement="center"]:is([data-sheet-edge="left"], [data-sheet-edge="right"]) > [data-sheet-content] { transform: translate3d(calc(-50% + var(--sheet-offset)), -50%, 0) var(--sheet-outlet-transform, scale(1)); }
+/* Placement and travel axis are independent, including cross-axis edges. */
+[data-sheet-placement] { --sheet-placement-left: 50%; --sheet-placement-top: 50%; --sheet-placement-x: -50%; --sheet-placement-y: -50%; --sheet-travel-x: 0px; --sheet-travel-y: 0px; }
+[data-sheet-placement="top"] { --sheet-placement-top: 0%; --sheet-placement-y: 0%; }
+[data-sheet-placement="bottom"] { --sheet-placement-top: 100%; --sheet-placement-y: -100%; }
+[data-sheet-placement="left"] { --sheet-placement-left: 0%; --sheet-placement-x: 0%; }
+[data-sheet-placement="right"] { --sheet-placement-left: 100%; --sheet-placement-x: -100%; }
+[data-sheet-placement]:is([data-sheet-edge="top"], [data-sheet-edge="bottom"]) { --sheet-travel-y: var(--sheet-offset); }
+[data-sheet-placement]:is([data-sheet-edge="left"], [data-sheet-edge="right"]) { --sheet-travel-x: var(--sheet-offset); }
+[data-sheet-placement][data-sheet-edge] > [data-sheet-content] { left: var(--sheet-placement-left); top: var(--sheet-placement-top); right: auto; bottom: auto; transform: translate3d(calc(var(--sheet-placement-x) + var(--sheet-travel-x)), calc(var(--sheet-placement-y) + var(--sheet-travel-y)), 0) var(--sheet-outlet-transform, scale(1)); }

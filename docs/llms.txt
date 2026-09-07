@@ -1,0 +1,21 @@
+# Hotwire Sheets 0.1.0
+
+Rails and Stimulus documentation. Legacy detents are zero-based open positions; activeDetent includes closed at 0.
+
+- [Full documentation](docs-full.md)
+- [Getting started](getting-started.md)
+- [Examples](examples.md)
+- [Recipes](recipes.md)
+- [Rails helpers](rails.md)
+- [Options](options.md)
+- [JavaScript API](javascript.md)
+- [Scroll](scroll.md)
+- [Animation APIs](animations.md)
+- [Stacks, focus and overlays](primitives.md)
+- [API index](api-index.md)
+- [Styling and composition](styling.md)
+- [Turbo and Stimulus](turbo.md)
+- [Core concepts](concepts.md)
+- [Troubleshooting](troubleshooting.md)
+- [Architecture](architecture.md)
+- [Coverage and limits](coverage.md)

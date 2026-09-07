@@ -1,0 +1,217 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Recipes · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" aria-current="page">Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" >Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="presentation-recipes">Presentation recipes</h1>
+<p>The same small set of primitives builds the different <a href="/">gallery examples</a>. These snippets use the library&#39;s actual helper API. Supply your application&#39;s content and CSS; reference gallery artwork is not required.</p>
+<h2 id="bottom-sheet-with-two-dismiss-controls">Bottom sheet with two dismiss controls</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_trigger &quot;Bottom Sheet&quot;, sheet: &quot;confirmation&quot; %&gt;
+&lt;%= hotwire_sheet(id: &quot;confirmation&quot;) do |sheet| %&gt;
+  &lt;%= sheet.content(class: &quot;confirmation&quot;) do %&gt;
+    &lt;%= sheet.close &quot;&quot;, class: &quot;dismiss-handle&quot;,
+          aria: { label: &quot;Dismiss&quot; }, data: { sheet_handle: &quot;&quot; } %&gt;
+    &lt;%= sheet.title &quot;Activity Added to Your Calendar&quot; %&gt;
+    &lt;%= sheet.body do %&gt;&lt;p&gt;Your activity is scheduled.&lt;/p&gt;&lt;% end %&gt;
+    &lt;%= sheet.close &quot;Got it&quot;, class: &quot;primary-action&quot; %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>For Top Sheet use <code>edge: :top</code> and round the bottom corners. For Detached Sheet, inset the panel with CSS and round all four corners. For Card, use <code>edge: :top</code>, center it with CSS, and scale from 80% to 100% using <code>--sheet-progress</code>. Keep the card opaque; only its backdrop fades. Each presentation accepts swipes from its backdrop by default.</p>
+<p>Detached Sheet and Sheet with Keyboard also set <code>opposite_edge_dismiss: true</code> (JavaScript: <code>oppositeEdgeDismiss: true</code>) to support exits through the top and bottom. Use one open detent. Centered surfaces include the signed offset in their transform, for example <code>translate3d(-50%, calc(50% + var(--sheet-offset)), 0)</code> with <code>bottom: 50%</code>; optional scale follows that translation. This keeps the surface moving with an upward swipe instead of only fading it out.</p>
+<h2 id="card-from-the-top">Card from the top</h2>
+<p>The Card example uses a top track, an opaque surface scaled from <code>0.8</code> to <code>1</code>, a backdrop that reaches 40% black, and an entrance spring with stiffness 260, damping 20, and mass 1. The gallery configures <code>edge: :top</code> with <code>spring: { stiffness: 260, damping: 20, mass: 1 }</code>. Its single open detent is <code>&quot;content&quot;</code>.</p>
+<pre><code class="language-css">[data-sheet-view]:has(&gt; .my-card) { --sheet-backdrop-color: rgb(0 0 0 / 40%); }
+[data-sheet-view] &gt; .my-card[data-sheet-content] {
+  --sheet-width: min(580px, calc(100% - 32px));
+  --card-travel: calc((var(--sheet-viewport-height, 100dvh) + var(--sheet-extent)) / 2);
+  top: 50%;
+  bottom: auto;
+  opacity: 1;
+  transform: translate3d(-50%, calc(-50% - (1 - var(--sheet-progress)) * var(--card-travel)), 0)
+    scale(calc(.8 + .2 * var(--sheet-progress)));
+}
+</code></pre>
+<p>The travel distance includes half the viewport and half the card so it leaves the screen completely, even on tall displays. Dismiss buttons, Escape, backdrop clicks, and upward swipes all leave through the top. This Card does not use <code>opposite_edge_dismiss</code>.</p>
+<h2 id="sidebar">Sidebar</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;navigation&quot;, edge: :left,
+      detents: [&quot;325px&quot;], label: &quot;Navigation&quot;) do |sheet| %&gt;
+  &lt;%= sheet.content(class: &quot;navigation-panel&quot;) do %&gt;
+    &lt;header&gt;Acme Inc.&lt;/header&gt;
+    &lt;%= sheet.body do %&gt;
+      &lt;nav&gt;&lt;%= link_to &quot;Overview&quot;, dashboard_path, data: { sheet_drag: true } %&gt;&lt;/nav&gt;
+    &lt;% end %&gt;
+    &lt;%= sheet.close &quot;Close navigation&quot; %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>Pixel detents clamp to the viewport. Use a percentage detent if a small-screen sidebar should leave part of the underlying page exposed.</p>
+<p>Sidebar accepts leftward swipes from the panel or elsewhere on screen by default. Use <code>data: { sheet_drag: true }</code> on navigation links or buttons to accept a dismissing swipe without losing normal clicks. Reserve horizontal touch movement for the sidebar while leaving vertical scrolling and pinch zoom native:</p>
+<pre><code class="language-css">.navigation-panel { touch-action: pan-y pinch-zoom; }
+</code></pre>
+<h2 id="searchable-sheet-with-detents">Searchable sheet with detents</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;contacts&quot;, detents: [0.6, 0.95]) do |sheet| %&gt;
+  &lt;%= sheet.content(data: { controller: &quot;contact-search&quot; }) do %&gt;
+    &lt;%= sheet.handle %&gt;
+    &lt;%= sheet.title &quot;Contacts&quot;, class: &quot;sheet-visually-hidden&quot; %&gt;
+    &lt;input type=&quot;search&quot; aria-label=&quot;Search for a contact&quot;
+           data-action=&quot;input-&gt;contact-search#filter&quot;&gt;
+    &lt;%= sheet.body do %&gt;&lt;%= render @contacts %&gt;&lt;% end %&gt;
+    &lt;%= sheet.close %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>For a Cycle button, retrieve the instance and call <code>snapTo(nextIndex)</code>; call <code>close()</code> after the final detent if that matches your intended cycle. The built-in handle supplies arrow/Home/End support.</p>
+<h2 id="nested-sheets-and-depth">Nested sheets and depth</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;profile&quot;, detents: [0.9], stack_effect: true, scroll_snap: true) do |sheet| %&gt;
+  &lt;%= sheet.content do %&gt;
+    &lt;%= sheet.title &quot;Profile&quot; %&gt;
+    &lt;%= sheet.body do %&gt;
+      &lt;%= hotwire_sheet_trigger &quot;More details&quot;, sheet: &quot;profile-details&quot; %&gt;
+    &lt;% end %&gt;
+    &lt;%= sheet.close %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+
+&lt;%= hotwire_sheet(id: &quot;profile-details&quot;, detents: [0.8], scroll_snap: true) do |sheet| %&gt;
+  &lt;%= sheet.content do %&gt;
+    &lt;%= sheet.title &quot;Details&quot; %&gt;
+    &lt;%= sheet.body do %&gt;&lt;p&gt;More about this profile.&lt;/p&gt;&lt;% end %&gt;
+    &lt;%= sheet.close &quot;Back&quot; %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>Roots can be siblings. Their views coordinate in a shared document stack. The frontmost modal owns focus, while background sheets retain their content and scroll position. Set <code>stack_effect: true</code> on any bottom sheet that should respond to layers above it. The Sheet with Stacking gallery presentation uses <code>--sheet-stack-depth</code> in its own CSS to scale the rear panel to 93.3% and shift it back as a child opens. Its transform origin follows the presentation edge: left-center on desktop and top-center on phones. This presentation effect is separate from the bottom-anchored <code>stack_effect</code> used by Sheet with Depth. Modal sheets retain their own gesture scope. A nonmodal nested sheet with <code>swipe_trap: false</code> and <code>swipe_overshoot: true</code> can pass boundary input to an eligible ancestor sheet; native touch chaining is still subject to browser cancellation.</p>
+<p>The Sheet with Depth demo enables <code>scroll_snap: true</code> on every nested layer. Its feed and outer sheet use native scrolling, with no separate wheel ownership to restore after dismissing a child. Keep the feed height fixed while receding its background, use <code>overflow: clip</code> for surface clipping, and preserve <code>overscroll-behavior: auto</code> along the chain to the native view. See <a href="/docs/styling#depth-and-custom-transforms">native depth styling</a>.</p>
+<p>Sheet with Depth also treats the visible root page as the first layer. The gallery&#39;s <code>DepthPage</code> helper clips the page to the current viewport, preserves its reading position in that container, and retains the original document height with a temporary placeholder. It scales the root to 91% around its top edge and offsets it by 1.3% of the viewport height; the front sheet starts at 2.6%, leaving a visible strip behind it. Avoid scaling a long document around its bottom: that moves its top edge behind the front sheet. On dismissal, disconnect, or Turbo navigation, remove the temporary layer before releasing the scroll lock so the original page position is restored. This root-page presentation belongs to application code; <code>stack_effect</code> continues to control the sheet surfaces themselves.</p>
+<h2 id="notification-and-persistent-player">Notification and persistent player</h2>
+<p>For Toast, use <code>modal: false, autofocus: false, restore_focus: false, close_on_outside: false</code>. At viewport widths of 1000px or more, the gallery uses <code>edge: :right, detents: [&quot;372px&quot;]</code>, an automatic content height, and a horizontal transform; narrower screens use <code>edge: :top, detents: [&quot;content&quot;]</code> and a vertical transform. Keep the CSS media query and controller breakpoint aligned, and recreate the sheet with the new edge when crossing it. Place a <code>role=&quot;status&quot;</code> region in the content. An application controller can call <code>close()</code> after a timeout and pause the timeout during hover/focus. Cancel timers on disconnect.</p>
+<p>For Persistent Sheet with Detent, use <code>detents: [&quot;76px&quot;, 1], modal: false, autofocus: false, close_on_outside: false, swipe_to_dismiss: false</code>. Expansion is <code>snapTo(1)</code> and collapse is <code>snapTo(0)</code>. Keep collapsed and expanded controls out of each other&#39;s tab order. The gallery uses a 76px collapsed bar and an expanded grid with album, track details/slider, and transport rows in <code>3fr 1fr .8fr</code> proportions. It keeps 32px side padding and gaps on every screen size, with a radial blue gradient, a white 24px slider thumb, and an album cover sized to 80% of its row up to 300px. Allow grid children to shrink with <code>min-height: 0</code> so shorter screens retain these proportions. The transport controls demonstrate UI state; the gallery does not stream music.</p>
+<h2 id="full-pages-and-lightbox">Full pages and Lightbox</h2>
+<p>Use <code>detents: [1]</code> and <code>--sheet-width: 100%</code>. Page uses <code>edge: :right</code>; Page from Bottom uses <code>edge: :bottom</code> with a header Close button outside the scroll body. Long Sheet wraps its article in an inset, rounded surface within a full-height scroll body.</p>
+<p>Enable Long Sheet&#39;s upward exit at the end of the article with <code>scroll_end_dismiss: true</code>:</p>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;article&quot;, detents: [1], scroll_end_dismiss: true) do |sheet| %&gt;
+  &lt;%= sheet.content(class: &quot;long-sheet&quot;) do %&gt;
+    &lt;%= sheet.body(class: &quot;article-scroll&quot;) do %&gt;
+      &lt;article class=&quot;reading-article&quot;&gt;
+        &lt;%= sheet.close &quot;Close article&quot; %&gt;
+        &lt;%= sheet.title @article.title %&gt;
+        &lt;%= render @article %&gt;
+      &lt;/article&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>In JavaScript, use <code>new Sheet(root, { detents: [1], scrollEndDismiss: true })</code>. Supply your own article styles; the gallery&#39;s classes are example CSS. See <a href="/docs/options#gestures-and-dismissal">dismissal options</a> for direction selection and gesture guards.</p>
+<h2 id="lightbox-with-independent-image-and-container-motion">Lightbox with independent image and container motion</h2>
+<p>In the Lightbox example, the black backdrop and desktop comments panel fade in place while the opaque image moves upward. The gallery keeps the dialog shell stationary and transparent, uses its backdrop for the black fade, and marks the image stage as the moving surface. Dismiss controls and the sidebar fade independently. The same layers reverse on dismissal.</p>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;photo&quot;, detents: [1], label: &quot;Photo viewer&quot;) do |sheet| %&gt;
+  &lt;%= sheet.content(class: &quot;photo-viewer&quot;) do %&gt;
+    &lt;div class=&quot;photo-stage&quot; data-sheet-motion&gt;
+      &lt;%= image_tag @photo, alt: @photo_description, draggable: false %&gt;
+    &lt;/div&gt;
+    &lt;%= sheet.close &quot;Close photo&quot;, class: &quot;photo-close&quot;,
+          data: { sheet_motion_fade: &quot;&quot; } %&gt;
+    &lt;aside class=&quot;photo-comments&quot; data-sheet-motion-fade&gt;
+      &lt;%= sheet.body do %&gt;&lt;%= render @comments %&gt;&lt;% end %&gt;
+    &lt;/aside&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<pre><code class="language-css">[data-sheet-view]:has(&gt; .photo-viewer) { --sheet-backdrop-color: #000; }
+[data-sheet-view] &gt; .photo-viewer[data-sheet-content] {
+  transform: translate3d(-50%, 0, 0);
+  background: transparent;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-rows: 100%;
+  overflow: hidden;
+}
+.photo-stage {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 5vh 5%;
+  overflow: auto;
+  transform: translate3d(0, var(--sheet-offset), 0);
+  touch-action: pan-x pinch-zoom;
+}
+.photo-stage img { width: 100%; max-height: 90dvh; object-fit: contain; }
+.photo-comments { min-height: 0; display: flex; flex-direction: column; background: #171717; color: white; }
+.photo-comments &gt; [data-sheet-body] { flex: 1; max-height: none; }
+.photo-close { position: absolute; top: 10px; left: 10px; z-index: 1; background: transparent; color: white; }
+[data-sheet-view]:has(&gt; .photo-viewer) &gt; [data-sheet-backdrop] { right: 360px; }
+@media (max-width: 999px) {
+  [data-sheet-view] &gt; .photo-viewer[data-sheet-content] { grid-template-columns: 100%; }
+  .photo-comments { display: none; }
+  [data-sheet-view]:has(&gt; .photo-viewer) &gt; [data-sheet-backdrop] { right: 0; }
+}
+</code></pre>
+<p>Use the default WAAPI/frame backend for this split composition. The image surface, backdrop, and <code>data-sheet-motion-fade</code> siblings animate on the browser&#39;s animation timeline; CSS also follows progress during dragging and the fallback. Do not put opacity on the whole dialog, which would fade the image as well.</p>
+<p>The photo is a normal image: clicking or tapping it does not enlarge it. Swipes over the image dismiss the Lightbox, and <code>draggable: false</code> prevents native image dragging from interrupting the gesture. Below 1000px, the gallery replaces the desktop sidebar with a Comments button that opens a nested sheet. Keep an explicit labeled close control available on every screen size.</p>
+<h2 id="parallax-page-with-an-anchored-header">Parallax Page with an anchored header</h2>
+<p>The Parallax Page example keeps its navigation header at the top of the viewport while article pages translate beneath it. Titles fade between layers, and their back arrows occupy the same slot. The gallery follows that composition: a stationary dialog shell contains the header and a separately animated article. The header remains inside the dialog&#39;s focus and dismissal scope.</p>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;story&quot;, edge: :right, detents: [1]) do |sheet| %&gt;
+  &lt;%= sheet.content(class: &quot;parallax-page&quot;) do %&gt;
+    &lt;header class=&quot;parallax-header&quot;&gt;
+      &lt;%= sheet.close &quot;Back&quot; %&gt;
+      &lt;%= sheet.title @article.title %&gt;
+    &lt;/header&gt;
+    &lt;%= sheet.body(class: &quot;parallax-article&quot;, data: { sheet_motion: &quot;&quot; }) do %&gt;
+      &lt;%= render @article %&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<pre><code class="language-css">[data-sheet-view] &gt; .parallax-page[data-sheet-content] {
+  transform: none;
+  background: transparent;
+  pointer-events: none;
+}
+.parallax-header {
+  height: 48px;
+  flex: none;
+  background: white;
+  opacity: clamp(0, var(--sheet-progress), 1);
+  pointer-events: auto;
+}
+.parallax-article {
+  flex: 1;
+  background: white;
+  pointer-events: auto;
+  transform: translate3d(calc(var(--sheet-offset) + var(--page-parallax, 0px)), 0, 0);
+}
+[data-sheet-view]:has(&gt; .parallax-page) &gt; [data-sheet-backdrop] { top: 48px; }
+</code></pre>
+<p>Use a single <code>data-sheet-motion</code> direct child. The WAAPI backend animates its authored transform and opacity, including sampling its displayed position when interrupted. With <code>animation: &quot;raf&quot;</code> or no WAAPI support, the same CSS responds to the engine&#39;s position variables. This composition uses the default animation backend, not <code>scroll_snap: true</code>, which scrolls the entire view.</p>
+<p>In a child page&#39;s <code>sheet:progress</code> listener, set the parent&#39;s <code>--page-parallax</code> to <code>-viewportWidth * 0.25 * progress</code> pixels. Apply the parallax translation only to the underlying article or gallery content; keep its header stationary. Align the headers, place the back controls in the same slot, and fade the incoming opaque white header over the outgoing header. Start the backdrop below the header so the fade does not darken the shared bar. Reset application transforms on <code>sheet:close</code>, Turbo navigation, and disconnect. The gallery implements these rules in <code>examples/gallery.css</code> and <code>examples/gallery.js</code>.</p>
+<h2 id="source-guide">Source guide</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>examples/catalog.js</code></td>
+<td>Names, contact data, article headers</td>
+</tr>
+<tr>
+<td><code>scripts/build-gallery.mjs</code></td>
+<td>Generates the server-delivered example HTML</td>
+</tr>
+<tr>
+<td><code>examples/gallery.css</code></td>
+<td>Responsive reference presentation styles</td>
+</tr>
+<tr>
+<td><code>examples/gallery.js</code></td>
+<td>Stimulus presentation controller and example interactions</td>
+</tr>
+<tr>
+<td><code>examples/assets/sources.json</code></td>
+<td>Provenance of reference media</td>
+</tr>
+<tr>
+<td><code>test/fixtures/index.html</code></td>
+<td>Engine and Turbo regression scenarios at <code>/regression</code></td>
+</tr>
+</tbody></table>
+<p>Run <code>npm run build:gallery</code> after editing the generator or catalog. The gallery is a static development server using the real core and Stimulus adapter. It is not a Rails application; the separate Ruby integration tests boot a real Rails application and exercise helper rendering and asset delivery.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/recipes.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#bottom-sheet-with-two-dismiss-controls">Bottom sheet with two dismiss controls</a><a href="#card-from-the-top">Card from the top</a><a href="#sidebar">Sidebar</a><a href="#searchable-sheet-with-detents">Searchable sheet with detents</a><a href="#nested-sheets-and-depth">Nested sheets and depth</a><a href="#notification-and-persistent-player">Notification and persistent player</a><a href="#full-pages-and-lightbox">Full pages and Lightbox</a><a href="#lightbox-with-independent-image-and-container-motion">Lightbox with independent image and container motion</a><a href="#parallax-page-with-an-anchored-header">Parallax Page with an anchored header</a><a href="#source-guide">Source guide</a></aside></div></body></html>

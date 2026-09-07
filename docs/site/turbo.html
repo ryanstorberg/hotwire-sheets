@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Turbo and Stimulus · Hotwire Sheets</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head><body><a class="skip" href="#content">Skip to content</a><header class="docs-header"><a class="brand" href="/docs">Hotwire Sheets <span>0.1.0</span></a><a href="/">All Examples ↗</a></header><div class="docs-layout"><aside class="docs-navigation"><details open><summary>Documentation</summary><label class="nav-search">Find a guide<input type="search" placeholder="Search guides…" aria-label="Search guides"></label><nav><h2>Start here</h2><a href="/docs/getting-started" >Getting started</a><a href="/docs/examples" >Examples</a><a href="/docs/recipes" >Recipes</a><h2>Reference</h2><a href="/docs/rails" >Rails helpers</a><a href="/docs/options" >Options</a><a href="/docs/javascript" >JavaScript API</a><a href="/docs/scroll" >Scroll</a><a href="/docs/animations" >Animation APIs</a><a href="/docs/primitives" >Stacks, focus and overlays</a><a href="/docs/api-index" >API index</a><h2>Guides</h2><a href="/docs/styling" >Styling and composition</a><a href="/docs/turbo" aria-current="page">Turbo and Stimulus</a><a href="/docs/concepts" >Core concepts</a><h2>Project</h2><a href="/docs/troubleshooting" >Troubleshooting</a><a href="/docs/architecture" >Architecture</a><a href="/docs/coverage" >Coverage and limits</a></nav></details></aside><main id="content"><div class="doc-meta">RAILS · HOTWIRE · STIMULUS</div><h1 id="turbo-and-stimulus">Turbo and Stimulus</h1>
+<p>Register the built-in adapter once in the application&#39;s existing Stimulus instance. It owns the <code>Sheet</code> lifecycle and handles Turbo&#39;s page cache.</p>
+<p><code>registerSheets(application)</code> also registers Scroll, Outlet, SheetStack, Island, ExternalOverlay, Fixed, and AutoFocusTarget controllers. They release observers, native scroll wrappers, viewport portals, and owned styles before Turbo caches or replaces a page, then reconnect after render. Their <code>data-…-options-value</code> attributes supply the serializable options documented in the Rails helpers guide.</p>
+<h2 id="navigation-lifecycle">Navigation lifecycle</h2>
+<ul>
+<li>Before a page is cached or replaced, ordinary sheets close, release their scroll locks, and return their views to their roots.</li>
+<li>A root with <code>data-turbo-permanent</code> saves its active detent and resumes after navigation.</li>
+<li>Frame and Stream changes inside an existing sheet preserve its open state and trigger remeasurement.</li>
+<li>Removing or replacing the root destroys the old instance and releases its portal, observers, listeners, and animations.</li>
+</ul>
+<p>The adapter does not add history entries for opening sheets. Browser Back follows Turbo navigation. If your product needs Back-to-dismiss, build that route policy explicitly around the lifecycle events.</p>
+<h2 id="lazy-frames">Lazy Frames</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet_trigger &quot;Order details&quot;, sheet: &quot;order&quot;,
+      href: order_path(@order) %&gt;
+
+&lt;%= hotwire_sheet(id: &quot;order&quot;, detents: [&quot;content&quot;, 0.85]) do |sheet| %&gt;
+  &lt;%= sheet.content do %&gt;
+    &lt;%= sheet.title &quot;Order details&quot; %&gt;
+    &lt;%= sheet.body do %&gt;
+      &lt;%= turbo_frame_tag &quot;order_details&quot;,
+            src: order_path(@order), loading: :lazy %&gt;
+    &lt;% end %&gt;
+    &lt;%= sheet.close &quot;Close&quot; %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>The server&#39;s Frame response must include the matching <code>turbo-frame id=&quot;order_details&quot;</code>. Use a normal page response for the trigger&#39;s fallback route. The engine observes content changes; call <code>sheet.refresh()</code> for application-driven layout changes that require explicit remeasurement.</p>
+<h2 id="form-submission">Form submission</h2>
+<p>Keep the form controller in the content subtree so its targets and actions remain together after portaling:</p>
+<pre><code class="language-erb">&lt;%= sheet.content(data: { controller: &quot;sheet-form&quot; }) do %&gt;
+  &lt;%= sheet.title &quot;Edit product&quot; %&gt;
+  &lt;%= sheet.body do %&gt;
+    &lt;%= form_with model: @product,
+          data: { action: &quot;turbo:submit-end-&gt;sheet-form#submitted&quot; } do |form| %&gt;
+      &lt;%= form.label :name %&gt;
+      &lt;%= form.text_field :name %&gt;
+      &lt;%= form.submit &quot;Save&quot; %&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+  &lt;%= sheet.close &quot;Cancel&quot; %&gt;
+&lt;% end %&gt;
+</code></pre>
+<pre><code class="language-js">// app/javascript/controllers/sheet_form_controller.js
+import { Controller } from &quot;@hotwired/stimulus&quot;
+import { Sheet } from &quot;hotwire-sheets&quot;
+
+export default class extends Controller {
+  submitted(event) {
+    if (!event.detail.success) return
+    // The stable root remains outside the portal.
+    Sheet.get(document.getElementById(&quot;product-editor&quot;))?.close({ reason: &quot;saved&quot; })
+  }
+}
+</code></pre>
+<p>In this example the outer helper uses <code>id: &quot;product-editor&quot;</code>. Validation errors can replace the Frame or update form content while leaving the sheet open. Use Rails&#39; normal status and response conventions for the form; the sheet does not change server submission semantics.</p>
+<h2 id="controller-actions">Controller actions</h2>
+<p>The adapter exposes <code>open</code>, <code>close</code>, <code>toggle</code>, and <code>snap</code>. <code>snap</code> reads a numeric <code>detent</code> action parameter:</p>
+<pre><code class="language-html">&lt;button data-action=&quot;sheet#snap&quot; data-sheet-detent-param=&quot;1&quot;&gt;Expand&lt;/button&gt;
+</code></pre>
+<p>Stimulus actions resolve controllers through ancestry. Because the view portals outside its root, place this action in a region that still has the controller as an ancestor, use <code>portal: false</code> where appropriate, or use an application controller and <code>Sheet.get(root)</code> for controls inside the portaled content. <code>data-sheet-open</code> and <code>data-sheet-close</code> work through portals without this restriction.</p>
+<h2 id="permanent-content">Permanent content</h2>
+<pre><code class="language-erb">&lt;%= hotwire_sheet(id: &quot;player&quot;, open: true, modal: false,
+      autofocus: false, close_on_outside: false,
+      detents: [&quot;76px&quot;, 1], swipe_to_dismiss: false,
+      html: { data: { turbo_permanent: true } }) do |sheet| %&gt;
+  &lt;%= sheet.content do %&gt;
+    &lt;%= sheet.title &quot;Now playing&quot;, class: &quot;sheet-visually-hidden&quot; %&gt;
+    &lt;%= sheet.body do %&gt;Player controls&lt;% end %&gt;
+    &lt;%= sheet.close %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+<p>Render the matching permanent root on the destination page too. A permanent player must not retain page-specific stale form state. Choose permanent ownership deliberately.</p>
+<h2 id="third-party-overlays">Third-party overlays</h2>
+<p>For an application-owned overlay outside the sheet portal that should remain interactive, mark its container with <code>data-sheet-island</code>. This keeps it available to focus and accessibility while a modal sheet is active. Remove the island when the overlay closes. It is a modality exception, not a complete integration with every third-party overlay library.</p>
+<p>For a third-party dialog with its own focus/inert manager, register an <code>ExternalOverlay</code> for the duration of that dialog. Use <code>selfManagedInertOutside: true</code> when that manager controls modality, or <code>false</code> to include the external content in the sheet&#39;s managed scope. The <a href="/docs/primitives#external-overlays">overlay guide</a> includes lifecycle examples.</p>
+<p>Test nested focus, Escape ordering, and both overlays&#39; scroll locking together. Automatic adapters for third-party frameworks and Turbo Native presentation mapping are not included.</p>
+<footer class="doc-footer"><a href="/">Try the examples</a><a href="/docs/turbo.md">Markdown source</a><span>Hotwire Sheets · Independent implementation</span></footer></main><aside class="on-this-page"><strong>On this page</strong><a href="#navigation-lifecycle">Navigation lifecycle</a><a href="#lazy-frames">Lazy Frames</a><a href="#form-submission">Form submission</a><a href="#controller-actions">Controller actions</a><a href="#permanent-content">Permanent content</a><a href="#third-party-overlays">Third-party overlays</a></aside></div></body></html>

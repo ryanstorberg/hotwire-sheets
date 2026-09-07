@@ -1,0 +1,9 @@
+node_modules/
+vendor/bundle/
+.bundle/
+*.gem
+*.tgz
+test-results/
+playwright-report/
+tmp/
+.DS_Store
