@@ -2,7 +2,7 @@
 
 The gallery presents **16 examples** in one responsive grid. Each card shows desktop and mobile previews with watercolor artwork. Layouts, typography, panel corners, and dismiss controls use the Rails-compatible engine.
 
-Run `npm run demo` and open the [local gallery](http://127.0.0.1:4173/). The Docs link opens this guide. The static demo uses the actual core, Stimulus, and Turbo modules; the Ruby integration tests separately verify a real Rails application.
+Open the [gallery](/) to try every example. For local development, run `npm run demo` and visit `http://127.0.0.1:4173/`. The Docs link opens this guide. The static demo uses the actual core, Stimulus, and Turbo modules; the Ruby integration tests separately verify a real Rails application.
 
 Swipe-enabled presentations accept gestures from their surface or elsewhere in the viewport, including the backdrop. Page from Bottom closes only through its Close button. Outside swipes control the frontmost sheet and follow its edge and detents. Persistent Sheet with Detent expands or collapses without dismissing. Scrolling content and form controls keep their own interactions.
 

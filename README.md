@@ -8,7 +8,9 @@ Motion uses WAAPI transform/opacity springs by default, with optional native CSS
 
 ## Documentation
 
-Run `npm run demo`, then open [the gallery](http://127.0.0.1:4173/) or [the developer docs](http://127.0.0.1:4173/docs). The documentation includes 16 guides, searchable navigation, copyable examples, Markdown sources, an `llms.txt` index, bundled Markdown, and a machine-readable index of the component, option, and utility APIs.
+Browse the [live examples](https://ryanstorberg.com/hotwire-sheets/) and [developer docs](https://ryanstorberg.com/hotwire-sheets/docs/).
+
+For local development, run `npm run demo`, then open [the gallery](http://127.0.0.1:4173/) or [the developer docs](http://127.0.0.1:4173/docs). The documentation includes 16 guides, searchable navigation, copyable examples, Markdown sources, an `llms.txt` index, bundled Markdown, and a machine-readable index of the component, option, and utility APIs.
 
 [Getting started](docs/getting-started.md) · [Rails helpers](docs/rails.md) · [All options](docs/options.md) · [JavaScript API](docs/javascript.md) · [Styling](docs/styling.md) · [Turbo and Stimulus](docs/turbo.md) · [Recipes](docs/recipes.md) · [Core concepts](docs/concepts.md) · [Scroll](docs/scroll.md) · [Animation APIs](docs/animations.md) · [Auxiliary primitives](docs/primitives.md) · [API index](docs/api-index.md)
 
@@ -206,3 +208,21 @@ The gallery presents 16 examples with watercolor artwork, responsive layouts, an
 The gem ships generated JavaScript in `app/assets/javascripts`; rebuild it after source changes. `npm pack` and `gem build hotwire_sheets.gemspec` create local distributable packages without publishing them.
 
 Runtime code is MIT licensed. Public-domain gallery artwork is attributed in `examples/assets/watercolors/README.md` and excluded from runtime packages. [Architecture](docs/architecture.md) · [Coverage](docs/coverage.md)
+
+## GitHub Pages
+
+The [public site](https://ryanstorberg.com/hotwire-sheets/) deploys automatically after pushes to `main`. The Pages workflow builds a standalone browser bundle, checks all 16 examples on desktop Chromium and mobile WebKit, and publishes only `dist/`. Rails and a Node server are not needed on the host.
+
+To build and preview the same static site locally:
+
+```sh
+npm ci
+npm run build:pages
+npm run preview:pages # http://127.0.0.1:4174/hotwire-sheets/
+# In another terminal:
+npm run test:pages
+```
+
+`PAGES_BASE_PATH` defaults to `/hotwire-sheets/`. Set it consistently for the build, preview, and tests when publishing under a different project path; use `/` for a custom domain. Each guide has its own directory index, so deep links and reloads work without a server rewrite. Markdown sources, the API inventory, and artwork credits are published alongside the site.
+
+For a fork, enable **Settings → Pages → Source → GitHub Actions** and update `PAGES_BASE_PATH` in `.github/workflows/pages.yml` to the repository path.

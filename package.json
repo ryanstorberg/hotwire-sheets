@@ -41,7 +41,10 @@
     "prepack": "npm run build",
     "benchmark:motion": "node scripts/benchmark-motion.mjs",
     "test:types": "tsc --noEmit --strict --lib DOM,ES2023 --module NodeNext --moduleResolution NodeNext test/types/public-api.ts",
-    "benchmark:gallery": "node scripts/benchmark-gallery.mjs"
+    "benchmark:gallery": "node scripts/benchmark-gallery.mjs",
+    "build:pages": "npm run build && npm run build:gallery && npm run build:docs && node scripts/build-pages.mjs",
+    "preview:pages": "node scripts/serve-pages.mjs",
+    "test:pages": "playwright test --config playwright.pages.config.js"
   },
   "peerDependencies": {
     "@hotwired/stimulus": "^3.2.2"
