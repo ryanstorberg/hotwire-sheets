@@ -113,7 +113,7 @@ export class ScrollSnapMotion {
     this.track.style.width = `${sheet.viewport.width + (sheet.axis === "x" ? sheet.extent : 0)}px`;
     this.track.style.height = `${sheet.viewport.height + (sheet.axis === "y" ? sheet.extent : 0)}px`;
     this.points();
-    if (changed && !this.operation && sheet.state !== "dragging") this.jump(sheet.state === "open" ? sheet.points[sheet.detent] : sheet.position);
+    if (changed && !this.operation && !this.animating && sheet.state !== "dragging") this.jump(sheet.state === "open" ? sheet.points[sheet.detent] : sheet.position);
     if (changed && this.operation) {
       this.operation.target = sheet.state === "closing" ? 0 : sheet.points[sheet.detent];
       this.scroll(this.operation.target, "smooth");
@@ -219,7 +219,7 @@ export class ScrollSnapMotion {
       this.animating = true;
       this.view.dataset.sheetSnapSuspended = "true";
       const completed = await sheet.animator.to(sheet.position, target, 0, settings, value => sheet.render(value));
-      if (this.animating) { this.jump(completed ? target : sheet.position); this.animating = false; }
+      if (this.animating) { this.jump(sheet.position); this.animating = false; }
       return completed;
     }
     if (immediate || sheet.win.matchMedia("(prefers-reduced-motion: reduce)").matches || Math.abs(this.position - target) < 1) {

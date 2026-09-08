@@ -1854,7 +1854,7 @@ Use the Stimulus adapter with Turbo. If using the standalone core, call `destroy
 
 ## A sheet changes size after images load
 
-`"content"` detents follow measured content. Give images dimensions or an aspect ratio to reserve their space, or use fixed/fraction detents when a stable presentation size is required. Mutation and resize observers remeasure dynamic content.
+`"content"` detents follow measured content. Give images dimensions or an aspect ratio to reserve their space, or use fixed/fraction detents when a stable presentation size is required. Mutation and resize observers remeasure dynamic content. Viewport changes during motion preserve the remaining animation. In responsive examples, use viewport-relative detents such as `"calc(var(--sheet-viewport-height, 100dvh) - 6px)"`; avoid destroying and recreating a sheet in a window resize handler. Mobile browser controls and the keyboard can trigger those events during a gesture.
 
 ## Dragging scrollable content feels different on a phone
 
@@ -1904,7 +1904,7 @@ The state machine is `closed → opening → open → dragging/settling → clos
 
 Detents resolve to visible lengths using the current visual viewport. Numeric values are fractions, strings may be `content` or positive CSS lengths, including viewport units and `calc()`. Public indices preserve declaration order even when content measurements change the size order. Keyboard navigation follows resolved size order.
 
-The default `animation: "waapi"` backend samples an analytical spring into keyframes and animates the sheet's concrete `transform` and `opacity`, plus the backdrop's `opacity`, with the Web Animations API. The browser owns interpolation and playback; the primary animation continues even if the library's JavaScript frame observer is stopped. The observer synchronizes public progress events, CSS variables, and custom stacking effects. Interruption samples the displayed transform before handing control to the next transition. If the viewport or detent geometry changes during a transition, it completes at the new destination. [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate).
+The default `animation: "waapi"` backend samples an analytical spring into keyframes and animates the sheet's concrete `transform` and `opacity`, plus the backdrop's `opacity`, with the Web Animations API. The browser owns interpolation and playback; the primary animation continues even if the library's JavaScript frame observer is stopped. The observer synchronizes public progress events, CSS variables, and custom stacking effects. Interruption samples the displayed transform before handing control to the next transition. If the viewport or detent geometry changes during a transition, the remaining curve adapts to the new destination without ending the animation or replacing its promise. The displayed pose is committed before compositor effects are removed. [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate).
 
 Springs include underdamped, critically damped, and overdamped configurations. By default, input and spring motion are capped at the maximum open extent so a sheet cannot move inward past its attached edge. Intermediate detents can rebound within that extent. Reduced motion skips animation. `animation: "raf"` uses the elapsed-time JavaScript fallback, which is also selected when WAAPI is unavailable.
 

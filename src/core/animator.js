@@ -23,14 +23,20 @@ export function framePosition(frames, time) {
   return a.position + (b.position - a.position) * fraction;
 }
 
+function release(animations) {
+  animations.forEach(animation => animation.cancel());
+  animations.release?.();
+}
+
 export class Animator {
   constructor(win, effects) { this.win = win; this.effects = effects; }
 
   cancel() {
     const position = this.sample?.(), render = this.render, finish = this.finish, cleanup = this.cleanup;
     this.win.cancelAnimationFrame(this.frame);
-    this.finish = this.cleanup = this.sample = this.complete = this.render = null;
-    cleanup?.();
+    this.finish = this.cleanup = this.sample = this.complete = this.retarget = this.render = null;
+    // Commit the presented pose before releasing its compositor effect.
+    cleanup?.(position);
     if (position != null) render(position);
     finish?.(false);
   }
@@ -47,25 +53,57 @@ export class Animator {
       frames = Array.from({ length: count + 1 }, (_, index) => ({ time: duration * index / count, position: from + (to-from) * easingAt(index/count, options.easing) }));
     } else frames = springFrames(from, to, options.initialVelocity == null ? velocity : options.initialVelocity / 1000, options);
     if (options.delay) frames = [{ time: 0, position: from }, ...frames.map(frame => ({ ...frame, time: frame.time + options.delay }))];
-    const duration = frames.at(-1).time;
+    let duration = frames.at(-1).time;
     if (!duration) { render(to); return Promise.resolve(true); }
-    const animations = this.effects?.(frames, duration) || [];
+    let animations = [], start;
     return new Promise(resolve => {
       this.finish = resolve;
-      const start = this.win.performance.now();
       const currentTime = () => animations.length ? Number(animations[0].currentTime || 0) : Math.max(0, this.win.performance.now() - start);
       const finish = completed => {
         if (this.finish !== resolve) return;
+        const previous = animations;
         this.win.cancelAnimationFrame(this.frame);
-        this.finish = this.sample = this.cleanup = this.complete = this.render = null;
-        animations.forEach(animation => animation.cancel());
+        this.finish = this.sample = this.cleanup = this.complete = this.retarget = this.render = null;
+        // The stylesheet must already describe the final pose when WebKit
+        // removes the animation's composited layer.
+        if (completed) previous.commit?.(to);
+        release(previous);
         if (completed) render(to);
         resolve(completed);
       };
-      this.cleanup = () => animations.forEach(animation => animation.cancel());
+      const play = () => {
+        start = this.win.performance.now();
+        const playing = animations = this.effects?.(frames, duration) || [];
+        if (playing.length) Promise.all(playing.map(animation => animation.finished)).then(
+          () => { if (animations === playing) finish(true); },
+          () => { if (animations === playing) finish(false); }
+        );
+      };
+      this.cleanup = position => {
+        if (position != null) animations.commit?.(position);
+        release(animations);
+      };
       this.render = render;
       this.sample = () => animations.position?.() ?? framePosition(frames, currentTime());
       this.complete = position => { to = position; finish(true); };
+      this.retarget = (target, scale = 1) => {
+        const time = Math.min(duration, currentTime());
+        if (time >= duration) { to = target; finish(true); return; }
+        const presented = this.sample(), calculated = framePosition(frames, time);
+        const remaining = duration - time;
+        const correction = target - (to - calculated + presented) * scale;
+        frames = [{ time: 0, position: presented * scale }, ...frames.filter(frame => frame.time > time).map(frame => ({
+          time: frame.time - time,
+          position: (frame.position - calculated + presented) * scale + correction * (frame.time - time) / remaining
+        }))];
+        to = target; duration = remaining;
+        const previous = animations;
+        animations = [];
+        previous.commit?.(frames[0].position);
+        release(previous);
+        render(frames[0].position);
+        if (this.finish === resolve) play();
+      };
       const tick = now => {
         if (this.finish !== resolve) return;
         const time = animations.length ? currentTime() : Math.max(0, now - start);
@@ -74,7 +112,7 @@ export class Animator {
         if (this.finish !== resolve) return;
         this.frame = this.win.requestAnimationFrame(tick);
       };
-      if (animations.length) Promise.all(animations.map(animation => animation.finished)).then(() => finish(true), () => finish(false));
+      play();
       this.frame = this.win.requestAnimationFrame(tick);
     });
   }

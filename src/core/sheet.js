@@ -179,7 +179,7 @@ export class Sheet {
 
   measure() {
     if (!this.isOpen) return;
-    const previousGeometry = this.motionGeometry;
+    const previousGeometry = this.motionGeometry, previousExtent = this.extent;
     const viewport = this.viewport = readViewport(this.win);
     for (const key of ["width", "height", "top", "left", "keyboard"]) this.view.style.setProperty(`--sheet-viewport-${key}`, `${viewport[key]}px`);
     const style = this.win.getComputedStyle(this.content);
@@ -207,7 +207,11 @@ export class Sheet {
     this.view.style.setProperty("--sheet-chrome", `${chrome}px`);
     this.updateBodySize();
     this.nativeMotion?.measure();
-    if (previousGeometry && previousGeometry !== this.motionGeometry) this.animator.complete?.(this.state === "closing" ? 0 : this.points[this.detent]);
+    // Browser chrome, keyboards and late content can resize a moving sheet.
+    // Rebase its remaining curve instead of snapping straight to the end.
+    if (previousGeometry && previousGeometry !== this.motionGeometry) this.animator.retarget?.(
+      this.state === "closing" ? 0 : this.points[this.detent], this.extent / previousExtent
+    );
     if (this.state === "open") this.render(this.points[this.detent]);
     else this.render(this.position);
     // A scroll-dependent header can resize without changing the sheet's

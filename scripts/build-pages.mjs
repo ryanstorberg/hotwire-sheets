@@ -1,6 +1,6 @@
 import { build } from "esbuild";
 import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pagesBasePath } from "./pages-config.mjs";
 
@@ -32,9 +32,10 @@ async function write(path, contents) {
 
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-await build({
+const { metafile } = await build({
   absWorkingDir: root,
-  entryPoints: ["examples/gallery.js"], outfile: resolve(output, "assets/gallery.js"),
+  entryPoints: ["examples/gallery.js"], outdir: resolve(output, "assets"),
+  entryNames: "[name]-[hash]", metafile: true,
   bundle: true, format: "esm", target: "es2022", minify: true,
   plugins: [{ name: "gallery-core", setup(bundler) {
     bundler.onResolve({ filter: /^(hotwire-sheets(?:\/stimulus)?|\/src\/(?:stimulus\/)?index\.js)$/ }, ({ path }) => ({
@@ -42,9 +43,12 @@ await build({
     }));
   } }]
 });
+const galleryOutput = Object.entries(metafile.outputs).find(([, details]) => details.entryPoint === "examples/gallery.js")?.[0];
+if (!galleryOutput) throw new Error("Missing gallery entry point in Pages bundle.");
+const galleryScript = `/${relative(output, resolve(root, galleryOutput))}`;
 const gallery = (await readFile(resolve(root, "examples/gallery.html"), "utf8"))
   .replace(/<script type="importmap">[\s\S]*?<\/script>/, "")
-  .replace('src="/examples/gallery.js"', 'src="/assets/gallery.js"');
+  .replace('src="/examples/gallery.js"', `src="${galleryScript}"`);
 await write("index.html", html(gallery, "/"));
 for (const name of documentNames) {
   const source = await readFile(resolve(root, `docs/site/${name}.html`), "utf8");

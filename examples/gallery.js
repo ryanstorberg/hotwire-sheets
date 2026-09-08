@@ -8,21 +8,22 @@ const { SheetController } = await import(built ? "hotwire-sheets/stimulus" : "/s
 // These responsive presentations use the public Sheet lifecycle. Their styling
 // and application controls are example code, not additional engine defaults.
 function presentationOptions(kind) {
-  const width = innerWidth, height = innerHeight;
+  const width = innerWidth;
+  const height = "var(--sheet-viewport-height, 100dvh)", viewportWidth = "var(--sheet-viewport-width, 100vw)";
   const base = { detents: ["content"] };
   switch (kind) {
     case "top": return { ...base, edge: "top" };
     case "card": return { ...base, edge: "top", spring: { stiffness: 260, damping: 20, mass: 1 } };
     case "detached": return { ...base, oppositeEdgeDismiss: true };
-    case "sidebar": return { edge: "left", detents: [`${Math.min(width * .9, 325)}px`] };
+    case "sidebar": return { edge: "left", detents: [`min(calc(${viewportWidth} * .9), 325px)`] };
     case "toast": return { detents: width >= 1000 ? ["372px"] : ["content"], edge: width >= 1000 ? "right" : "top", modal: false, autofocus: false, restoreFocus: false, closeOnOutside: false };
-    case "stacking": return width >= 700 ? { edge: "right", detents: [`${Math.min(width * .8, 700)}px`], initialFocus: ".profile-dismiss" } : { detents: [`${Math.min(500, height * .9)}px`], initialFocus: ".profile-dismiss" };
+    case "stacking": return width >= 700 ? { edge: "right", detents: [`min(calc(${viewportWidth} * .8), 700px)`], initialFocus: ".profile-dismiss" } : { edge: "bottom", detents: [`min(500px, calc(${height} * .9))`], initialFocus: ".profile-dismiss" };
     case "depth": return { detents: [.974], stackEffect: true, scrollSnap: true, initialFocus: ".profile-dismiss" };
     case "persistent": return { detents: ["76px", 1], modal: false, autofocus: false, closeOnOutside: false, swipeToDismiss: false };
-    case "detents": return { detents: [`${Math.max(1, height * .66 - 60)}px`, `${height - (width >= 800 ? height * .05 : 6)}px`], initialFocus: ".handle", scrollSnap: true };
-    case "keyboard": return { detents: [`${height - (width >= 800 ? 64 : 6)}px`], oppositeEdgeDismiss: true };
+    case "detents": return { detents: [`max(1px, calc(${height} * .66 - 60px))`, width >= 800 ? `calc(${height} * .95)` : `calc(${height} - 6px)`], initialFocus: ".handle", scrollSnap: true };
+    case "keyboard": return { detents: [`calc(${height} - ${width >= 800 ? 64 : 6}px)`], oppositeEdgeDismiss: true };
     case "page": case "parallax": return { edge: "right", detents: [1] };
-    case "mobile-comments": return { detents: [`${Math.max(1, height * .66 - 60)}px`, `${height - 6}px`] };
+    case "mobile-comments": return { detents: [`max(1px, calc(${height} * .66 - 60px))`, `calc(${height} - 6px)`] };
     case "lightbox": return { detents: [1] };
     case "long": return { detents: [1], scrollEndDismiss: true };
     case "page-bottom": return { detents: [1], draggable: false, wheel: false, swipeToDismiss: false, closeOnEscape: false, closeOnOutside: false };
@@ -41,6 +42,9 @@ class PresentationController extends SheetController {
     on(this.element, "sheet:progress", event => this.progress(event));
     on(this.element, "sheet:open", () => this.opened());
     on(this.element, "sheet:close", () => this.resetPresentation());
+    for (const event of ["sheet:open", "sheet:close", "sheet:detent-change"]) {
+      on(this.element, event, () => { if (this.resizePending) this.resizePresentation(); });
+    }
     on(this.sheet.view, "input", event => this.input(event));
     on(this.sheet.content, "pointerenter", () => { this.hovered = true; clearTimeout(this.timer); });
     on(this.sheet.content, "pointerleave", () => { this.hovered = false; this.scheduleToast(); });
@@ -65,16 +69,12 @@ class PresentationController extends SheetController {
     if (!this.sheet) return;
     if (this.kind === "mobile-comments" && innerWidth >= 1000) this.sheet.close({ immediate: true });
     const options = presentationOptions(this.kind);
-    if (JSON.stringify(options) === JSON.stringify(this.optionsValue)) return;
-    const { isOpen, detent, returnFocus } = this.sheet;
-    const active = document.activeElement;
-    this.sheet.destroy();
+    if (JSON.stringify(options) === JSON.stringify(this.optionsValue)) { this.resizePending = false; return; }
+    // Height changes are handled by the viewport-relative detents. A real
+    // layout breakpoint can update the same instance once its gesture ends.
+    if (!["closed", "open"].includes(this.sheet.state)) { this.resizePending = true; return; }
+    this.resizePending = false;
     this.optionsValue = options;
-    this.sheet = new Sheet(this.element, options);
-    if (isOpen) {
-      this.sheet.open({ immediate: true, detent: Math.min(detent, options.detents.length - 1), trigger: returnFocus });
-      if (active?.isConnected && this.sheet.content.contains(active)) active.focus({ preventScroll: true });
-    }
   }
 
   action(event) {

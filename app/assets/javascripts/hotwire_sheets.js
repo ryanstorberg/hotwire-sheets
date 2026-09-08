@@ -363,13 +363,13 @@ var Outlet = class {
     if (JSON.stringify(start) === JSON.stringify(end)) return null;
     const target = this.target(true), animation = target.animate(frames.map((frame) => ({ ...this.styles(changed, frame.position), offset: frame.time / duration })), { duration, fill: "both", easing: "linear", id: "hotwire-sheet-outlet" });
     this.playing = animation;
-    const release = () => {
+    const release2 = () => {
       if (this.playing === animation) {
         this.playing = null;
         this.update();
       }
     };
-    animation.addEventListener("cancel", release, { once: true });
+    animation.addEventListener("cancel", release2, { once: true });
     return animation;
   }
   destroy() {
@@ -865,6 +865,10 @@ function framePosition(frames, time) {
   const fraction = Math.max(0, Math.min(1, (time - a.time) / (b.time - a.time)));
   return a.position + (b.position - a.position) * fraction;
 }
+function release(animations) {
+  animations.forEach((animation) => animation.cancel());
+  animations.release?.();
+}
 var Animator = class {
   constructor(win, effects) {
     this.win = win;
@@ -873,8 +877,8 @@ var Animator = class {
   cancel() {
     const position = this.sample?.(), render = this.render, finish = this.finish, cleanup = this.cleanup;
     this.win.cancelAnimationFrame(this.frame);
-    this.finish = this.cleanup = this.sample = this.complete = this.render = null;
-    cleanup?.();
+    this.finish = this.cleanup = this.sample = this.complete = this.retarget = this.render = null;
+    cleanup?.(position);
     if (position != null) render(position);
     finish?.(false);
   }
@@ -890,30 +894,69 @@ var Animator = class {
       frames = Array.from({ length: count + 1 }, (_, index) => ({ time: duration2 * index / count, position: from + (to - from) * easingAt(index / count, options.easing) }));
     } else frames = springFrames(from, to, options.initialVelocity == null ? velocity : options.initialVelocity / 1e3, options);
     if (options.delay) frames = [{ time: 0, position: from }, ...frames.map((frame) => ({ ...frame, time: frame.time + options.delay }))];
-    const duration = frames.at(-1).time;
+    let duration = frames.at(-1).time;
     if (!duration) {
       render(to);
       return Promise.resolve(true);
     }
-    const animations = this.effects?.(frames, duration) || [];
+    let animations = [], start;
     return new Promise((resolve) => {
       this.finish = resolve;
-      const start = this.win.performance.now();
       const currentTime = () => animations.length ? Number(animations[0].currentTime || 0) : Math.max(0, this.win.performance.now() - start);
       const finish = (completed) => {
         if (this.finish !== resolve) return;
+        const previous = animations;
         this.win.cancelAnimationFrame(this.frame);
-        this.finish = this.sample = this.cleanup = this.complete = this.render = null;
-        animations.forEach((animation) => animation.cancel());
+        this.finish = this.sample = this.cleanup = this.complete = this.retarget = this.render = null;
+        if (completed) previous.commit?.(to);
+        release(previous);
         if (completed) render(to);
         resolve(completed);
       };
-      this.cleanup = () => animations.forEach((animation) => animation.cancel());
+      const play = () => {
+        start = this.win.performance.now();
+        const playing = animations = this.effects?.(frames, duration) || [];
+        if (playing.length) Promise.all(playing.map((animation) => animation.finished)).then(
+          () => {
+            if (animations === playing) finish(true);
+          },
+          () => {
+            if (animations === playing) finish(false);
+          }
+        );
+      };
+      this.cleanup = (position) => {
+        if (position != null) animations.commit?.(position);
+        release(animations);
+      };
       this.render = render;
       this.sample = () => animations.position?.() ?? framePosition(frames, currentTime());
       this.complete = (position) => {
         to = position;
         finish(true);
+      };
+      this.retarget = (target, scale = 1) => {
+        const time = Math.min(duration, currentTime());
+        if (time >= duration) {
+          to = target;
+          finish(true);
+          return;
+        }
+        const presented = this.sample(), calculated = framePosition(frames, time);
+        const remaining = duration - time;
+        const correction = target - (to - calculated + presented) * scale;
+        frames = [{ time: 0, position: presented * scale }, ...frames.filter((frame) => frame.time > time).map((frame) => ({
+          time: frame.time - time,
+          position: (frame.position - calculated + presented) * scale + correction * (frame.time - time) / remaining
+        }))];
+        to = target;
+        duration = remaining;
+        const previous = animations;
+        animations = [];
+        previous.commit?.(frames[0].position);
+        release(previous);
+        render(frames[0].position);
+        if (this.finish === resolve) play();
       };
       const tick = (now) => {
         if (this.finish !== resolve) return;
@@ -926,7 +969,7 @@ var Animator = class {
         if (this.finish !== resolve) return;
         this.frame = this.win.requestAnimationFrame(tick);
       };
-      if (animations.length) Promise.all(animations.map((animation) => animation.finished)).then(() => finish(true), () => finish(false));
+      play();
       this.frame = this.win.requestAnimationFrame(tick);
     });
   }
@@ -974,6 +1017,8 @@ function motionEffects(sheet, frames, duration) {
   const customBackdrop = sheet.outlets?.some((outlet) => outlet.element === backdrop && outlet.options.travelAnimation && Object.hasOwn(outlet.options.travelAnimation, "opacity"));
   if (backdrop && sheet.options.modal && !customBackdrop) animations.push(backdrop.animate(opacityFrames, { ...timing, id: "hotwire-sheet-backdrop" }));
   animations.push(...animateOutlets(sheet, frames, duration, content));
+  animations.commit = (position) => sheet.writePosition(position);
+  animations.release = () => updateOutlets(sheet.doc);
   animations.position = () => {
     const matrix = new win.DOMMatrix(win.getComputedStyle(content).transform);
     const a = snapshots.find((sample) => sample.position === 0), b = snapshots.at(-1);
@@ -1016,21 +1061,21 @@ function guardWheelTail(sheet, event) {
   let last = win.performance.now(), magnitude = Math.abs(axis === "y" ? event.deltaY : event.deltaX);
   const direction = Math.sign(axis === "y" ? event.deltaY : event.deltaX);
   let timer;
-  const release = () => {
+  const release2 = () => {
     abort.abort();
     win.clearTimeout(timer);
-    if (guards.get(doc) === release) guards.delete(doc);
+    if (guards.get(doc) === release2) guards.delete(doc);
     if (!sheet.swipeCommitted) delete sheet.view.dataset.sheetGestureSettling;
   };
   const renew = () => {
     win.clearTimeout(timer);
-    timer = win.setTimeout(release, 120);
+    timer = win.setTimeout(release2, 120);
   };
   doc.addEventListener("wheel", (next) => {
     const delta = axis === "y" ? next.deltaY : next.deltaX, size = Math.abs(delta), now = win.performance.now();
     const cross = axis === "y" ? next.deltaX : next.deltaY;
     if (next.ctrlKey || Math.abs(cross) > size || now - last > 120 || delta * direction < 0 || size > magnitude * 1.75 + 2) {
-      release();
+      release2();
       return;
     }
     last = now;
@@ -1041,9 +1086,9 @@ function guardWheelTail(sheet, event) {
     if (next.cancelable) next.preventDefault();
     next.stopImmediatePropagation();
   }, { capture: true, passive: false, signal: abort.signal });
-  for (const name of ["pointerdown", "touchstart"]) doc.addEventListener(name, release, { capture: true, passive: true, signal: abort.signal });
-  sheet.abort.signal.addEventListener("abort", release, { once: true, signal: abort.signal });
-  guards.set(doc, release);
+  for (const name of ["pointerdown", "touchstart"]) doc.addEventListener(name, release2, { capture: true, passive: true, signal: abort.signal });
+  sheet.abort.signal.addEventListener("abort", release2, { once: true, signal: abort.signal });
+  guards.set(doc, release2);
   renew();
 }
 
@@ -1431,7 +1476,7 @@ var ScrollSnapMotion = class {
     this.track.style.width = `${sheet.viewport.width + (sheet.axis === "x" ? sheet.extent : 0)}px`;
     this.track.style.height = `${sheet.viewport.height + (sheet.axis === "y" ? sheet.extent : 0)}px`;
     this.points();
-    if (changed && !this.operation && sheet.state !== "dragging") this.jump(sheet.state === "open" ? sheet.points[sheet.detent] : sheet.position);
+    if (changed && !this.operation && !this.animating && sheet.state !== "dragging") this.jump(sheet.state === "open" ? sheet.points[sheet.detent] : sheet.position);
     if (changed && this.operation) {
       this.operation.target = sheet.state === "closing" ? 0 : sheet.points[sheet.detent];
       this.scroll(this.operation.target, "smooth");
@@ -1525,7 +1570,7 @@ var ScrollSnapMotion = class {
       this.view.dataset.sheetSnapSuspended = "true";
       const completed = await sheet.animator.to(sheet.position, target, 0, settings, (value) => sheet.render(value));
       if (this.animating) {
-        this.jump(completed ? target : sheet.position);
+        this.jump(sheet.position);
         this.animating = false;
       }
       return completed;
@@ -1822,7 +1867,7 @@ var Sheet = class {
   }
   measure() {
     if (!this.isOpen) return;
-    const previousGeometry = this.motionGeometry;
+    const previousGeometry = this.motionGeometry, previousExtent = this.extent;
     const viewport = this.viewport = readViewport(this.win);
     for (const key of ["width", "height", "top", "left", "keyboard"]) this.view.style.setProperty(`--sheet-viewport-${key}`, `${viewport[key]}px`);
     const style = this.win.getComputedStyle(this.content);
@@ -1853,7 +1898,10 @@ var Sheet = class {
     this.view.style.setProperty("--sheet-chrome", `${chrome}px`);
     this.updateBodySize();
     this.nativeMotion?.measure();
-    if (previousGeometry && previousGeometry !== this.motionGeometry) this.animator.complete?.(this.state === "closing" ? 0 : this.points[this.detent]);
+    if (previousGeometry && previousGeometry !== this.motionGeometry) this.animator.retarget?.(
+      this.state === "closing" ? 0 : this.points[this.detent],
+      this.extent / previousExtent
+    );
     if (this.state === "open") this.render(this.points[this.detent]);
     else this.render(this.position);
     if (this.state === "open" && previousGeometry !== this.motionGeometry) keepFocusVisible(this);

@@ -28,7 +28,7 @@ Use the Stimulus adapter with Turbo. If using the standalone core, call `destroy
 
 ## A sheet changes size after images load
 
-`"content"` detents follow measured content. Give images dimensions or an aspect ratio to reserve their space, or use fixed/fraction detents when a stable presentation size is required. Mutation and resize observers remeasure dynamic content.
+`"content"` detents follow measured content. Give images dimensions or an aspect ratio to reserve their space, or use fixed/fraction detents when a stable presentation size is required. Mutation and resize observers remeasure dynamic content. Viewport changes during motion preserve the remaining animation. In responsive examples, use viewport-relative detents such as `"calc(var(--sheet-viewport-height, 100dvh) - 6px)"`; avoid destroying and recreating a sheet in a window resize handler. Mobile browser controls and the keyboard can trigger those events during a gesture.
 
 ## Dragging scrollable content feels different on a phone
 

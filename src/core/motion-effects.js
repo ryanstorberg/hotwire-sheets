@@ -1,5 +1,5 @@
 import { clamp } from "./physics.js";
-import { animateOutlets } from "./outlet.js";
+import { animateOutlets, updateOutlets } from "./outlet.js";
 
 // Read authored transforms once, then hand concrete matrix and opacity
 // keyframes to WAAPI. The primary surface can move independently of JS frames.
@@ -48,6 +48,10 @@ export function motionEffects(sheet, frames, duration) {
   const customBackdrop = sheet.outlets?.some(outlet => outlet.element === backdrop && outlet.options.travelAnimation && Object.hasOwn(outlet.options.travelAnimation, "opacity"));
   if (backdrop && sheet.options.modal && !customBackdrop) animations.push(backdrop.animate(opacityFrames, { ...timing, id: "hotwire-sheet-backdrop" }));
   animations.push(...animateOutlets(sheet, frames, duration, content));
+  // Commit underlying CSS without dispatching progress callbacks while the
+  // old effects still exist; those callbacks can start another transition.
+  animations.commit = position => sheet.writePosition(position);
+  animations.release = () => updateOutlets(sheet.doc);
   // WebKit can expose a timeline time newer than the last presented frame.
   // On interruption, continue from the actual presented matrix to avoid a jump.
   animations.position = () => {
